@@ -1,0 +1,48 @@
+/* File: app/globals.css */
+
+/* 1. Import the Inter font to match your brand */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* 2. Standard Tailwind v4 imports */
+@import "tailwindcss";
+
+
+
+/* 3. Define the theme variables inside the @theme block */
+@theme {
+  /* Colors */
+  --color-background: #f8fafc; /* slate-50 */
+  --color-foreground: #0f172a; /* slate-900 */
+  --color-primary: #f59e0b;   /* yellow-500 */
+  --color-primary-foreground: #0f172a;
+  --color-border: #e2e8f0;    /* slate-200 */
+
+  /* Fonts */
+  --font-sans: 'Inter', sans-serif;
+
+  /* Animations */
+  --animation-grid-scroll: scrollGrid 20s linear infinite;
+}
+
+/* 4. Define base styles for the app */
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 5. Define the keyframes for our animation */
+@keyframes scrollGrid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 100px;
+  }
+}
+
+.animate-grid-scroll {
+  animation: scrollGrid 20s linear infinite;
+}
