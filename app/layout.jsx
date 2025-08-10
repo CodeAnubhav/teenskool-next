@@ -8,6 +8,7 @@ import { SupabaseProvider } from '@/contexts/SupabaseContext';
 export const metadata = {
   title: 'TeenSkool',
   description: 'Empowering youth through learning and innovation',
+  icon: '/favicon.ico', 
 };
 
 export default function RootLayout({ children }) {

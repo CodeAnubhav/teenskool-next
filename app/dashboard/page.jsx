@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import MotionDiv from "@/components/ui/MotionDiv";
-import { Loader2, LogOut, User, BookOpen, Award } from "lucide-react";
+import { Loader2, LogOut, User, BookOpen, Award, Hand } from "lucide-react";
 
 // Pattern background matching login/signup
 const PatternBackground = () => (
@@ -22,7 +22,7 @@ export default function DashboardPage() {
     const [user, setUser] = useState(null);
     // THE FIX: Start with a true loading state
     const [loading, setLoading] = useState(true);
-  
+ 
     useEffect(() => {
       const getUser = async () => {
         // Fetch session from Supabase
@@ -37,10 +37,10 @@ export default function DashboardPage() {
           setLoading(false); // Stop loading ONLY if the user is authenticated
         }
       };
-  
+ 
       getUser();
     }, [router]);
-  
+ 
     // THIS IS THE KEY:
     // While loading is true, we show a full-screen loader.
     // The dashboard UI will not even attempt to render until loading is false.
@@ -51,18 +51,18 @@ export default function DashboardPage() {
         </div>
       );
     }
-  
+ 
     // This part of the code is now only reachable if loading is false (i.e., user is logged in)
     const userName = user?.user_metadata?.name || "Student";
-  
+ 
     const handleLogout = async () => {
       await supabase.auth.signOut();
       router.push("/");
     };
-  
+ 
 
   return (
-    <div className="min-h-screen pt-32 relative pt-12 pb-20 px-6">
+    <div className="min-h-screen  relative pt-32 pb-20 px-6">
       <PatternBackground />
 
       <MotionDiv
@@ -72,21 +72,22 @@ export default function DashboardPage() {
         className="max-w-5xl mx-auto"
       >
         {/* Profile Header */}
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-10">
           <div className="flex items-center gap-4">
             <div className="bg-primary/20 p-3 rounded-full">
               <User className="h-8 w-8 text-primary" />
             </div>
             <div>
+              {/* 2. Updated h1 greeting */}
               <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-                Welcome Back, {userName}!
+                Hello <Hand className="inline-block h-8 w-8 text-amber-500" /> {userName}!
               </h1>
               <p className="text-slate-500">Let's continue your learning journey.</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center cursor-pointer gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+            className="w-full md:w-auto flex items-center justify-center cursor-pointer gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity"
           >
             <LogOut className="h-5 w-5" />
             <span>Logout</span>

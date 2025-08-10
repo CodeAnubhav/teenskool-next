@@ -87,7 +87,7 @@ export default function Navigation() {
             {user ? (
               // If user is logged in, show Dashboard button
               <Link href="/dashboard">
-                <button className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">
+                <button className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">
                   <LayoutDashboard className="h-5 w-5" />
                   <span>Dashboard</span>
                 </button>
@@ -96,13 +96,13 @@ export default function Navigation() {
               // If user is logged out, show Login and Sign Up
               <>
                 <Link href="/login">
-                  <button className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-slate-600 hover:bg-slate-100 transition-colors">
+                  <button className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-semibold text-slate-600 hover:bg-slate-100 transition-colors">
                     <LogIn className="h-5 w-5"/>
                     Login
                   </button>
                 </Link>
                 <Link href="/signup">
-                  <button className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+                  <button className="flex items-center cursor-pointer gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity">
                     <UserPlus className="h-5 w-5"/>
                     Sign Up
                   </button>
@@ -115,13 +115,13 @@ export default function Navigation() {
           <div className="md:hidden">
              {user ? (
                 <Link href="/dashboard">
-                    <button className="p-2 rounded-full hover:bg-slate-100">
+                    <button className="p-2 rounded-full cursor-pointer hover:bg-slate-100">
                         <LayoutDashboard className="h-6 w-6 text-slate-700" />
                     </button>
                 </Link>
              ) : (
                 <Link href="/login">
-                    <button className="px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-full shadow transition">
+                    <button className="px-4 py-2 cursor-pointer bg-primary text-primary-foreground text-sm font-semibold rounded-full shadow transition">
                         Login
                     </button>
                 </Link>
