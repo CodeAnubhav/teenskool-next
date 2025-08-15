@@ -2,17 +2,18 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import MotionDiv from '@/components/ui/MotionDiv';
-import ProgramSidebar from './ProgramSidebar'; // Import the new client component
-import programs from '@/data/programs'; // Correct default import
-import { CheckCircle, AlertTriangle } from 'lucide-react';
+import ProgramSidebar from './ProgramSidebar';
+import programs from '@/data/programs'; // Import the programs data
+import { CheckCircle } from 'lucide-react';
 
 const GridPattern = () => (
   <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
 );
 
-// This function fetches the data for the page
+// This function fetches the data for the page, now with added robustness
 function getProgram(id) {
-    return programs.find((p) => p.id === id);
+    // FIX: Trim whitespace from program IDs to prevent matching errors
+    return programs.find((p) => p.id.trim() === id);
 }
 
 // This function generates metadata (like the page title) for the page
@@ -50,15 +51,29 @@ export default function ProgramDetailPage({ params }) {
             </MotionDiv>
             
             <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
-              <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-200">
-                <Image src={program.image} alt={program.title} width={1920} height={1080} className="w-full object-cover aspect-video" />
+              <div className="rounded-2xl overflow-hidden shadow-xl border border-border">
+                <Image src={program.image} alt={program.title} width={1200} height={600} className="w-full object-cover aspect-video" />
               </div>
             </MotionDiv>
             
             <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
-              <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-200">
+              <div className="bg-white p-8 rounded-2xl shadow-xl border border-border">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">About This Program</h2>
-                <div className="prose prose-slate max-w-none">{program.description}</div>
+                <div className="prose prose-slate max-w-none text-slate-600">{program.description}</div>
+              </div>
+            </MotionDiv>
+            
+            <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}>
+              <div className="bg-white p-8 rounded-2xl shadow-xl border border-border">
+                <h2 className="text-2xl font-bold text-slate-900 mb-6">What’s Included</h2>
+                <ul className="space-y-3">
+                  {program.includes?.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-slate-600">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </MotionDiv>
           </div>

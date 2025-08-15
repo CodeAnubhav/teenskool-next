@@ -359,8 +359,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Other sections can be migrated similarly... */}
     </div>
   );
 }
