@@ -1,3 +1,5 @@
+// Client component import (co-located for DX)
+import ChatPanel from "./ChatPanel";
 import Link from "next/link";
 import MotionDiv from "@/components/ui/MotionDiv";
 import { Brain, MessageSquare, Sparkles, ShieldCheck, Clock, Rocket } from "lucide-react";
@@ -160,5 +162,3 @@ function Bubble({ role, children }) {
   );
 }
 
-// Client component import (co-located for DX)
-import ChatPanel from "./ChatPanel";
