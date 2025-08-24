@@ -2,9 +2,12 @@
 
 export async function sendMessage(message) {
   try {
-    // Validate input
     if (!message || typeof message !== 'string') {
       throw new Error('Invalid message');
+    }
+
+    if (!process.env.OPENROUTER_API_KEY) {
+      throw new Error('Missing OpenRouter API Key (set in Netlify env vars)');
     }
 
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -14,7 +17,7 @@ export async function sendMessage(message) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-3.5-turbo", // Updated to a more reliable free model
+        model: "openai/gpt-3.5-turbo",
         messages: [
           {
             role: "system",
@@ -37,23 +40,25 @@ export async function sendMessage(message) {
     }
 
     const data = await res.json();
-    
-    // Better error handling for API response
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      console.error('Unexpected API response structure:', data);
+
+    if (!data.choices?.[0]?.message) {
+      console.error('Unexpected API response:', data);
       throw new Error('Invalid API response structure');
     }
 
-    return data.choices[0].message.content || "I'm sorry, I couldn't generate a response. Please try again.";
+    return data.choices[0].message.content || "I couldn't generate a response. Please try again.";
 
   } catch (err) {
-    console.error("Error in sendMessage:", err);
-    
-    // Return different error messages based on error type
+    console.error("Error in sendMessage:", err.message);
+
     if (err.message.includes('API request failed')) {
       return "I'm experiencing some technical difficulties. Please try again in a moment.";
     }
-    
+
+    if (err.message.includes('Missing OpenRouter API Key')) {
+      return "Server misconfiguration: API key missing. Please contact support.";
+    }
+
     return "Something went wrong. Please check your connection and try again.";
   }
 }
