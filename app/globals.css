@@ -10,13 +10,20 @@
 
 /* 3. Define the theme variables inside the @theme block */
 @theme {
-  /* Colors */
-  --color-background: #f8fafc; /* slate-50 */
-  --color-foreground: #0f172a; /* slate-900 */
-  --color-primary: #f59e0b;   /* yellow-500 */
-  --color-primary-foreground: #0f172a;
-  --color-border: #e2e8f0;    /* slate-200 */
+  --color-background: #121212;
+  /* The darkest shade, for the main page background */
+  --color-surface: #1E1E1E;
+  /* A slightly lighter gray for elevated surfaces like cards, footers, etc. */
+  --color-border: #2E2E2E;
+  /* A subtle border color that's visible on both background and surface */
 
+  --color-foreground: #f8fafc;
+  /* A light, off-white for text for better readability */
+
+  --color-primary: #a3e635;
+  /* Your neon green primary color */
+  --color-primary-foreground: #121212;
+  /* Dark text for on top of neon green buttons */
   /* Fonts */
   --font-sans: 'Inter', sans-serif;
 
@@ -38,6 +45,7 @@ body {
   0% {
     background-position: 0 0;
   }
+
   100% {
     background-position: 100px 100px;
   }

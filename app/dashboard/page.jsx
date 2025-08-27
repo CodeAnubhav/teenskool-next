@@ -7,8 +7,9 @@ import { supabase } from "@/lib/supabaseClient";
 import MotionDiv from "@/components/ui/MotionDiv";
 import { Loader2, LogOut, User, MessageSquare, Hand } from "lucide-react";
 
+// Themed pattern for the dark background
 const PatternBackground = () => (
-  <div className="absolute inset-0 -z-10 bg-slate-50">
+  <div className="absolute inset-0 -z-10 bg-background">
     <div className="absolute inset-0 bg-[radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:24px_24px]" />
   </div>
 );
@@ -33,7 +34,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="animate-spin h-8 w-8 text-primary" />
       </div>
     );
@@ -59,12 +60,12 @@ export default function DashboardPage() {
       >
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            Hello <Hand className="h-6 w-6 text-amber-500" /> {userName}
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            Hello <Hand className="h-6 w-6 text-primary" /> {userName}
           </h1>
           <button
             onClick={handleLogout}
-            className="flex items-center cursor-pointer justify-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-semibold hover:opacity-90 w-full sm:w-auto"
+            className="flex items-center cursor-pointer justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-semibold transition-colors w-full sm:w-auto"
           >
             <LogOut className="h-5 w-5" /> Logout
           </button>
@@ -72,37 +73,37 @@ export default function DashboardPage() {
 
 
         {/* Profile Card */}
-        <div className="bg-white p-6 rounded-2xl border shadow-sm flex items-center gap-4">
+        <div className="bg-surface p-6 rounded-2xl border border-border shadow-2xl shadow-black/20 flex items-center gap-4">
           <div className="bg-primary/20 p-3 rounded-full">
             <User className="h-10 w-10 text-primary" />
           </div>
           <div>
-            <p className="font-semibold text-lg">{userName}</p>
-            <p className="text-slate-500 text-sm">{email}</p>
+            <p className="font-semibold text-lg text-foreground">{userName}</p>
+            <p className="text-foreground/70 text-sm">{email}</p>
           </div>
         </div>
 
         {/* Virtual Mentor Teaser */}
-        <div className="bg-white p-6 rounded-2xl border shadow-sm">
-          <h2 className="text-xl font-bold mb-2 flex items-center gap-2">
+        <div className="bg-surface p-6 rounded-2xl border border-border shadow-2xl shadow-black/20">
+          <h2 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">
             <MessageSquare className="h-5 w-5 text-primary" /> Your Virtual Mentor
           </h2>
-          <p className="text-slate-500 text-sm mb-4">
+          <p className="text-foreground/70 text-sm mb-4">
             Ask business, startup, and entrepreneurship questions — powered by AI.
           </p>
           <Link href="/mentor">
-            <button className="bg-primary cursor-pointer text-white px-5 py-2 rounded-lg font-semibold hover:opacity-90">
+            <button className="bg-primary hover:bg-primary/90 cursor-pointer text-primary-foreground px-5 py-2 rounded-lg font-semibold transition-colors">
               Open Virtual Mentor
             </button>
           </Link>
         </div>
 
         {/* Enrolled Programs */}
-        <div className="bg-white p-6 rounded-2xl border shadow-sm">
-          <h2 className="text-xl font-bold mb-4">Your Enrolled Workshops/Bootcamps</h2>
-          <p className="text-slate-500 text-sm">
+        <div className="bg-surface p-6 rounded-2xl border border-border shadow-2xl shadow-black/20">
+          <h2 className="text-xl font-bold mb-4 text-foreground">Your Enrolled Workshops/Bootcamps</h2>
+          <p className="text-foreground/70 text-sm">
             No programs yet.{" "}
-            <Link href="/programs" className="text-primary underline">
+            <Link href="/programs" className="text-primary hover:underline">
               Browse programs
             </Link>
           </p>

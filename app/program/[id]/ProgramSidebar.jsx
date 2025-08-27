@@ -7,6 +7,7 @@ import { Wallet, CalendarDays, Clock, ShieldCheck, CheckCircle, Award } from "lu
 export default function ProgramSidebar({ program, userProgress }) {
   const { toast } = useToast();
 
+  // --- No changes to the handleEnroll function ---
   const handleEnroll = () => {
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
@@ -30,11 +31,7 @@ export default function ProgramSidebar({ program, userProgress }) {
           toast({
             title: "Payment Successful!",
             description: `Thank you for enrolling. Payment ID: ${response.razorpay_payment_id}`,
-            action: (
-              <div className="p-2 bg-green-500 text-white rounded-full">
-                <CheckCircle />
-              </div>
-            ),
+            variant: "success",
           });
         },
         prefill: {
@@ -42,7 +39,7 @@ export default function ProgramSidebar({ program, userProgress }) {
           email: "student@example.com",
           contact: "9999999999",
         },
-        theme: { color: '#f59e0b' },
+        theme: { color: '#a3e635' },
       };
       const rzp = new window.Razorpay(options);
       rzp.open();
@@ -50,46 +47,48 @@ export default function ProgramSidebar({ program, userProgress }) {
     document.body.appendChild(script);
   };
 
+  // --- DUMMY PRICE CALCULATION ---
+  const originalPrice = program.price + 2000;
+
   return (
     <MotionDiv
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.4 }}
-      className="sticky top-28 rounded-2xl border border-slate-200 shadow-2xl overflow-hidden"
+      className="sticky top-28 rounded-2xl border border-border shadow-2xl shadow-black/20 overflow-hidden"
     >
-      {/* Pattern Background */}
-      <div className="relative bg-white">
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div className="relative bg-surface">
+        <div className="absolute inset-0 bg-[radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div className="relative p-8 space-y-6">
           
           {/* Program Info */}
           <div className="grid grid-cols-2 gap-6 text-sm">
             <div>
-              <CalendarDays className="h-5 w-5 text-yellow-600 mb-1" />
-              <p className="font-semibold text-slate-800">Next Batch</p>
-              <p className="text-slate-500">{program.nextBatch}</p>
+              <CalendarDays className="h-5 w-5 text-primary mb-1" />
+              <p className="font-semibold text-foreground">Next Batch</p>
+              <p className="text-foreground/70">{program.nextBatch}</p>
             </div>
             <div>
-              <Clock className="h-5 w-5 text-yellow-600 mb-1" />
-              <p className="font-semibold text-slate-800">Duration</p>
-              <p className="text-slate-500">{program.duration}</p>
+              <Clock className="h-5 w-5 text-primary mb-1" />
+              <p className="font-semibold text-foreground">Duration</p>
+              <p className="text-foreground/70">{program.duration}</p>
             </div>
             <div className="col-span-2">
-              <ShieldCheck className="h-5 w-5 text-yellow-600 mb-1" />
-              <p className="font-semibold text-slate-800">Curriculum</p>
-              <p className="text-slate-500">{program.curriculum}</p>
+              <ShieldCheck className="h-5 w-5 text-primary mb-1" />
+              <p className="font-semibold text-foreground">Curriculum</p>
+              <p className="text-foreground/70">{program.curriculum}</p>
             </div>
           </div>
 
-          {/* Optional: Progress Tracker if enrolled */}
+          {/* Optional: Progress Tracker */}
           {userProgress && (
             <div>
-              <p className="text-sm font-medium text-slate-600 mb-2">
+              <p className="text-sm font-medium text-foreground/80 mb-2">
                 Progress: {userProgress.completedLessons} / {userProgress.totalLessons} lessons
               </p>
-              <div className="w-full h-2 bg-slate-200 rounded-full">
+              <div className="w-full h-2 bg-background rounded-full">
                 <div
-                  className="h-2 bg-yellow-500 rounded-full"
+                  className="h-2 bg-primary rounded-full"
                   style={{
                     width: `${(userProgress.completedLessons / userProgress.totalLessons) * 100}%`,
                   }}
@@ -98,13 +97,20 @@ export default function ProgramSidebar({ program, userProgress }) {
             </div>
           )}
 
-          {/* Program Fee & Enroll */}
-          <div className="border-t border-slate-200 pt-6">
-            <p className="text-slate-500 mb-1">Program Fee</p>
-            <p className="text-4xl font-bold text-slate-900 mb-4">₹{program.price}</p>
+          {/* --- UPDATED Program Fee & Enroll Section --- */}
+          <div className="border-t border-border pt-6">
+            <p className="text-foreground/70 mb-1">Special Offer Price</p>
+            
+            <div className="flex items-baseline gap-3 mb-4">
+              <p className="text-4xl font-bold text-foreground">₹{program.price}</p>
+              <p className="text-2xl font-medium text-foreground/50 line-through">
+                ₹{originalPrice}
+              </p>
+            </div>
+            
             <button
               onClick={handleEnroll}
-              className="w-full cursor-pointer flex items-center justify-center gap-3 bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-bold py-4 rounded-lg shadow-lg shadow-yellow-400/20 transition-all duration-300 transform hover:scale-105"
+              className="w-full cursor-pointer flex items-center justify-center gap-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-lg shadow-lg shadow-primary/20 transition-all duration-300 transform hover:scale-105"
             >
               <Wallet className="w-5 h-5" /> Enroll Now
             </button>

@@ -2,8 +2,8 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import MotionDiv from "@/components/ui/MotionDiv"; // Import our new Client Component
-import ProgramCard from "@/components/ui/ProgramCard"; // Import your refactored ProgramCard
+import MotionDiv from "@/components/ui/MotionDiv";
+import ProgramCard from "@/components/ui/ProgramCard";
 import programs from "@/data/programs";
 import {
   ArrowUpRight,
@@ -16,10 +16,9 @@ import {
   FileText,
   PhoneCall,
   SmilePlus,
-  Import,
-  BotMessageSquare, // New icon for the mentor
-  Sparkles,         // New icon for a feature
-  Rocket,           // New icon for a feature
+  BotMessageSquare,
+  Sparkles,
+  Rocket,
 } from "lucide-react";
 
 const features = [
@@ -54,11 +53,11 @@ const stats = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 relative overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 px-6 text-center overflow-hidden min-h-[70vh] flex items-center justify-center">
         <div
-          className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.07)_1px,transparent_1px)] bg-[size:30px_30px] animate-grid-scroll"
+          className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(248,250,252,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(248,250,252,0.05)_1px,transparent_1px)] bg-[size:30px_30px] animate-grid-scroll"
           aria-hidden="true"
         />
         <div className="relative z-10 max-w-4xl mx-auto">
@@ -67,9 +66,9 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
               Build Your First Startup Idea with AI — In Just{" "}
-              <span className="text-yellow-500">One Day</span>
+              <span className="text-primary">One Day</span>
             </h1>
           </MotionDiv>
           <MotionDiv
@@ -77,7 +76,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <h2 className="mt-6 text-lg md:text-xl text-slate-600 font-medium max-w-2xl mx-auto">
+            <h2 className="mt-6 text-lg md:text-xl text-foreground/80 font-medium max-w-2xl mx-auto">
               Join the AI-Powered Teenpreneur Workshop by Teenskool. No coding. No prior experience. Just ideas, AI, and action.
             </h2>
           </MotionDiv>
@@ -88,20 +87,20 @@ export default function HomePage() {
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link href="/apply">
-              <button className="bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 text-lg shadow-lg shadow-yellow-400/20 transition-transform hover:scale-105 w-full cursor-pointer sm:w-auto">
+              <button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 text-lg shadow-lg shadow-primary/20 transition-transform hover:scale-105 w-full cursor-pointer sm:w-auto">
                 Apply Now <ArrowUpRight className="w-5 h-5" />
               </button>
             </Link>
             <Link href="/contact">
-              <button className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 px-6 py-3 rounded-lg font-semibold text-lg shadow-sm flex items-center justify-center gap-2 transition-transform hover:scale-105 w-full cursor-pointer sm:w-auto">
-                <Building2 className="w-5 h-5 text-yellow-500" /> Book for Your School
+              <button className="bg-surface border border-border text-foreground hover:bg-border px-6 py-3 rounded-lg font-semibold text-lg shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-105 w-full cursor-pointer sm:w-auto">
+                <Building2 className="w-5 h-5 text-primary" /> Book for Your School
               </button>
             </Link>
           </MotionDiv>
         </div>
       </section>
 
-      {/* Video Section - Modernized */}
+      {/* Video Section */}
       <section className="pb-24 px-6">
         <div className="max-w-4xl mx-auto group">
           <MotionDiv
@@ -109,7 +108,7 @@ export default function HomePage() {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20, duration: 0.8 }}
             viewport={{ once: true, amount: 0.5 }}
-            className="bg-gradient-to-br from-slate-50 to-gray-100 p-3 rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-900/5"
+            className="bg-gradient-to-br from-surface to-background p-3 rounded-2xl border border-border shadow-2xl shadow-black/20"
           >
             <div className="rounded-xl overflow-hidden">
               <video
@@ -129,7 +128,7 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 px-6 bg-white border-y border-slate-200">
+      <section className="py-20 px-6 bg-surface border-y border-border">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {stats.map((stat, index) => (
@@ -141,10 +140,10 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 className="group"
               >
-                <div className="text-4xl lg:text-5xl font-extrabold text-yellow-500 mb-2 transition-transform duration-300 group-hover:scale-110">
+                <div className="text-4xl lg:text-5xl font-extrabold text-primary mb-2 transition-transform duration-300 group-hover:scale-110">
                   {stat.number}
                 </div>
-                <div className="text-slate-500 text-sm md:text-base">{stat.label}</div>
+                <div className="text-foreground/70 text-sm md:text-base">{stat.label}</div>
               </MotionDiv>
             ))}
           </div>
@@ -154,10 +153,10 @@ export default function HomePage() {
       {/* Features Section */}
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6">
             What the Workshop Covers
           </h2>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto mb-16">
+          <p className="text-lg text-foreground/80 max-w-3xl mx-auto mb-16">
             A fast-paced, high-energy intro to show students how AI can turn their ideas into real startup concepts.
           </p>
           <MotionDiv
@@ -177,13 +176,13 @@ export default function HomePage() {
                     show: { opacity: 1, y: 0 },
                   }}
                   transition={{ duration: 0.5 }}
-                  className="bg-white p-8 rounded-2xl shadow-lg border border-slate-200/80 h-full text-left transition-transform hover:-translate-y-2"
+                  className="bg-surface p-8 rounded-2xl shadow-lg border border-border h-full text-left transition-transform hover:-translate-y-2"
                 >
-                  <div className="bg-yellow-400/20 p-3 rounded-full w-fit mb-6">
-                    <Icon className="text-yellow-600 w-6 h-6" />
+                  <div className="bg-primary/20 p-3 rounded-full w-fit mb-6">
+                    <Icon className="text-primary w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-semibold text-slate-900 mb-3">{feature.title}</h3>
-                  <p className="text-slate-600 text-base leading-relaxed">{feature.description}</p>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h3>
+                  <p className="text-foreground/80 text-base leading-relaxed">{feature.description}</p>
                 </MotionDiv>
               );
             })}
@@ -191,16 +190,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-24 px-6 bg-white border-y border-slate-200">
+      {/* Virtual Mentor Section */}
+      <section className="py-24 px-6 bg-surface border-y border-border">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-          {/* Left Side: Image */}
           <MotionDiv
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
             viewport={{ once: true, amount: 0.5 }}
           >
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-slate-900/10 border border-slate-200">
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/20 border border-border">
               <Image
                 src="/assets/virtual-image.png"
                 alt="AI Virtual Mentor Interface"
@@ -208,17 +207,15 @@ export default function HomePage() {
                 objectFit="cover"
                 className="transition-transform duration-500 hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div className="absolute bottom-6 left-6 text-white">
-                <div className="bg-yellow-400 text-slate-900 text-xs font-bold uppercase px-3 py-1 rounded-full mb-2 inline-block">
+                <div className="bg-primary text-primary-foreground text-xs font-bold uppercase px-3 py-1 rounded-full mb-2 inline-block">
                   Your Personal AI Guide
                 </div>
-                {/* <h3 className="text-2xl font-bold">Teenskool Mentor</h3> */}
               </div>
             </div>
           </MotionDiv>
 
-          {/* Right Side: Content */}
           <MotionDiv
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -227,138 +224,88 @@ export default function HomePage() {
             className="space-y-6"
           >
             <div className="flex items-center gap-3">
-              <div className="bg-green-500/20 p-2 rounded-full">
-                <BotMessageSquare className="w-6 h-6 text-green-600" />
+              <div className="bg-primary/20 p-2 rounded-full">
+                <BotMessageSquare className="w-6 h-6 text-primary" />
               </div>
-              <span className="text-green-600 font-semibold tracking-wider uppercase text-sm">
+              <span className="text-primary font-semibold tracking-wider uppercase text-sm">
                 FREE WITH EVERY COURSE
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
               Never Get Stuck. Meet Your AI Mentor.
             </h2>
-            <p className="text-lg text-slate-600 leading-relaxed">
+            <p className="text-lg text-foreground/80 leading-relaxed">
               Every student gets free access to our virtual mentor. It's like having a 24/7 startup expert to help you brainstorm, refine your pitch, and answer any question, anytime.
             </p>
             <div className="space-y-4 pt-4">
               <div className="flex items-start gap-4">
-                <div className="bg-slate-100 p-2 rounded-full mt-1">
-                  <Sparkles className="w-5 h-5 text-yellow-500" />
+                <div className="bg-background p-2 rounded-full mt-1">
+                  <Sparkles className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-800 text-lg">Idea Validation</h4>
-                  <p className="text-slate-600">Get instant feedback on your startup ideas and suggestions for improvement.</p>
+                  <h4 className="font-semibold text-foreground text-lg">Idea Validation</h4>
+                  <p className="text-foreground/80">Get instant feedback on your startup ideas and suggestions for improvement.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="bg-slate-100 p-2 rounded-full mt-1">
-                  <Rocket className="w-5 h-5 text-blue-500" />
+                <div className="bg-background p-2 rounded-full mt-1">
+                  <Rocket className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-800 text-lg">Pitch Practice</h4>
-                  <p className="text-slate-600">Practice your pitch and get tips on how to present with more confidence.</p>
+                  <h4 className="font-semibold text-foreground text-lg">Pitch Practice</h4>
+                  <p className="text-foreground/80">Practice your pitch and get tips on how to present with more confidence.</p>
                 </div>
               </div>
             </div>
           </MotionDiv>
         </div>
       </section>
-      {/* --- END: Virtual Mentor Section --- */}
 
       {/* Who It's For Section */}
-      <section className="py-24 px-6 bg-slate-50"> {/* Changed background to alternate */}
+      <section className="py-24 px-6 bg-background">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-16">
             Who It's For
           </h2>
           <div className="grid gap-8 md:grid-cols-3">
-            <MotionDiv
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0 }}
-              viewport={{ once: true }}
-              className="bg-white p-8 rounded-2xl border border-slate-200" // Changed background
-            >
-              <div className="bg-blue-500/20 p-4 rounded-full w-fit mx-auto mb-6">
-                <Users className="text-blue-600 w-8 h-8" />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                Students (Grades 8–12)
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                Curious minds ready to explore entrepreneurship and AI tools. No technical background needed!
-              </p>
-            </MotionDiv>
-            <MotionDiv
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white p-8 rounded-2xl border border-slate-200" // Changed background
-            >
-              <div className="bg-yellow-400/20 p-4 rounded-full w-fit mx-auto mb-6">
-                <Lightbulb className="text-yellow-600 w-8 h-8" />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                Creative Thinkers
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                Students who love solving problems, thinking outside the box, and want to see their ideas come to life.
-              </p>
-            </MotionDiv>
-            <MotionDiv
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white p-8 rounded-2xl border border-slate-200" // Changed background
-            >
-              <div className="bg-green-500/20 p-4 rounded-full w-fit mx-auto mb-6">
-                <Target className="text-green-600 w-8 h-8" />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                Forward-Thinking Schools
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                Institutions bringing 21st-century skills and NEP-aligned workshops to their students.
-              </p>
-            </MotionDiv>
+            {[
+              { icon: Users, title: "Students (Grades 8–12)", desc: "Curious minds ready to explore entrepreneurship and AI tools. No technical background needed!" },
+              { icon: Lightbulb, title: "Creative Thinkers", desc: "Students who love solving problems, thinking outside the box, and want to see their ideas come to life." },
+              { icon: Target, title: "Forward-Thinking Schools", desc: "Institutions bringing 21st-century skills and NEP-aligned workshops to their students." },
+            ].map((item, index) => (
+              <MotionDiv
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-surface p-8 rounded-2xl border border-border"
+              >
+                <div className="bg-primary/20 p-4 rounded-full w-fit mx-auto mb-6">
+                  <item.icon className="text-primary w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-3">{item.title}</h3>
+                <p className="text-foreground/80 leading-relaxed">{item.desc}</p>
+              </MotionDiv>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 px-6">
+      <section className="py-24 px-6 bg-surface border-y border-border">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             What Students Say
           </h2>
-          <p className="text-lg text-slate-600 mb-16">
+          <p className="text-lg text-foreground/80 mb-16">
             Real feedback from young innovators who joined the bootcamp.
           </p>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              {
-                name: "Priya Sharma",
-                age: 15,
-                school: "Kendriya Vidyalaya, Delhi",
-                feedback:
-                  "This was the most fun I've had in a class all year. I loved creating with AI and pitching my startup idea!",
-              },
-              {
-                name: "Aarav Mehta",
-                age: 16,
-                school: "Delhi Public School",
-                feedback:
-                  "I had no idea AI could be this exciting. I feel more confident and creative now.",
-              },
-              {
-                name: "Saanvi Kapoor",
-                age: 14,
-                school: "Bal Bharti Public School",
-                feedback:
-                  "Our team learned teamwork, pitching, and design in just a few hours. We even made our logo using AI!",
-              },
+              { name: "Priya Sharma", age: 15, school: "Kendriya Vidyalaya, Delhi", feedback: "This was the most fun I've had in a class all year. I loved creating with AI and pitching my startup idea!" },
+              { name: "Aarav Mehta", age: 16, school: "Delhi Public School", feedback: "I had no idea AI could be this exciting. I feel more confident and creative now." },
+              { name: "Saanvi Kapoor", age: 14, school: "Bal Bharti Public School", feedback: "Our team learned teamwork, pitching, and design in just a few hours. We even made our logo using AI!" },
             ].map((testimonial, index) => (
               <MotionDiv
                 key={index}
@@ -366,29 +313,15 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 viewport={{ once: true }}
-                className="bg-white border border-slate-200 p-8 rounded-2xl shadow-lg text-left space-y-4"
+                className="bg-background border border-border p-8 rounded-2xl shadow-lg text-left space-y-4"
               >
                 <div className="flex items-center">
-                  {Array(5)
-                    .fill()
-                    .map((_, i) => (
-                      <svg
-                        key={i}
-                        className="h-5 w-5 text-yellow-400 mr-1 fill-current"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 .587l3.668 7.568L24 9.75l-6 5.849L19.335 24 12 19.897 4.665 24 6 15.599 0 9.75l8.332-1.595z" />
-                      </svg>
-                    ))}
+                  {Array(5).fill().map((_, i) => <svg key={i} className="h-5 w-5 text-primary mr-1 fill-current" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.75l-6 5.849L19.335 24 12 19.897 4.665 24 6 15.599 0 9.75l8.332-1.595z" /></svg>)}
                 </div>
-                <p className="text-slate-700 text-lg font-medium leading-relaxed">
-                  “{testimonial.feedback}”
-                </p>
+                <p className="text-foreground text-lg font-medium leading-relaxed">“{testimonial.feedback}”</p>
                 <div>
-                  <p className="font-semibold text-slate-800">
-                    {testimonial.name}, {testimonial.age}
-                  </p>
-                  <p className="text-sm text-slate-500">{testimonial.school}</p>
+                  <p className="font-semibold text-foreground">{testimonial.name}, {testimonial.age}</p>
+                  <p className="text-sm text-foreground/70">{testimonial.school}</p>
                 </div>
               </MotionDiv>
             ))}
@@ -396,80 +329,67 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- START: Redesigned CTA Section --- */}
-      <section className="py-24 px-6 bg-white">
+      {/* CTA Section */}
+      <section className="py-24 px-6 bg-background">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Section Header */}
           <MotionDiv
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, type: "spring" }}
             viewport={{ once: true, amount: 0.5 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
               Ready to Inspire the Next Generation?
             </h2>
-            <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+            <p className="mt-4 text-lg text-foreground/80 max-w-3xl mx-auto">
               Whether you're an educator shaping future leaders or a parent empowering your child, Teenskool provides the tools for success.
             </p>
           </MotionDiv>
-
-          {/* CTA Cards Grid */}
           <div className="mt-16 grid md:grid-cols-2 gap-8 text-left">
-            {/* Card 1: For Educators */}
             <MotionDiv
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true, amount: 0.5 }}
-              className="bg-white border border-slate-200/80 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
+              className="bg-surface border border-border p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
             >
               <div className="flex-grow">
                 <div className="flex items-center gap-4">
-                  <div className="bg-blue-500/10 p-3 rounded-xl">
-                    <School className="text-blue-600 w-6 h-6" />
+                  <div className="bg-primary/10 p-3 rounded-xl">
+                    <School className="text-primary w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">
-                    For Educators
-                  </h3>
+                  <h3 className="text-2xl font-bold text-foreground">For Educators</h3>
                 </div>
-                <p className="text-slate-600 mt-4">
+                <p className="text-foreground/80 mt-4">
                   Bring our NEP-aligned, AI-powered workshops to your school and give your students a competitive edge.
                 </p>
               </div>
               <Link href="/contact" className="mt-6">
-                <button className="bg-yellow-400 hover:bg-yellow-500 cursor-pointer text-slate-900 font-semibold py-3 px-6 rounded-lg w-full transition-transform hover:scale-105 flex items-center justify-center gap-2">
+                <button className="bg-primary hover:bg-primary/90 cursor-pointer text-primary-foreground font-semibold py-3 px-6 rounded-lg w-full transition-transform hover:scale-105 flex items-center justify-center gap-2">
                   <PhoneCall className="w-4 h-4" /> Book a Free Demo
                 </button>
               </Link>
             </MotionDiv>
-
-            {/* Card 2: For Parents */}
             <MotionDiv
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true, amount: 0.5 }}
-              className="bg-white border border-slate-200/80 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
+              className="bg-surface border border-border p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
             >
               <div className="flex-grow">
                 <div className="flex items-center gap-4">
-                  <div className="bg-pink-500/10 p-3 rounded-xl">
-                    <SmilePlus className="text-pink-600 w-6 h-6" />
+                  <div className="bg-primary/10 p-3 rounded-xl">
+                    <SmilePlus className="text-primary w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">For Parents</h3>
+                  <h3 className="text-2xl font-bold text-foreground">For Parents</h3>
                 </div>
-                <p className="text-slate-600 mt-4">
+                <p className="text-foreground/80 mt-4">
                   Give your child the confidence and creative skills to succeed with our engaging, hands-on workshops.
                 </p>
               </div>
-              <a
-                href="/parent-pack.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6"
-              >
-                <button className="bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 px-6 rounded-lg w-full transition-transform hover:scale-105 flex items-center justify-center cursor-pointer gap-2">
+              <a href="/parent-pack.pdf" target="_blank" rel="noopener noreferrer" className="mt-6">
+                <button className="bg-foreground hover:bg-foreground/90 text-background font-semibold py-3 px-6 rounded-lg w-full transition-transform hover:scale-105 flex items-center justify-center cursor-pointer gap-2">
                   <FileText className="w-4 h-4" /> Download Parent Pack
                 </button>
               </a>
@@ -477,10 +397,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* --- END: Redesigned CTA Section --- */}
 
       {/* Programs Section */}
-      <section className="py-24 px-6">
+      <section className="py-24 px-6 bg-background border-t border-border">
         <div className="max-w-7xl mx-auto">
           <MotionDiv
             initial={{ opacity: 0, y: 30 }}
@@ -489,10 +408,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
               Explore Our Programs
             </h2>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+            <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
               Learn real-world skills with our expertly designed bootcamps.
             </p>
           </MotionDiv>

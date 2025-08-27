@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import logoUrl from "@/public/assets/TSlogo.png";
+import logoUrl from "@/public/assets/TS.png";
 
 export default function AnimatedLogo() {
   return (

@@ -13,9 +13,9 @@ import {
   LayoutDashboard,
   LogIn,
   UserPlus,
-  LayoutGrid, // 1. Imported the new icon
+  LayoutGrid,
 } from "lucide-react";
-import logoUrl from "@/public/assets/TSlogo.png";
+import logoUrl from "@/public/assets/TS.png";
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -50,7 +50,6 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 2. Added "Programs" to the navItems array
   const navItems = [
     { path: "/", label: "Home", icon: Home },
     { path: "/about", label: "About", icon: Users },
@@ -66,7 +65,7 @@ export default function Navigation() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-4 sm:px-6 py-3 border-b ${
           scrolled
-            ? "bg-white/80 backdrop-blur-lg shadow-md border-slate-200/80"
+            ? "bg-background/80 backdrop-blur-lg shadow-md border-border/80"
             : "bg-transparent border-transparent"
         }`}
       >
@@ -88,10 +87,10 @@ export default function Navigation() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-colors duration-300 ${
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors duration-300 ${
                     isActive(item.path)
-                      ? "bg-yellow-400/20 text-yellow-700 font-semibold"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      ? "bg-primary/20 text-primary font-semibold"
+                      : "text-foreground/80 hover:text-foreground hover:bg-surface"
                   }`}
                 >
                   <item.icon className="h-4 w-4" />
@@ -106,7 +105,7 @@ export default function Navigation() {
             {user ? (
               // If user is logged in, show Dashboard button
               <Link href="/dashboard">
-                <button className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">
+                <button className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-semibold text-foreground bg-surface hover:bg-surface/80 transition-colors">
                   <LayoutDashboard className="h-5 w-5" />
                   <span>Dashboard</span>
                 </button>
@@ -115,7 +114,7 @@ export default function Navigation() {
               // If user is logged out, show Login and Sign Up
               <>
                 <Link href="/login">
-                  <button className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-semibold text-slate-600 hover:bg-slate-100 transition-colors">
+                  <button className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-semibold text-foreground hover:bg-surface transition-colors">
                     <LogIn className="h-5 w-5" />
                     Login
                   </button>
@@ -134,8 +133,8 @@ export default function Navigation() {
           <div className="md:hidden">
             {user ? (
               <Link href="/dashboard">
-                <button className="p-2 rounded-full cursor-pointer hover:bg-slate-100">
-                  <LayoutDashboard className="h-6 w-6 text-slate-700" />
+                <button className="p-2 rounded-full cursor-pointer hover:bg-surface">
+                  <LayoutDashboard className="h-6 w-6 text-foreground" />
                 </button>
               </Link>
             ) : (
@@ -150,15 +149,15 @@ export default function Navigation() {
       </nav>
 
       {/* Floating Bottom Navbar (Mobile Only) */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-white shadow-lg border border-border rounded-full px-6 py-3 flex justify-between w-[90%] max-w-sm md:hidden">
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-surface shadow-lg border border-border rounded-full px-6 py-3 flex justify-between w-[90%] max-w-sm md:hidden">
         {navItems.map((item) => (
           <Link key={`bottom-${item.path}`} href={item.path}>
             <motion.button
               whileTap={{ scale: 0.9 }}
               className={`p-2 rounded-full transition-colors duration-300 ${
                 isActive(item.path)
-                  ? "bg-yellow-400/20 text-yellow-700"
-                  : "text-slate-500 hover:bg-slate-100"
+                  ? "bg-primary/20 text-primary"
+                  : "text-foreground/70 hover:bg-background"
               }`}
             >
               <item.icon className="h-6 w-6" />

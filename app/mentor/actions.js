@@ -17,7 +17,7 @@ export async function sendMessage(message) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-oss-20b:free",
+        model: "deepseek/deepseek-r1-0528:free",
         messages: [
           {
             role: "system",
@@ -28,7 +28,7 @@ export async function sendMessage(message) {
             content: message
           }
         ],
-        max_tokens: 500,
+        max_tokens: 1500,
         temperature: 0.7,
       }),
     });

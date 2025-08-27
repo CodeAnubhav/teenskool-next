@@ -1,17 +1,17 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
-import ProgramCard from '@/components/ui/ProgramCard'; // Using your custom component
+import ProgramCard from '@/components/ui/ProgramCard';
 import programs from '@/data/programs';
 
-// Consistent background pattern from your 'About' page design
+// Corrected GridPattern for dark theme
 const GridPattern = () => (
-  <div className="absolute inset-0 -z-10 h-full w-full bg-slate-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+  <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:16px_16px] animate-grid-scroll" />
 );
 
 export default function ProgramsPage() {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-800 relative">
+    <main className="min-h-screen bg-background text-foreground relative">
       <GridPattern />
 
       <div className="relative z-10 max-w-7xl mx-auto space-y-24 pt-32 pb-20 px-6">
@@ -24,14 +24,14 @@ export default function ProgramsPage() {
             transition={{ duration: 0.8 }}
             className="space-y-5"
           >
-            <p className="uppercase text-sm tracking-widest text-yellow-600 font-semibold">
+            <p className="uppercase text-sm tracking-widest text-primary font-semibold">
               Our Programs
             </p>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-foreground leading-tight">
               A Launchpad for Young
-              <span className="text-yellow-500 block mt-2">Innovators & Builders</span>
+              <span className="text-primary block mt-2">Innovators & Builders</span>
             </h1>
-            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto pt-4">
+            <p className="text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto pt-4">
               Our hands-on workshops and bootcamps are designed to turn curiosity into capability. Explore our programs and find your passion.
             </p>
           </motion.div>

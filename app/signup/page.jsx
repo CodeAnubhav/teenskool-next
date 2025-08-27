@@ -8,8 +8,9 @@ import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+// CORRECTED: Using the theme variable for the grid color
 const GridPattern = () => (
-  <div className="absolute inset-0 -z-10 h-full w-full bg-white/20 backdrop-blur-xl bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]" />
+  <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:16px_16px] animate-grid-scroll" />
 );
 
 export default function SignupPage() {
@@ -57,7 +58,7 @@ export default function SignupPage() {
           title: "Account Created!",
           description: "Please check your email to confirm your account.",
         });
-        router.push("/dashboard"); // redirect after signup
+        router.push("/dashboard");
       }
     } catch (err) {
       toast({
@@ -71,7 +72,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen m-auto flex items-center justify-center bg-slate-50 text-slate-800 relative">
+    <div className="min-h-screen m-auto flex items-center justify-center bg-background text-foreground relative">
       <GridPattern />
 
       <div className="relative pt-32 z-10 max-w-md w-full p-6">
@@ -81,11 +82,11 @@ export default function SignupPage() {
           transition={{ duration: 0.8 }}
           className="text-center mb-8"
         >
-          <div className="inline-block bg-yellow-400/20 p-4 rounded-full mb-4">
-            <UserPlus className="h-12 w-12 text-yellow-600" />
+          <div className="inline-block bg-primary/20 p-4 rounded-full mb-4">
+            <UserPlus className="h-12 w-12 text-primary" />
           </div>
-          <h1 className="text-4xl font-bold text-slate-900">Create Account</h1>
-          <p className="text-slate-600 mt-2">
+          <h1 className="text-4xl font-bold text-foreground">Create Account</h1>
+          <p className="text-foreground/80 mt-2">
             Join our community and start learning today!
           </p>
         </MotionDiv>
@@ -95,11 +96,11 @@ export default function SignupPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="bg-white/20 backdrop-blur-xl border border-white/30 rounded-2xl shadow-xl p-8">
+          <div className="bg-surface/50 backdrop-blur-xl border border-border rounded-2xl shadow-xl p-8">
             <form onSubmit={handleSignup} className="space-y-6">
               {/* Name */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-foreground/90 mb-1">
                   Name
                 </label>
                 <input
@@ -107,24 +108,24 @@ export default function SignupPage() {
                   id="name"
                   name="name"
                   placeholder="e.g., Ada Lovelace"
-                  className="w-full px-4 py-3 rounded-lg bg-white/40 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full px-4 py-3 rounded-lg bg-background/70 border border-border placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-foreground/90 mb-1">
                   Email
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 text-slate-500" />
+                  <Mail className="absolute left-3 top-3.5 text-foreground/50 h-5 w-5" />
                   <input
                     type="email"
                     id="email"
                     name="email"
                     placeholder="e.g., ada@example.com"
-                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/40 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-background/70 border border-border placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   />
                 </div>
@@ -132,23 +133,23 @@ export default function SignupPage() {
 
               {/* Password */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+                <label htmlFor="password" className="block text-sm font-medium text-foreground/90 mb-1">
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 text-slate-500" />
+                  <Lock className="absolute left-3 top-3.5 text-foreground/50 h-5 w-5" />
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     placeholder="••••••••"
-                    className="w-full pl-10 pr-10 py-3 rounded-lg bg-white/40 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    className="w-full pl-10 pr-10 py-3 rounded-lg bg-background/70 border border-border placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-3 cursor-pointer top-3 text-slate-500 hover:text-slate-700"
+                    className="absolute right-3 cursor-pointer top-3 text-foreground/50 hover:text-foreground/80"
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
@@ -156,10 +157,10 @@ export default function SignupPage() {
               </div>
 
               {/* Submit */}
-              <MotionDiv whileTap={{ scale: 0.98 }}>
+              <MotionDiv whileTap={{ scale: 0.98 }} className="pt-2">
                 <button
                   type="submit"
-                  className="w-full flex cursor-pointer items-center justify-center gap-3 bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-semibold py-3 px-6 rounded-lg"
+                  className="w-full flex cursor-pointer items-center justify-center cursor-pointer gap-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
                   disabled={loading}
                 >
                   {loading ? (
@@ -172,9 +173,9 @@ export default function SignupPage() {
                     </>
                   )}
                 </button>
-                <p className="text-center text-sm text-slate-600 mt-8">
+                <p className="text-center text-sm text-foreground/70 mt-8">
                   Already have an account?{" "}
-                  <Link href="/login" className="font-semibold text-primary hover:underline">
+                  <Link href="/login" className="font-semibold cursor-pointer text-primary hover:underline">
                     Login
                   </Link>
                 </p>

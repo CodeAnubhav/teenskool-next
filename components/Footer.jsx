@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
-import AnimatedLogo from "./ui/AnimatedLogo"; // Import our new client component
+import AnimatedLogo from "./ui/AnimatedLogo";
 
 const quickLinks = [
   { href: "/about", label: "About" },
@@ -49,13 +49,13 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-slate-200 mt-12 pb-24 sm:pb-8">
+    <footer className="bg-surface border-t border-border mt-12 pb-24 sm:pb-8">
       <div className="max-w-7xl mx-auto py-12 px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Column 1 - About & Socials */}
           <div className="md:col-span-2 space-y-4">
             <AnimatedLogo /> {/* Use the new client component here */}
-            <p className="text-slate-600 text-sm leading-relaxed max-w-md">
+            <p className="text-foreground/80 text-sm leading-relaxed max-w-md">
               At Teenskool, we empower students to explore entrepreneurship and
               AI through hands-on workshops led by real startup founders. No
               prior experience needed—just ideas and curiosity!
@@ -67,7 +67,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                  className="text-foreground/70 hover:text-foreground transition-colors"
                 >
                   {social.icon}
                 </a>
@@ -77,14 +77,14 @@ export default function Footer() {
 
           {/* Column 2 - Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-slate-900 font-semibold text-sm tracking-wider uppercase">
+            <h4 className="text-foreground font-semibold text-sm tracking-wider uppercase">
               Quick Links
             </h4>
             <ul className="space-y-2 text-sm">
               <li key="/">
                 <Link
                   href="/"
-                  className="text-slate-600 hover:text-yellow-500 transition-colors"
+                  className="text-foreground/80 hover:text-primary transition-colors"
                 >
                   Home
                 </Link>
@@ -93,7 +93,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-slate-600 hover:text-yellow-500 transition-colors"
+                    className="text-foreground/80 hover:text-primary transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -104,26 +104,26 @@ export default function Footer() {
 
           {/* Column 3 - Contact */}
           <div className="space-y-4">
-            <h4 className="text-slate-900 font-semibold text-sm tracking-wider uppercase">
+            <h4 className="text-foreground font-semibold text-sm tracking-wider uppercase">
               Contact Us
             </h4>
-            <div className="space-y-3 text-slate-600 text-sm">
+            <div className="space-y-3 text-foreground/80 text-sm">
               <a
                 href="mailto:info@teenskool.in"
-                className="flex items-center gap-3 hover:text-yellow-500 transition-colors"
+                className="flex items-center gap-3 hover:text-primary transition-colors"
               >
-                <Mail className="h-4 w-4 text-slate-400" />
+                <Mail className="h-4 w-4 text-foreground/70" />
                 info@teenskool.in
               </a>
               <a
                 href="tel:+919876543210"
-                className="flex items-center gap-3 hover:text-yellow-500 transition-colors"
+                className="flex items-center gap-3 hover:text-primary transition-colors"
               >
-                <Phone className="h-4 w-4 text-slate-400" />
+                <Phone className="h-4 w-4 text-foreground/70" />
                 +91 98765 43210
               </a>
               <div className="flex items-center gap-3">
-                <MapPin className="h-4 w-4 text-slate-400" />
+                <MapPin className="h-4 w-4 text-foreground/70" />
                 Gurugram, Haryana
               </div>
             </div>
@@ -131,8 +131,8 @@ export default function Footer() {
         </div>
 
         {/* Footer Bottom */}
-        <div className="mt-12 pt-8 border-t border-slate-200 text-center">
-          <p className="text-slate-500 text-sm">
+        <div className="mt-12 pt-8 border-t border-border text-center">
+          <p className="text-foreground/70 text-sm">
             © {new Date().getFullYear()} Teenskool. All rights reserved.
             <span className="mx-2">|</span>
             Coded & Crafted with ❤️ in India 🇮🇳
