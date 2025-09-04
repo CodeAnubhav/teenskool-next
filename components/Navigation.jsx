@@ -139,7 +139,7 @@ export default function Navigation() {
               </Link>
             ) : (
               <Link href="/login">
-                <button className="px-4 py-2 cursor-pointer bg-primary text-primary-foreground text-sm font-semibold rounded-full shadow transition">
+                <button className="px-4 py-2 cursor-pointer bg-primary text-primary-foreground text-sm font-semibold rounded-lg shadow transition">
                   Login
                 </button>
               </Link>
