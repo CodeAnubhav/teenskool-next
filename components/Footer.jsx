@@ -14,7 +14,7 @@ const quickLinks = [
 const socialLinks = [
   // Keeping your existing SVG icons
   {
-    href: "https://twitter.com/teenskool",
+    href: "https://www.linkedin.com/company/teenskool/", // Update with your actual LinkedIn URL
     icon: (
       <svg
         className="w-6 h-6"
@@ -22,8 +22,9 @@ const socialLinks = [
         viewBox="0 0 24 24"
         aria-hidden="true"
       >
-        {" "}
-        <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />{" "}
+        <path
+          d="M20.5 2H3.5A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5V9h3zM6.5 7.75a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zM19 19h-3v-5c0-1.4-.4-2.5-1.9-2.5A2.8 2.8 0 0012 13.5v5.5H9V9h3v1.5a4 4 0 013.6-2c2.1 0 3.8 1.4 3.8 4.4z"
+        />
       </svg>
     ),
   },
@@ -109,18 +110,18 @@ export default function Footer() {
             </h4>
             <div className="space-y-3 text-foreground/80 text-sm">
               <a
-                href="mailto:info@teenskool.in"
+                href="mailto:teenskool@gmail.com"
                 className="flex items-center gap-3 hover:text-primary transition-colors"
               >
                 <Mail className="h-4 w-4 text-foreground/70" />
-                info@teenskool.in
+                teenskool@gmail.com
               </a>
               <a
                 href="tel:+919876543210"
                 className="flex items-center gap-3 hover:text-primary transition-colors"
               >
                 <Phone className="h-4 w-4 text-foreground/70" />
-                +91 98765 43210
+                +91 95824 05745
               </a>
               <div className="flex items-center gap-3">
                 <MapPin className="h-4 w-4 text-foreground/70" />
@@ -135,7 +136,7 @@ export default function Footer() {
           <p className="text-foreground/70 text-sm">
             © {new Date().getFullYear()} Teenskool. All rights reserved.
             <span className="mx-2">|</span>
-            Coded & Crafted with ❤️ in India 🇮🇳
+            Coded & Crafted with ❤️ in India
           </p>
         </div>
       </div>
