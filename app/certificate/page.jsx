@@ -1,14 +1,15 @@
+// This file will contain all the logic and state from your original component
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation"; // This hook is now here
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import MotionDiv from "@/components/ui/MotionDiv";
 import { useToast } from "@/components/ui/use-toast";
 import { Download, FileText, Copy, Loader2, Check, Linkedin } from "lucide-react";
-import { supabase } from "@/lib/supabaseClient"; // ← your supabase client
+import { supabase } from "@/lib/supabaseClient";
 
 // Workshops list
 const WORKSHOPS = [
@@ -76,16 +77,14 @@ function CertificateContent({ name, workshop, date, certificateNumber, nameFontS
   );
 }
 
-export default function CertificateClientPage() {
+export default function CertificateGenerator() {
   const router = useRouter();
-  const toast = useToast?.() || { toast: () => { } }; // in case your hook returns differently
+  const toast = useToast?.() || { toast: () => { } };
   const searchParams = useSearchParams();
 
-  // refs
-  const certRef = useRef(null); // full-size hidden certificate (export)
-  const previewWrapperRef = useRef(null); // visible preview wrapper
+  const certRef = useRef(null);
+  const previewWrapperRef = useRef(null);
 
-  // state
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
 
@@ -105,7 +104,6 @@ export default function CertificateClientPage() {
     return 34;
   }, [name]);
 
-  // Auth check (Supabase)
   useEffect(() => {
     let mounted = true;
     const check = async () => {
@@ -119,7 +117,6 @@ export default function CertificateClientPage() {
         if (!mounted) return;
         setUser(userFromSupabase);
 
-        // If no explicit name in URL, pre-fill from profile
         const initialNameParam = searchParams.get("name");
         if (!initialNameParam && userFromSupabase?.user_metadata?.full_name) {
           setName(userFromSupabase.user_metadata.full_name);
@@ -135,7 +132,6 @@ export default function CertificateClientPage() {
     };
     check();
 
-    // optional: subscribe to auth changes to redirect if signed out
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (!session?.user) {
         router.push("/login");
@@ -149,10 +145,8 @@ export default function CertificateClientPage() {
       if (sub && typeof sub.subscription?.unsubscribe === "function") sub.subscription.unsubscribe();
       if (sub && typeof sub.unsubscribe === "function") sub.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]); // intentionally not including searchParams object to avoid re-run loop
+  }, [router, searchParams]); // Now including searchParams is safe
 
-  // keep URL in sync
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (name) params.set("name", name); else params.delete("name");
@@ -161,7 +155,6 @@ export default function CertificateClientPage() {
     window.history.replaceState(null, "", newUrl);
   }, [name, workshop]);
 
-  // preview scale calculation (applies only to preview wrapper)
   useEffect(() => {
     const updateScale = () => {
       if (!previewWrapperRef.current) return;
@@ -173,7 +166,6 @@ export default function CertificateClientPage() {
     return () => window.removeEventListener("resize", updateScale);
   }, []);
 
-  // caption (no emojis)
   const caption = useMemo(() => {
     const n = name || "I";
     return `${n} completed the “${workshop}” at TeenSkool!\n\nBuilt real-world skills in idea validation, MVPs, and pitching.\n\nThanks to the TeenSkool team for an awesome learning experience.\n#TeenSkool #Entrepreneurship #AI #Learning #Students`;
@@ -186,23 +178,20 @@ export default function CertificateClientPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Download from the hidden full-size certificate (no scale applied to the exported element)
   const downloadFile = async (format) => {
     if (!certRef.current) return;
     setIsDownloading(true);
 
     try {
-      // Ensure fonts are loaded to avoid reflow differences
       if (document?.fonts?.ready) {
         await document.fonts.ready;
-        // small delay to allow layout to stabilize
         await new Promise((r) => setTimeout(r, 80));
       }
 
       const canvas = await html2canvas(certRef.current, {
-        scale: 3, // high-quality export
+        scale: 3,
         useCORS: true,
-        backgroundColor: "#fdfcf7", // ensures background stays correct
+        backgroundColor: "#fdfcf7",
       });
 
       const dataUrl = canvas.toDataURL("image/png");
@@ -214,7 +203,6 @@ export default function CertificateClientPage() {
         link.download = `${fileName}.png`;
         link.click();
       } else {
-        // PDF: center on A4 landscape
         const pdf = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
         const pageW = pdf.internal.pageSize.getWidth();
         const pageH = pdf.internal.pageSize.getHeight();
@@ -253,7 +241,6 @@ export default function CertificateClientPage() {
 
   return (
     <div className="min-h-screen">
-      {/* (Optional) background pattern uses your theme tokens; this doesn't affect export */}
       <div className="absolute inset-0 -z-10 bg-background">
         <div className="absolute inset-0 bg-[radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:24px_24px]" />
       </div>
@@ -269,10 +256,8 @@ export default function CertificateClientPage() {
         </MotionDiv>
 
         <div className="mt-12 max-w-4xl mx-auto space-y-12">
-          {/* Form */}
           <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-surface/50 backdrop-blur-lg border border-border rounded-2xl shadow-2xl p-6 md:p-8">
             <h2 className="text-2xl font-bold text-foreground mb-6">Your Details</h2>
-
             <div className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-foreground/70 mb-1">Student Name</label>
@@ -283,7 +268,6 @@ export default function CertificateClientPage() {
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-foreground/70 mb-1">Workshop Attended</label>
                 <select
@@ -294,32 +278,25 @@ export default function CertificateClientPage() {
                   {WORKSHOPS.map((w) => <option key={w} value={w}>{w}</option>)}
                 </select>
               </div>
-
               <div className="grid sm:grid-cols-2 gap-3 pt-3">
                 <button onClick={() => downloadFile("png")} disabled={!name.trim() || isDownloading} className="flex items-center justify-center gap-2 rounded-xl bg-primary hover:opacity-90 text-primary-foreground px-4 py-3 font-semibold disabled:opacity-50 transition">
                   {isDownloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} Download PNG
                 </button>
-
                 <button onClick={() => downloadFile("pdf")} disabled={!name.trim() || isDownloading} className="flex items-center justify-center gap-2 rounded-xl bg-foreground hover:bg-foreground/80 text-background px-4 py-3 font-semibold disabled:opacity-50 transition">
                   {isDownloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4" />} Download PDF
                 </button>
-
                 <button onClick={handleCopy} disabled={!name.trim()} className="flex items-center justify-center gap-2 rounded-xl bg-surface border border-border px-4 py-3 font-semibold hover:bg-border/50 disabled:opacity-50 transition">
                   {copied ? (<><Check className="w-4 h-4 text-green-400" /> Copied!</>) : (<><Copy className="w-4 h-4" /> Copy Caption</>)}
                 </button>
-
                 <button onClick={shareOnLinkedIn} className="flex items-center justify-center gap-2 rounded-xl bg-[#0a66c2] hover:bg-[#004182] text-white px-4 py-3 font-semibold transition">
                   <Linkedin className="w-4 h-4" /> Share on LinkedIn
                 </button>
               </div>
-
               <p className="text-xs text-foreground/50 !mt-5 text-center">
                 For best LinkedIn results, download the PNG and attach it to your post with the copied caption.
               </p>
             </div>
           </MotionDiv>
-
-          {/* Preview (scaled) */}
           <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <h2 className="text-2xl font-bold text-foreground mb-6 text-center">Your Certificate Preview</h2>
             <div ref={previewWrapperRef} className="w-full aspect-[1100/780] rounded-2xl shadow-2xl overflow-hidden bg-surface/30 flex items-center justify-center">
@@ -330,8 +307,6 @@ export default function CertificateClientPage() {
           </MotionDiv>
         </div>
       </div>
-
-      {/* Hidden full-size certificate for export (pixel-perfect) */}
       <div aria-hidden style={{ position: "absolute", top: -99999, left: -99999, width: 1100, height: 780, overflow: "hidden" }}>
         <div ref={certRef}>
           <CertificateContent name={name} workshop={workshop} date={date} certificateNumber={certificateNumber} nameFontSize={nameFontSize} />
