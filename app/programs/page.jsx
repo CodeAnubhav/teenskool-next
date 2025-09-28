@@ -15,7 +15,7 @@ export default function ProgramsPage() {
       <GridPattern />
 
       <div className="relative z-10 max-w-7xl mx-auto space-y-24 pt-32 pb-20 px-6">
-        
+
         {/* --- Hero Section --- */}
         <section className="text-center">
           <motion.div
@@ -39,13 +39,23 @@ export default function ProgramsPage() {
 
         {/* --- Programs Grid Section --- */}
         <section>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {programs.map((program) => (
-              <ProgramCard key={program.id} program={program} />
-            ))}
+          {/* FIX: Changed the grid structure to center a single element */}
+          <div className="flex justify-center">
+            {/* The inner card will take a max width (md:max-w-xl) and be centered */}
+            <div className="w-full max-w-4xl">
+              {/* Only map the first (and only) program */}
+              {programs.slice(0, 1).map((program) => (
+                <ProgramCard
+                  key={program.id}
+                  program={program}
+                  // Pass a prop to the card indicating it should be full-width if needed
+                  isSingleCard={true}
+                />
+              ))}
+            </div>
           </div>
         </section>
-        
+
       </div>
     </main>
   );

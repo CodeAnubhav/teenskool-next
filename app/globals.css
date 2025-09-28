@@ -6,7 +6,7 @@
 /* 2. Standard Tailwind v4 imports */
 @import "tailwindcss";
 
-
+@custom-variant dark (&:is(.dark *));
 
 /* 3. Define the theme variables inside the @theme block */
 @theme {

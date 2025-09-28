@@ -17,7 +17,7 @@ export async function sendMessage(message) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "deepseek/deepseek-r1-0528:free",
+        model: "x-ai/grok-4-fast:free",
         messages: [
           {
             role: "system",

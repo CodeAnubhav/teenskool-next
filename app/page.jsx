@@ -5,6 +5,7 @@ import Image from "next/image";
 import MotionDiv from "@/components/ui/MotionDiv";
 import ProgramCard from "@/components/ui/ProgramCard";
 import programs from "@/data/programs";
+import BannerCarousel from "@/components/ui/BannerCarousel";
 import {
   ArrowUpRight,
   Building2,
@@ -19,7 +20,10 @@ import {
   BotMessageSquare,
   Sparkles,
   Rocket,
+  ArrowRight,
 } from "lucide-react";
+
+
 
 const features = [
   {
@@ -86,11 +90,13 @@ export default function HomePage() {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link href="/apply">
+            <Link href="/contact" className="group">
               <button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 text-lg shadow-lg shadow-primary/20 transition-transform hover:scale-105 w-full cursor-pointer sm:w-auto">
-                Apply Now <ArrowUpRight className="w-5 h-5" />
+                Apply Now
+                <ArrowUpRight className="w-5 h-5 transform transition-transform duration-300 group-hover:rotate-45" />
               </button>
             </Link>
+
             <Link href="/contact">
               <button className="bg-surface border border-border text-foreground hover:bg-border px-6 py-3 rounded-lg font-semibold text-lg shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-105 w-full cursor-pointer sm:w-auto">
                 <Building2 className="w-5 h-5 text-primary" /> Book for Your School
@@ -329,76 +335,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+
       <section className="py-24 px-6 bg-background">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="max-w-7xl mx-auto">
+          {/* Swiper Carousel */}
           <MotionDiv
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, type: "spring" }}
-            viewport={{ once: true, amount: 0.5 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, amount: 0.3 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-              Ready to Inspire the Next Generation?
-            </h2>
-            <p className="mt-4 text-lg text-foreground/80 max-w-3xl mx-auto">
-              Whether you're an educator shaping future leaders or a parent empowering your child, Teenskool provides the tools for success.
-            </p>
+            <BannerCarousel />
           </MotionDiv>
-          <div className="mt-16 grid md:grid-cols-2 gap-8 text-left">
-            <MotionDiv
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true, amount: 0.5 }}
-              className="bg-surface border border-border p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
-            >
-              <div className="flex-grow">
-                <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 p-3 rounded-xl">
-                    <School className="text-primary w-6 h-6" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground">For Educators</h3>
-                </div>
-                <p className="text-foreground/80 mt-4">
-                  Bring our NEP-aligned, AI-powered workshops to your school and give your students a competitive edge.
-                </p>
-              </div>
-              <Link href="/contact" className="mt-6">
-                <button className="bg-primary hover:bg-primary/90 cursor-pointer text-primary-foreground font-semibold py-3 px-6 rounded-lg w-full transition-transform hover:scale-105 flex items-center justify-center gap-2">
-                  <PhoneCall className="w-4 h-4" /> Book a Free Demo
-                </button>
-              </Link>
-            </MotionDiv>
-            <MotionDiv
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true, amount: 0.5 }}
-              className="bg-surface border border-border p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
-            >
-              <div className="flex-grow">
-                <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 p-3 rounded-xl">
-                    <SmilePlus className="text-primary w-6 h-6" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground">For Parents</h3>
-                </div>
-                <p className="text-foreground/80 mt-4">
-                  Give your child the confidence and creative skills to succeed with our engaging, hands-on workshops.
-                </p>
-              </div>
-              <a href="/parent-pack.pdf" target="_blank" rel="noopener noreferrer" className="mt-6">
-                <button className="bg-foreground hover:bg-foreground/90 text-background font-semibold py-3 px-6 rounded-lg w-full transition-transform hover:scale-105 flex items-center justify-center cursor-pointer gap-2">
-                  <FileText className="w-4 h-4" /> Download Parent Pack
-                </button>
-              </a>
-            </MotionDiv>
-          </div>
         </div>
       </section>
 
-      {/* Programs Section */}
+
+
+
+      {/* Programs Section (Modified for Single Full-Width Card) */}
       <section className="py-24 px-6 bg-background border-t border-border">
         <div className="max-w-7xl mx-auto">
           <MotionDiv
@@ -409,16 +364,27 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-              Explore Our Programs
+              Explore Our Program
             </h2>
             <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
-              Learn real-world skills with our expertly designed bootcamps.
+              Master a high-demand skill with our flagship, expertly designed masterclass.
             </p>
           </MotionDiv>
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-            {programs.map((program) => (
-              <ProgramCard key={program.id} program={program} />
-            ))}
+
+          {/* FIX: Changed the grid structure to center a single element */}
+          <div className="flex justify-center">
+            {/* The inner card will take a max width (md:max-w-xl) and be centered */}
+            <div className="w-full max-w-4xl">
+              {/* Only map the first (and only) program */}
+              {programs.slice(0, 1).map((program) => (
+                <ProgramCard
+                  key={program.id}
+                  program={program}
+                  // Pass a prop to the card indicating it should be full-width if needed
+                  isSingleCard={true}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>

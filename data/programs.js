@@ -1,67 +1,91 @@
-// This file serves as the central data source for all educational programs.
-// Using a centralized file like this makes it easy to update program details
-// across the entire website without editing individual components.
+// programs.js
+// Centralized data source for all TeenSkool programs
 
 const programs = [
   {
-    id: "1",
-    title: "AI for Entrepreneurs Bootcamp",
-    shortDescription: "Launch your first AI-powered startup idea in just one day. No coding required.",
-    description: "A comprehensive bootcamp designed to empower students with the skills to conceptualize, build, and pitch their own AI-powered startups. This hands-on program covers everything from idea generation using ChatGPT to creating visual assets with DALL-E and presenting a compelling business case.",
-    price: 4999,
-    image: "https://placehold.co/1200x600/fde047/1e293b?text=AI+Bootcamp",
-    nextBatch: "August 15, 2024",
-    duration: "1-Day Workshop",
-    curriculum: "NEP 2020 Aligned",
-    features: ["ChatGPT", "DALL-E", "Canva AI"], // For the home page cards
-    includes: [
-        "Live mentorship from IIT/IIM alumni",
-        "Hands-on experience with ChatGPT, DALL-E, and Canva",
-        "Interactive group brainstorming sessions",
-        "Shark Tank-style pitch practice",
-        "Certificate of Completion",
-        "Access to an exclusive community of innovators",
-    ]
-  },
-  {
-    id: "2",
-    title: "Web Development Mastery",
-    shortDescription: "Build and deploy modern, responsive websites from scratch.",
-    description: "Dive deep into the world of web development. This course covers the essentials of HTML, CSS, and JavaScript, and then moves on to advanced topics using React and Tailwind CSS. You'll build several projects, including a fully functional portfolio website.",
-    price: 7999,
-    image: "https://placehold.co/1200x600/a78bfa/1e293b?text=Web+Mastery",
-    nextBatch: "September 1, 2024",
-    duration: "4-Week Course",
-    curriculum: "Project-Based Learning",
-    features: ["React", "Tailwind CSS", "Firebase"],
-    includes: [
-        "20+ hours of live, interactive classes",
-        "Build and deploy 3 real-world projects",
-        "Personalized code reviews and feedback",
-        "Career guidance and portfolio building session",
-        "Lifetime access to course materials",
-        "Official Certificate of Mastery",
-    ]
-  },
-  {
-    id: "3  ",
-    title: "Digital Marketing Pro",
-    shortDescription: "Learn to grow any business with cutting-edge marketing strategies.",
-    description: "This program covers the A-Z of digital marketing. You will learn about Search Engine Optimization (SEO), Social Media Marketing (SMM), content creation, and data analytics to make informed decisions that drive growth for any business.",
+    id: "ai-startup-masterclass",
+    title: "AI Startup Masterclass",
+    shortDescription: "Launch your first business idea in 3 hours using only AI tools.",
+    description: "This is a super-fast, hands-on workshop designed for new founders. You will learn the ultimate AI-First strategy to build a complete business prototype including a validated idea, brand, website, and investor pitch all in one single 3-hour session without writing a single line of code.",
+    
+    // Core Data
+    Image: "/assets/programimage.png",
     price: 3999,
-    image: "https://placehold.co/1200x600/60a5fa/1e293b?text=Marketing+Pro",
-    nextBatch: "August 20, 2024",
-    duration: "2-Week Intensive",
-    curriculum: "Industry Aligned",
-    features: ["SEO", "Social Media", "Analytics"],
+    duration: "3 Hours Live Workshop",
+    nextBatch: "December 1, 2025",
+    format: "Live Interactive Session", // Kept for sidebar
+    level: "Beginner to Intermediate", // Kept for sidebar
+    
+    // Key Features - Highly compressed (max 3 words each)
+    features: [
+      "Idea to Prototype",
+      "Zero Code", 
+      "AI Automation",
+      "Pitch Deck Ready"
+    ],
+
+    // What's Included - Focused on core deliverables
     includes: [
-        "Mastering Google Analytics 4",
-        "Running successful social media campaigns",
-        "Content strategy and creation workshops",
-        "Building a professional digital marketing portfolio",
-        "Live Q&A sessions with industry experts",
-        "Certificate in Digital Marketing",
-    ]
+      "3 hours intensive hands-on training",
+      "Functional startup prototype (live assets)",
+      "Lifetime resource access & templates",
+      "Professional certificate of completion",
+      "90-day implementation support",
+    ],
+
+    // Core Strategy (Simplified from 'Methodology')
+    strategy: {
+      approach: "The AI-First Fast-Build Plan", // Simplified
+      philosophy: "Get maximum results with minimum effort by focusing entirely on smart AI tools.", // Simplified
+      focusAreas: [
+        "Be fast and automatic",
+        "Build with zero code", 
+        "Use data to check ideas",
+        "Look professional and polished"
+      ]
+    },
+
+    // Simplified Curriculum for Timeline
+    curriculum: [
+      { segment: 1, title: "Mindset & Setup", timeframe: "0:00 - 0:22", keyFocus: "Learn the rules of building fast with AI and set up your tools." },
+      { segment: 2, title: "Idea Validation", timeframe: "0:22 - 0:45", keyFocus: "Quickly check if your idea will make money and who your customer is." },
+      { segment: 3, title: "Branding & Assets", timeframe: "0:45 - 1:10", keyFocus: "Create a unique logo, slogan, and visual style using AI." },
+      { segment: 4, title: "Website Deployment", timeframe: "1:10 - 1:35", keyFocus: "Launch a live, mobile-friendly website in minutes." },
+      { segment: 5, title: "Content Strategy", timeframe: "1:35 - 2:00", keyFocus: "Build a 30-day social media plan and make a promo video." },
+      { segment: 6, title: "Pitch Deck Creation", timeframe: "2:00 - 2:25", keyFocus: "Create a professional presentation ready for investors." },
+      { segment: 7, title: "Final Demo & Plan", timeframe: "2:25 - 3:00", keyFocus: "Show your finished prototype and plan your next 90 days." }
+    ],
+
+    // Learning Outcomes - Renamed to key results
+    keyResults: [
+      "Master the process of building with AI",
+      "Create and validate profitable business ideas quickly",
+      "Design a professional brand identity",
+      "Build a functional website without coding",
+      "Develop a pitch deck ready for investors",
+      "Use AI tools for everyday business tasks"
+    ],
+
+    // AI Tools used - Ready for logo display
+    toolsUsed: [
+      { name: "ChatGPT", logo: "/assets/tools/chatgpt.png" },
+      { name: "Claude", logo: "/assets/tools/claude.png" },
+      { name: "Gemini", logo: "/assets/tools/gemini.png" },
+      { name: "perplexity", logo: "/assets/tools/perplexity.png" },
+      { name: "MidJourney", logo: "/assets/tools/midj.png" },
+      { name: "Gamma", logo: "/assets/tools/gamma.png" },
+      { name: "Durable", logo: "/assets/tools/durable.png" },
+    ],
+    
+    // Support simplified to a single object
+    support: {
+        duration: "90 days",
+        includes: [
+            "Email support for implementation questions",
+            "Monthly group office hours sessions",
+            "Private alumni community access",
+        ]
+    }
   }
 ];
 

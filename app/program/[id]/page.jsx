@@ -1,112 +1,281 @@
-// File: app/program/[id]/page.jsx
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import MotionDiv from '@/components/ui/MotionDiv';
 import ProgramSidebar from './ProgramSidebar';
 import programs from '@/data/programs';
-import { CheckCircle, BotMessageSquare, Sparkles, Rocket } from 'lucide-react';
+import {
+  CheckCircle,
+  BotMessageSquare,
+  Sparkles,
+  Rocket,
+  Lightbulb,
+  Clock,
+  Zap,
+  Cpu,
+  Search,
+  Trophy,
+  Hammer,
+  ArrowRight,
+  Video,
+} from 'lucide-react';
 
-// Corrected GridPattern for dark theme
+// Branded grid background (lighter + subtle)
 const GridPattern = () => (
-  <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:16px_16px] animate-grid-scroll" />
+  <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(var(--color-border)_0.5px,transparent_1px)] [background-size:24px_24px]" />
 );
 
 function getProgram(id) {
-    return programs.find((p) => p.id.trim() === id);
+  return programs.find((p) => p.id.trim() === id);
 }
 
 export async function generateMetadata({ params }) {
   const program = getProgram(params.id);
-  if (!program) {
-    return { title: 'Program Not Found' };
-  }
+  if (!program) return { title: 'Program Not Found' };
   return {
     title: `${program.title} | Teenskool`,
     description: program.shortDescription,
   };
 }
 
-export default function ProgramDetailPage({ params }) {
-  const program = getProgram(params.id);
+// Segment icons
+const segmentIconMap = {
+  "Mindset & Setup": Cpu,
+  "Idea Validation": Lightbulb,
+  "Branding & Assets": Sparkles,
+  "Website Deployment": Rocket,
+  "Market Positioning & Analysis": Search,
+  "Content Strategy": Video,
+  "Pitch Deck Creation": Trophy,
+  "Final Demo & Plan": Clock,
+};
 
-  if (!program) {
-    notFound();
-  }
+// Unified card style
+const UnifiedCard = ({ children, className = "" }) => (
+  <div
+    className={`bg-gradient-to-br from-primary/5 via-background to-background p-8 rounded-2xl border border-primary/10 shadow-sm hover:shadow-md transition-all ${className}`}
+  >
+    {children}
+  </div>
+);
+
+// Motion wrapper defaults
+const motionDefaults = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6 },
+};
+
+export default async function ProgramDetailPage({ params }) {
+  const { id } = params;
+  const program = getProgram(id);
+
+  if (!program) notFound();
+  const imageUrl = program.Image;
 
   return (
     <div className="min-h-screen bg-background text-foreground relative">
       <GridPattern />
-      <div className="max-w-7xl mx-auto pt-32 pb-20 px-6">
+      <div className="max-w-7xl mx-auto pt-28 pb-20 px-6">
         <div className="grid lg:grid-cols-3 gap-10 lg:gap-16">
-          
-          {/* Left Content Column */}
-          <div className="lg:col-span-2 space-y-10">
-            <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-              <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">{program.title}</h1>
-              <p className="text-lg text-foreground/80">{program.shortDescription}</p>
-            </MotionDiv>
-            
-            <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
-              <div className="rounded-2xl overflow-hidden shadow-2xl shadow-black/20 border border-border">
-                <Image src={program.image} alt={program.title} width={1200} height={600} className="w-full object-cover aspect-video" />
-              </div>
-            </MotionDiv>
-            
-            <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
-              <div className="bg-surface p-8 rounded-2xl shadow-2xl shadow-black/20 border border-border">
-                <h2 className="text-2xl font-bold text-foreground mb-6">About This Program</h2>
-                {/* Using prose-invert for dark mode typography on the description */}
-                <div className="prose prose-invert max-w-none text-foreground/80">{program.description}</div>
-              </div>
-            </MotionDiv>
-            
-            <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}>
-              <div className="bg-surface p-8 rounded-2xl shadow-2xl shadow-black/20 border border-border">
-                <div className="flex flex-col sm:flex-row items-start gap-6">
-                    <div className="bg-primary/20 p-4 rounded-full w-fit">
-                        <BotMessageSquare className="w-8 h-8 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                        <h2 className="text-2xl font-bold text-foreground mb-3">Free AI Mentor Included</h2>
-                        <p className="text-foreground/80 mb-4">
-                            Get 24/7 guidance with your personal virtual mentor. Brainstorm ideas, practice your pitch, and get unstuck anytime.
-                        </p>
-                        <div className="space-y-3">
-                             <div className="flex items-center gap-3">
-                                 <Sparkles className="w-5 h-5 text-primary flex-shrink-0" />
-                                 <span className="text-foreground/90 font-medium">Instant feedback on ideas</span>
-                             </div>
-                             <div className="flex items-center gap-3">
-                                 <Rocket className="w-5 h-5 text-primary flex-shrink-0"/>
-                                 <span className="text-foreground/90 font-medium">Pitch refinement and practice</span>
-                             </div>
-                        </div>
-                    </div>
-                </div>
+          {/* MAIN CONTENT */}
+          <div className="lg:col-span-2 space-y-12">
+
+            {/* Title & Intro */}
+            <MotionDiv {...motionDefaults}>
+              <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
+                {program.title}
+              </h1>
+              <p className="text-lg md:text-xl font-medium text-primary mb-6">
+                {program.shortDescription}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {program.features?.map((feature, i) => (
+                  <span
+                    key={i}
+                    className="flex items-center gap-1.5 px-3 py-1 text-sm rounded-full bg-primary/10 text-primary border border-primary/20"
+                  >
+                    <Zap className="w-4 h-4" />
+                    {feature}
+                  </span>
+                ))}
               </div>
             </MotionDiv>
 
-            <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.4 }}>
-              <div className="bg-surface p-8 rounded-2xl shadow-2xl shadow-black/20 border border-border">
-                <h2 className="text-2xl font-bold text-foreground mb-6">What’s Included</h2>
-                <ul className="space-y-3">
-                  {program.includes?.map((item, i) => (
+            {/* Hero Image */}
+            {imageUrl && (
+              <MotionDiv {...motionDefaults} transition={{ duration: 0.6, delay: 0.1 }}>
+                <div className="rounded-3xl overflow-hidden shadow-xl border border-border">
+                  <Image
+                    src={imageUrl}
+                    alt={program.title}
+                    width={1200}
+                    height={600}
+                    className="w-full object-cover aspect-video"
+                    priority
+                  />
+                </div>
+              </MotionDiv>
+            )}
+
+            {/* Masterclass Overview */}
+            <MotionDiv {...motionDefaults} transition={{ duration: 0.6, delay: 0.2 }}>
+              <UnifiedCard>
+                <h2 className="text-3xl font-extrabold mb-4 flex items-center gap-3">
+                  <Lightbulb className="w-7 h-7 text-primary" />
+                  Masterclass Overview
+                </h2>
+                <p className="text-foreground/80 leading-relaxed mb-6 pb-6 border-b border-primary/10">
+                  {program.description}
+                </p>
+
+                <div>
+                  <h3 className="text-lg font-bold text-primary mb-2">
+                    Core Strategy: {program.strategy?.approach}
+                  </h3>
+                  <p className="text-base font-medium text-foreground/80">
+                    Goal: {program.strategy?.philosophy}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {program.strategy?.focusAreas?.map((focus, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 text-sm rounded-full bg-primary/20 text-primary font-semibold"
+                      >
+                        {focus}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </UnifiedCard>
+            </MotionDiv>
+
+            {/* Key Results */}
+            <MotionDiv {...motionDefaults} transition={{ duration: 0.6, delay: 0.3 }}>
+              <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
+                Key Results <Trophy className="w-6 h-6 text-primary" />
+              </h2>
+              <UnifiedCard className="p-6">
+                <ul className="grid md:grid-cols-2 gap-y-3 gap-x-6">
+                  {program.keyResults?.map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
+                      <ArrowRight className="h-5 w-5 text-primary mt-0.5" />
                       <span className="text-foreground/80">{item}</span>
                     </li>
                   ))}
                 </ul>
+              </UnifiedCard>
+            </MotionDiv>
+
+            {/* Modernized Timeline */}
+            <MotionDiv {...motionDefaults} transition={{ duration: 0.6, delay: 0.4 }}>
+              <h2 className="text-3xl font-bold mb-8 flex items-center gap-2">
+                3-Hour Curriculum Flow <Clock className="w-6 h-6 text-primary" />
+              </h2>
+
+              <div className="relative pl-6 md:pl-10 space-y-8">
+                {/* Gradient vertical line */}
+                <div className="absolute left-2 md:left-4 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary/60 to-transparent" />
+
+                {program.curriculum?.map((segment, i) => {
+                  const Icon = segmentIconMap[segment.title] || Clock;
+                  return (
+                    <MotionDiv
+                      key={i}
+                      className="relative group"
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: i * 0.08 }}
+                      viewport={{ once: true, amount: 0.5 }}
+                    >
+                      {/* Dot */}
+                      <div className="absolute -left-6 md:-left-8 top-2 w-4 h-4 rounded-full bg-background border-2 border-primary group-hover:bg-primary transition-all duration-300" />
+
+                      <div className="ml-6 md:ml-4 p-5 rounded-lg bg-surface border border-border hover:border-primary/40 transition-all">
+                        <div className="flex justify-between items-center mb-2">
+                          <h3 className="text-lg font-bold flex items-center gap-2 text-primary">
+                            <Icon className="w-5 h-5" />
+                            {segment.title}
+                          </h3>
+                          <span className="text-xs font-medium text-foreground/70">
+                            {segment.timeframe}
+                          </span>
+                        </div>
+                        <p className="text-sm text-foreground/80">{segment.keyFocus}</p>
+                      </div>
+                    </MotionDiv>
+                  );
+                })}
               </div>
+            </MotionDiv>
+
+              {/* AI Tools You'll Master (FIXED: Improved logo visibility) */}
+              <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.5 }}>
+                <h2 className="text-3xl font-bold mb-6">AI Tools You Will Master <Hammer className="inline-block w-6 h-6 text-primary" /></h2>
+                <UnifiedCard className="!bg-background/50"> {/* Slightly dimmer background for tools to contrast more */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {program.toolsUsed?.map((tool, i) => (
+                            <MotionDiv 
+                                key={i} 
+                                className='p-4 rounded-xl border border-primary/20 bg-background text-center transition-all duration-300 hover:bg-primary/5 cursor-pointer'
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3, delay: i * 0.05 }}
+                                viewport={{ once: true, amount: 0.5 }}
+                            >
+                                {/* --- START OF FIX: LOGO VISIBILITY --- */}
+                                <div className='w-12 h-12 mx-auto mb-2 rounded-full overflow-hidden border border-primary/50 flex items-center justify-center bg-white p-1'> 
+                                    {/* Added bg-white and p-1 to the logo container */}
+                                    <Image 
+                                        src={tool.logo || 'https://placehold.co/80x80/282828/ffffff?text=TOOL'} 
+                                        alt={`${tool.name} Logo`} 
+                                        width={80} 
+                                        height={80} 
+                                        className="w-full h-full object-contain" // Changed to object-contain to prevent cropping
+                                    />
+                                </div>
+                                {/* --- END OF FIX --- */}
+                                <h3 className='font-extrabold text-md text-primary'>{tool.name}</h3>
+                            </MotionDiv>
+                        ))}
+                    </div>
+                </UnifiedCard>
+            </MotionDiv>
+
+            {/* Included + Support */}
+            <MotionDiv {...motionDefaults} transition={{ duration: 0.6, delay: 0.6 }}>
+              <UnifiedCard>
+                <h2 className="text-3xl font-bold mb-6">What’s Included</h2>
+
+                <ul className="grid md:grid-cols-2 gap-3 pb-6 mb-6 border-b border-primary/10">
+                  {program.includes?.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
+                      <span className="text-foreground/80">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div>
+                  <h3 className="text-lg font-bold text-primary mb-3">
+                    Post-Masterclass Support ({program.support?.duration})
+                  </h3>
+                  <ul className="space-y-2 text-sm text-foreground/80">
+                    {program.support?.includes?.map((item, i) => (
+                      <li key={i} className="flex items-center gap-2">
+                        <BotMessageSquare className="w-4 h-4 text-primary" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </UnifiedCard>
             </MotionDiv>
           </div>
 
-          {/* Right Sidebar Column */}
+          {/* SIDEBAR */}
           <div className="lg:col-span-1">
-            {/* You'll also need to update ProgramSidebar to match the new theme */}
             <ProgramSidebar program={program} />
           </div>
-
         </div>
       </div>
     </div>
