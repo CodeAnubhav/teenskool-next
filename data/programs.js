@@ -10,7 +10,7 @@ const programs = [
     
     // Core Data
     Image: "/assets/programimage.png",
-    price: 3999,
+    price: 1999,
     duration: "3 Hours Live Workshop",
     nextBatch: "December 1, 2025",
     format: "Live Interactive Session", // Kept for sidebar
