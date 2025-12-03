@@ -90,7 +90,7 @@ export default function HomePage() {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link href="/contact" className="group">
+            <Link href="/program/ai-startup-masterclass" className="group">
               <button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 text-lg shadow-lg shadow-primary/20 transition-transform hover:scale-105 w-full cursor-pointer sm:w-auto">
                 Apply Now
                 <ArrowUpRight className="w-5 h-5 transform transition-transform duration-300 group-hover:rotate-45" />
