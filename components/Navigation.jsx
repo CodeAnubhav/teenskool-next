@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { supabase } from "@/lib/supabaseClient";
+import { useSupabase } from "@/contexts/SupabaseContext";
 import {
   Home,
   Users,
@@ -20,28 +20,11 @@ import logoUrl from "@/public/assets/TS.png";
 export default function Navigation() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [user, setUser] = useState(null);
+  const { user } = useSupabase();
 
-  useEffect(() => {
-    const getSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-    };
-    getSession();
+  /* Auth state is now managed globally in SupabaseContext */
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, []);
-
+  // Scrolled state effect checks window scroll
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -63,11 +46,10 @@ export default function Navigation() {
     <>
       {/* Top Navbar */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-4 sm:px-6 py-3 border-b ${
-          scrolled
-            ? "bg-background/80 backdrop-blur-lg shadow-md border-border/80"
-            : "bg-transparent border-transparent"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-4 sm:px-6 py-3 border-b ${scrolled
+          ? "bg-background/80 backdrop-blur-lg shadow-md border-border/80"
+          : "bg-transparent border-transparent"
+          }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex-shrink-0">
@@ -87,11 +69,10 @@ export default function Navigation() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors duration-300 ${
-                    isActive(item.path)
-                      ? "bg-primary/20 text-primary font-semibold"
-                      : "text-foreground/80 hover:text-foreground hover:bg-surface"
-                  }`}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors duration-300 ${isActive(item.path)
+                    ? "bg-primary/20 text-primary font-semibold"
+                    : "text-foreground/80 hover:text-foreground hover:bg-surface"
+                    }`}
                 >
                   <item.icon className="h-4 w-4" />
                   <span className="text-sm">{item.label}</span>
@@ -113,13 +94,13 @@ export default function Navigation() {
             ) : (
               // If user is logged out, show Login and Sign Up
               <>
-                <Link href="/login">
+                <Link href="/auth/login">
                   <button className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-semibold text-foreground hover:bg-surface transition-colors">
                     <LogIn className="h-5 w-5" />
                     Login
                   </button>
                 </Link>
-                <Link href="/signup">
+                <Link href="/auth/signup">
                   <button className="flex items-center cursor-pointer gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity">
                     <UserPlus className="h-5 w-5" />
                     Sign Up
@@ -154,11 +135,10 @@ export default function Navigation() {
           <Link key={`bottom-${item.path}`} href={item.path}>
             <motion.button
               whileTap={{ scale: 0.9 }}
-              className={`p-2 rounded-full transition-colors duration-300 ${
-                isActive(item.path)
-                  ? "bg-primary/20 text-primary"
-                  : "text-foreground/70 hover:bg-background"
-              }`}
+              className={`p-2 rounded-full transition-colors duration-300 ${isActive(item.path)
+                ? "bg-primary/20 text-primary"
+                : "text-foreground/70 hover:bg-background"
+                }`}
             >
               <item.icon className="h-6 w-6" />
             </motion.button>

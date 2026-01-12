@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUp, Loader2, Copy, Check, User, Bot, Maximize2, X } from "lucide-react";
-import { supabase } from "@/lib/supabaseClient";
+import { useSupabase } from "@/contexts/SupabaseContext";
 import { sendMessage as sendMessageAction } from "./actions";
 
 // --- FormattedMessage and FullScreenChat components remain the same as your provided code ---
@@ -9,7 +9,7 @@ import { sendMessage as sendMessageAction } from "./actions";
 // Markdown-like text formatter
 const formatText = (text) => {
   if (!text) return "";
-  
+
   let formatted = text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -25,7 +25,7 @@ const formatText = (text) => {
 // Component to render formatted text
 const FormattedMessage = ({ text, isUser }) => {
   const [copied, setCopied] = useState(false);
-  
+
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(text);
@@ -47,7 +47,7 @@ const FormattedMessage = ({ text, isUser }) => {
 
   lines.forEach((line) => {
     const trimmed = line.trim();
-    
+
     const numberedMatch = trimmed.match(/^(\d+)\.\s(.+)/);
     if (numberedMatch) {
       if (listType !== 'ordered') {
@@ -79,7 +79,7 @@ const FormattedMessage = ({ text, isUser }) => {
       currentList = [];
       listType = null;
     }
-    
+
     if (trimmed) {
       elements.push({ type: 'text', content: trimmed });
     } else {
@@ -106,7 +106,7 @@ const FormattedMessage = ({ text, isUser }) => {
               </ol>
             );
           }
-          
+
           if (element.type === 'unordered') {
             return (
               <ul key={index} className="list-disc list-inside space-y-2 ml-4">
@@ -118,25 +118,25 @@ const FormattedMessage = ({ text, isUser }) => {
               </ul>
             );
           }
-          
+
           if (element.type === 'break') {
             return <div key={index} className="h-2" />;
           }
-          
+
           return (
-            <p key={index} className="text-foreground/90 leading-relaxed" 
-               dangerouslySetInnerHTML={{ __html: formatText(element.content) }} />
+            <p key={index} className="text-foreground/90 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: formatText(element.content) }} />
           );
         })}
       </div>
-      
+
       <button
         onClick={copyToClipboard}
         className="absolute bottom-2 cursor-pointer right-2 opacity-0 group-hover:opacity-100 transition-all duration-200 p-1.5 rounded-md hover:bg-background/50 hover:scale-110"
         title="Copy message"
       >
-        {copied ? 
-          <Check className="w-3.5 h-3.5 text-green-500" /> : 
+        {copied ?
+          <Check className="w-3.5 h-3.5 text-green-500" /> :
           <Copy className="w-3.5 h-3.5 text-foreground/60 hover:text-foreground/80" />
         }
       </button>
@@ -150,9 +150,9 @@ const FullScreenChat = ({ isOpen, onClose, messages, sending, sendMessage, input
 
   useEffect(() => {
     if (isOpen) {
-      scrollerRef.current?.scrollTo({ 
-        top: scrollerRef.current.scrollHeight, 
-        behavior: "smooth" 
+      scrollerRef.current?.scrollTo({
+        top: scrollerRef.current.scrollHeight,
+        behavior: "smooth"
       });
     }
   }, [messages, isOpen]);
@@ -195,13 +195,13 @@ const FullScreenChat = ({ isOpen, onClose, messages, sending, sendMessage, input
                 <FormattedMessage text={m.text} isUser={m.role === "user"} />
               </div>
               {m.role === "user" && (
-                 <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xs font-medium bg-primary text-primary-foreground">
-                   <User className="w-5 h-5" />
-                 </div>
+                <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xs font-medium bg-primary text-primary-foreground">
+                  <User className="w-5 h-5" />
+                </div>
               )}
             </div>
           ))}
-          
+
           {sending && (
             <div className="flex gap-4">
               <div className="flex-shrink-0 w-10 h-10 rounded-full bg-background border-2 border-border flex items-center justify-center">
@@ -248,7 +248,7 @@ const FullScreenChat = ({ isOpen, onClose, messages, sending, sendMessage, input
 
 // --- MAIN CHATPANEL COMPONENT ---
 export default function ChatPanel() {
-  const [user, setUser] = useState(null);
+  const { user } = useSupabase();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
     { role: "assistant", text: "Hi! I'm your Virtual Mentor. Ask me anything about startups, ideas, or growth." }
@@ -257,19 +257,13 @@ export default function ChatPanel() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const scrollerRef = useRef(null);
 
-  useEffect(() => {
-    const init = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user ?? null);
-    };
-    init();
-  }, []);
+  /* User is now from context */
 
   useEffect(() => {
     if (!isFullScreen) {
-      scrollerRef.current?.scrollTo({ 
-        top: scrollerRef.current.scrollHeight, 
-        behavior: "smooth" 
+      scrollerRef.current?.scrollTo({
+        top: scrollerRef.current.scrollHeight,
+        behavior: "smooth"
       });
     }
   }, [messages, isFullScreen]);
@@ -290,9 +284,9 @@ export default function ChatPanel() {
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
     } catch (error) {
       console.error("Error sending message:", error);
-      const errorMessage = { 
-        role: "assistant", 
-        text: "Sorry, I encountered an error. Please try again." 
+      const errorMessage = {
+        role: "assistant",
+        text: "Sorry, I encountered an error. Please try again."
       };
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
     } finally {
@@ -303,7 +297,7 @@ export default function ChatPanel() {
   return (
     <>
       <div className="flex flex-col h-[520px] bg-surface rounded-2xl border border-border">
-        
+
         {/* --- NEW HEADER --- */}
         <div className="p-4 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -343,7 +337,7 @@ export default function ChatPanel() {
               )}
             </div>
           ))}
-          
+
           {sending && (
             <div className="flex gap-3">
               <div className="flex-shrink-0 w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center">
@@ -391,7 +385,7 @@ export default function ChatPanel() {
         input={input}
         setInput={setInput}
       />
-      
+
       {/* Custom styles for formatted content */}
       <style jsx global>{`
         .chat-message strong { font-weight: 600; color: inherit; }

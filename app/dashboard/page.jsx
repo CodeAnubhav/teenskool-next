@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { supabase } from "@/lib/supabaseClient";
+import { useSupabase } from "@/contexts/SupabaseContext";
 import MotionDiv from "@/components/ui/MotionDiv";
 import { Loader2, LogOut, User, MessageSquare, Hand } from "lucide-react";
 
@@ -16,21 +16,18 @@ const PatternBackground = () => (
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const { user, loading: authLoading, supabase } = useSupabase();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+    if (!authLoading) {
       if (!user) {
-        router.push("/login");
+        router.push("/auth/login");
       } else {
-        setUser(user);
         setLoading(false);
       }
-    };
-    getUser();
-  }, [router]);
+    }
+  }, [authLoading, user, router]);
 
   if (loading) {
     return (
