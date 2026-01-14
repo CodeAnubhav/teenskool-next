@@ -1,17 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import MotionDiv from "@/components/ui/MotionDiv";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2, LogIn, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Loader2, LogIn, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useSupabase } from "@/contexts/SupabaseContext";
 import { useRouter } from "next/navigation";
-
-// CORRECTED: Using the theme variable for the grid color
-const GridPattern = () => (
-  <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:16px_16px] animate-grid-scroll" />
-);
+import { ModernAuthCard } from "@/components/ui/modern-auth-card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const { toast } = useToast();
@@ -51,107 +47,63 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground relative">
-      <GridPattern />
+    <ModernAuthCard
+      title="Welcome Back"
+      description="Log in to access your dashboard and continue your journey."
+      footerLabel="Don't have an account?"
+      footerLinkText="Sign Up"
+      footerLinkHref="/auth/signup"
+    >
+      <form onSubmit={handleLogin} className="w-full space-y-4">
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-muted-foreground ml-1 uppercase tracking-wide">
+            Email
+          </label>
+          <Input
+            type="email"
+            name="email"
+            placeholder="e.g. alex@teenskool.com"
+            className="bg-background/50 border-input/50 focus:bg-background transition-all h-12"
+            required
+          />
+        </div>
 
-      <div className="relative pt-32 z-10 max-w-md w-full p-6">
-        <MotionDiv
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-8"
-        >
-          <div className="inline-block bg-primary/20 p-4 rounded-full mb-4">
-            <LogIn className="h-12 w-12 text-primary" />
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-muted-foreground ml-1 uppercase tracking-wide">
+            Password
+          </label>
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="••••••••"
+              className="bg-background/50 border-input/50 focus:bg-background transition-all h-12 pr-10"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-3 text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
-          <h1 className="text-4xl font-bold text-foreground">
-            Welcome Back
-          </h1>
-          <p className="mt-2 text-foreground/80">
-            Log in to access your dashboard and courses.
-          </p>
-        </MotionDiv>
+        </div>
 
-        <MotionDiv
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+        <Button
+          type="submit"
+          className="w-full h-12 rounded-xl bg-primary text-black font-bold text-base hover:bg-primary/90 mt-2 shadow-[0_0_20px_-5px_rgba(163,230,53,0.4)] hover:shadow-[0_0_25px_-5px_rgba(163,230,53,0.6)] transition-all duration-300"
+          disabled={loading}
         >
-          <div className="bg-surface/50 backdrop-blur-xl border border-border rounded-2xl shadow-xl p-8">
-            <form onSubmit={handleLogin} className="space-y-6">
-              {/* Email Field */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-foreground/90 mb-1">
-                  Email
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3.5 text-foreground/50 h-5 w-5" />
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="e.g., ada@example.com"
-                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-background/70 border border-border placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Password Field */}
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-foreground/90 mb-1">
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3.5 text-foreground/50 h-5 w-5" />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    placeholder="••••••••"
-                    className="w-full pl-10 pr-10 py-3 rounded-lg bg-background/70 border border-border placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-foreground/50 hover:text-foreground/80 cursor-pointer"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <MotionDiv whileTap={{ scale: 0.98 }} className="pt-2">
-                <button
-                  type="submit"
-                  className="w-full flex items-center cursor-pointer justify-center gap-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" /> Logging In...
-                    </>
-                  ) : (
-                    <>
-                      <LogIn className="w-5 h-5" /> Login
-                    </>
-                  )}
-                </button>
-
-                {/* Sign Up Link */}
-                <p className="text-center text-sm text-foreground/70 mt-8">
-                  Don't have an account?{" "}
-                  <Link href="/auth/signup" className="font-semibold text-primary cursor-pointer hover:underline">
-                    Sign Up
-                  </Link>
-                </p>
-              </MotionDiv>
-            </form>
-          </div>
-        </MotionDiv>
-      </div>
-    </div>
+          {loading ? (
+            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+          ) : (
+            <span className="flex items-center gap-2">
+              Login <ArrowRight className="w-5 h-5" />
+            </span>
+          )}
+        </Button>
+      </form>
+    </ModernAuthCard>
   );
 }

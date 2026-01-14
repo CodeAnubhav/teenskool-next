@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import MotionDiv from "@/components/ui/MotionDiv";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
-import { HeroGeometric } from "@/components/ui/shape-landing-hero";
+import { InfiniteGridHero } from "@/components/ui/infinite-grid-hero";
+import { Testimonial } from "@/components/ui/testimonial";
 import ProgramCard from "@/components/ui/ProgramCard";
 import programs from "@/data/programs";
 import BannerCarousel from "@/components/ui/BannerCarousel";
@@ -15,17 +16,10 @@ import {
   Target,
   Zap,
   Users,
-  School,
-  FileText,
-  PhoneCall,
-  SmilePlus,
   BotMessageSquare,
   Sparkles,
   Rocket,
-  ArrowRight,
 } from "lucide-react";
-
-
 
 const features = [
   {
@@ -50,30 +44,23 @@ const features = [
   },
 ];
 
-const stats = [
-  { number: "150+", label: "Student Trained" },
-  { number: "50+", label: "Schools Participating" },
-  { number: "50+", label: "Winners Recognized" },
-  { number: "25+", label: "States Represented" },
-];
-
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
-      {/* Hero Section with Scroll Animation and Geometric Background */}
-      <HeroGeometric>
+      {/* Hero Section with Infinite Grid and Scroll Animation */}
+      <InfiniteGridHero>
         <div className="flex flex-col overflow-hidden w-full">
           <ContainerScroll
             titleComponent={
               <>
-                <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-white mb-6">
+                <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-foreground mb-6">
                   Build Your First Startup <br />
                   <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none block">
-                    Idea with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">AI</span>
+                    Idea with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-400">AI</span>
                   </span>
                 </h1>
 
-                <p className="mt-6 text-lg md:text-xl text-white/80 font-medium max-w-2xl mx-auto mb-10">
+                <p className="mt-6 text-lg md:text-xl text-muted-foreground font-medium max-w-2xl mx-auto mb-10">
                   Join the AI-Powered Teenpreneur Workshop by Teenskool. No coding. No prior experience. Just ideas, AI, and action.
                 </p>
 
@@ -86,8 +73,8 @@ export default function HomePage() {
                   </Link>
 
                   <Link href="/program-for-school">
-                    <button className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 px-6 py-3 rounded-lg font-semibold text-lg shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-105 w-full cursor-pointer sm:w-auto">
-                      <Building2 className="w-5 h-5 text-white" /> Book for Your School
+                    <button className="bg-surface/80 backdrop-blur-sm border border-border text-foreground hover:bg-border px-6 py-3 rounded-lg font-semibold text-lg shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-105 w-full cursor-pointer sm:w-auto">
+                      <Building2 className="w-5 h-5 text-primary" /> Book for Your School
                     </button>
                   </Link>
                 </div>
@@ -98,7 +85,7 @@ export default function HomePage() {
             <div className="h-full w-full object-cover">
               <video
                 className="w-full h-full object-cover rounded-2xl"
-                src="/assets/studentvideo.mp4"
+                src="/assets/promovideo.mp4"
                 title="Student Video"
                 autoPlay
                 muted
@@ -108,52 +95,51 @@ export default function HomePage() {
             </div>
           </ContainerScroll>
         </div>
-      </HeroGeometric>
+      </InfiniteGridHero>
 
-      {/* Stats Section with Parallax */}
-      <section className="py-32 px-6 bg-surface border-y border-border relative overflow-hidden">
-        {/* Parallax Background Element */}
-        <MotionDiv
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.1 }}
-          className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary rounded-full blur-[120px] -z-10"
-        />
-
+      {/* 1. Who It's For Section */}
+      <section className="py-32 px-6 bg-background relative">
         <div className="max-w-7xl mx-auto">
           <MotionDiv
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
-            <span className="text-primary text-xs font-bold uppercase tracking-[0.3em] mb-4 block">Our Impact</span>
+            <span className="text-zinc-500 text-xs font-bold uppercase tracking-[0.3em] mb-4 block">Target Audience</span>
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground">
-              NUMBERS THAT <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">MATTER</span>
+              WHO IS THIS <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">FOR?</span>
             </h2>
           </MotionDiv>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center sticky top-20">
-            {stats.map((stat, index) => (
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              { icon: Users, title: "Students (Grades 8–12)", desc: "Curious minds ready to explore entrepreneurship and AI tools. No technical background needed!" },
+              { icon: Lightbulb, title: "Creative Thinkers", desc: "Students who love solving problems, thinking outside the box, and want to see their ideas come to life." },
+              { icon: Target, title: "Forward-Thinking Schools", desc: "Institutions bringing 21st-century skills and NEP-aligned workshops to their students." },
+            ].map((item, index) => (
               <MotionDiv
                 key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1, type: "spring" }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group p-6 rounded-2xl bg-background/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all"
+                whileHover={{ y: -10, transition: { duration: 0.2 } }}
+                className="bg-surface p-10 rounded-[2rem] border border-border shadow-xl hover:shadow-2xl hover:border-primary/50 transition-all text-center group"
               >
-                <div className="text-4xl lg:text-6xl font-black text-primary mb-2 transition-transform duration-300 group-hover:scale-110">
-                  {stat.number}
+                <div className="bg-primary/10 p-5 rounded-3xl w-20 h-20 mx-auto mb-8 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                  <item.icon className="w-10 h-10" />
                 </div>
-                <div className="text-foreground/70 font-medium tracking-wide text-sm md:text-base uppercase">{stat.label}</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">{item.title}</h3>
+                <p className="text-foreground/70 leading-relaxed text-lg">{item.desc}</p>
               </MotionDiv>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Section with Staggered Parallax */}
-      <section className="py-32 px-6 relative">
+      {/* 2. Features Section ("What You Will Build") */}
+      <section className="py-32 px-6 relative bg-surface border-y border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-24">
             <MotionDiv
@@ -163,7 +149,7 @@ export default function HomePage() {
             >
               <span className="text-zinc-500 text-xs font-bold uppercase tracking-[0.3em] mb-4 block">Curriculum</span>
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground mb-6">
-                WHAT YOU WILL <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">BUILD</span>
+                WHAT YOU WILL <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">BUILD</span>
               </h2>
               <p className="text-xl text-foreground/60 max-w-2xl mx-auto font-light leading-relaxed">
                 A fast-paced, high-energy intro to show students how AI can turn their ideas into real startup concepts.
@@ -189,7 +175,7 @@ export default function HomePage() {
                   }}
                   transition={{ type: "spring", stiffness: 50 }}
                   whileHover={{ y: -10 }}
-                  className="bg-surface/50 backdrop-blur-md p-8 rounded-3xl border border-border h-full shadow-lg hover:shadow-primary/10 transition-all group"
+                  className="bg-background/80 backdrop-blur-md p-8 rounded-3xl border border-border h-full shadow-lg hover:shadow-primary/10 transition-all group"
                 >
                   <div className="bg-gradient-to-br from-primary/20 to-transparent p-4 rounded-2xl w-fit mb-6 group-hover:bg-primary/30 transition-colors">
                     <Icon className="text-primary w-8 h-8" />
@@ -203,8 +189,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Virtual Mentor Section - Modern Card */}
-      <section className="py-32 px-6 bg-gradient-to-b from-surface to-background border-y border-border overflow-hidden">
+      {/* 3. Virtual Mentor Section -> Rebranded to AI CoFounder */}
+      <section className="py-32 px-6 bg-gradient-to-b from-background to-surface border-b border-border overflow-hidden">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
           <MotionDiv
             initial={{ opacity: 0, x: -50, rotate: -5 }}
@@ -217,7 +203,7 @@ export default function HomePage() {
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-primary/10 border border-border/50 ring-1 ring-white/10">
               <Image
                 src="/assets/virtual-image.png"
-                alt="AI Virtual Mentor Interface"
+                alt="AI Virtual CoFounder Interface"
                 layout="fill"
                 objectFit="cover"
                 className="transition-transform duration-700 hover:scale-110"
@@ -250,10 +236,10 @@ export default function HomePage() {
                 </span>
               </div>
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground mb-6 leading-none">
-                MEET YOUR <br /> <span className="text-primary">AI MENTOR.</span>
+                MEET YOUR <br /> <span className="text-primary">AI CO-FOUNDER.</span>
               </h2>
               <p className="text-lg text-foreground/70 leading-relaxed font-light">
-                Every student gets free access to our virtual mentor. It's like having a 24/7 startup expert to help you brainstorm, refine your pitch, and answer any question, anytime.
+                Every student gets free access to our virtual AI CoFounder. It's like having a 24/7 startup expert to help you brainstorm, refine your pitch, and answer any question, anytime.
               </p>
             </div>
 
@@ -277,99 +263,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Who It's For Section */}
-      <section className="py-32 px-6 bg-background relative">
-        <div className="max-w-7xl mx-auto">
-          <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <span className="text-zinc-500 text-xs font-bold uppercase tracking-[0.3em] mb-4 block">Target Audience</span>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground">
-              WHO IS THIS <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary">FOR?</span>
-            </h2>
-          </MotionDiv>
-
-          <div className="grid gap-8 md:grid-cols-3">
-            {[
-              { icon: Users, title: "Students (Grades 8–12)", desc: "Curious minds ready to explore entrepreneurship and AI tools. No technical background needed!" },
-              { icon: Lightbulb, title: "Creative Thinkers", desc: "Students who love solving problems, thinking outside the box, and want to see their ideas come to life." },
-              { icon: Target, title: "Forward-Thinking Schools", desc: "Institutions bringing 21st-century skills and NEP-aligned workshops to their students." },
-            ].map((item, index) => (
-              <MotionDiv
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10, transition: { duration: 0.2 } }}
-                className="bg-surface p-10 rounded-[2rem] border border-border shadow-xl hover:shadow-2xl hover:border-primary/50 transition-all text-center group"
-              >
-                <div className="bg-primary/10 p-5 rounded-3xl w-20 h-20 mx-auto mb-8 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                  <item.icon className="w-10 h-10" />
-                </div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">{item.title}</h3>
-                <p className="text-foreground/70 leading-relaxed text-lg">{item.desc}</p>
-              </MotionDiv>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section - Glass Cards */}
-      <section className="py-32 px-6 bg-[url('/assets/grid-pattern.svg')] bg-fixed relative">
-        <div className="absolute inset-0 bg-background/90 backdrop-blur-3xl -z-10"></div>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <span className="text-primary text-xs font-bold uppercase tracking-[0.3em] mb-4 block">Testimonials</span>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground mb-4">
-              STUDENT <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">VOICES</span>
-            </h2>
-            <p className="text-xl text-foreground/60 max-w-2xl mx-auto font-light">
-              Real feedback from young innovators who joined the bootcamp.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: "Priya Sharma", age: 15, school: "Kendriya Vidyalaya, Delhi", feedback: "This was the most fun I've had in a class all year. I loved creating with AI and pitching my startup idea!" },
-              { name: "Aarav Mehta", age: 16, school: "Delhi Public School", feedback: "I had no idea AI could be this exciting. I feel more confident and creative now." },
-              { name: "Saanvi Kapoor", age: 14, school: "Bal Bharti Public School", feedback: "Our team learned teamwork, pitching, and design in just a few hours. We even made our logo using AI!" },
-            ].map((testimonial, index) => (
-              <MotionDiv
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white/5 backdrop-blur-md border border-white/10 p-10 rounded-3xl shadow-2xl relative"
-              >
-                <div className="absolute -top-4 -left-4 text-6xl text-primary/20 font-serif">"</div>
-                <div className="flex items-center mb-6">
-                  {Array(5).fill().map((_, i) => <StarIcon key={i} className="h-5 w-5 text-yellow-500 fill-current" />)}
-                </div>
-                <p className="text-foreground text-xl font-medium leading-relaxed mb-8 relative z-10">“{testimonial.feedback}”</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary to-purple-500 flex items-center justify-center text-white font-bold text-lg">
-                    {testimonial.name[0]}
-                  </div>
-                  <div>
-                    <p className="font-bold text-foreground text-lg">{testimonial.name}</p>
-                    <p className="text-sm text-foreground/60">{testimonial.school}</p>
-                  </div>
-                </div>
-              </MotionDiv>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 4. Student Voices (Testimonials) */}
+      <Testimonial />
 
 
+      {/* 5. Banner Carousel */}
       <section className="py-24 px-6 bg-background">
         <div className="max-w-7xl mx-auto">
-          {/* Swiper Carousel */}
           <MotionDiv
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -381,10 +281,7 @@ export default function HomePage() {
         </div>
       </section>
 
-
-
-
-      {/* Programs Section */}
+      {/* 6. Programs Section */}
       <section className="py-32 px-6 bg-surface border-t border-border">
         <div className="max-w-7xl mx-auto">
           <MotionDiv
@@ -396,7 +293,7 @@ export default function HomePage() {
           >
             <span className="text-zinc-500 text-xs font-bold uppercase tracking-[0.3em] mb-4 block">Masterclass</span>
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground mb-4">
-              EXPLORE OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-400">PROGRAM</span>
+              EXPLORE OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">PROGRAM</span>
             </h2>
             <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
               Master a high-demand skill with our flagship, expertly designed masterclass.
@@ -420,7 +317,7 @@ export default function HomePage() {
   );
 }
 
-// Helper Icon for Testimonials
+// Helper Icon for Testimonials (preserved just in case, though Testimonial component might use its own)
 function StarIcon(props) {
   return (
     <svg {...props} viewBox="0 0 24 24">
