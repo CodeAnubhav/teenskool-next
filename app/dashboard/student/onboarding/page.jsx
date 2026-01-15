@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSupabase } from "@/contexts/SupabaseContext";
-import { ONBOARDING_QUIZ, updateMockUserProfile, XP_RULES } from "@/lib/mock-lms";
+import { ONBOARDING_QUIZ, XP_RULES } from "@/lib/gamification";
+import { updateProfile } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle2, Trophy } from "lucide-react";
 import Image from "next/image";
@@ -52,25 +53,33 @@ export default function OnboardingPage() {
         });
 
         // 2. Determine Initial Role (Gamification Logic)
-        // If they get > 80%, start them as "Founder". Else "Novice".
-        const roldId = correctCount >= 4 ? "role_founder" : "role_novice";
+        const roleId = correctCount >= 4 ? "role_founder" : "role_novice";
         const baseXP = XP_RULES.ONBOARDING_COMPLETE + totalScore;
 
-        // 3. Update Profile (Mock)
+        // 3. Update Profile (Real DB)
         if (user) {
-            updateMockUserProfile(user, {
-                onboarding_completed: true,
-                total_xp: baseXP,
-                game_role_id: roldId,
-                quiz_score: totalScore
-            });
+            try {
+                // Determine 'level' or just save XP. DB has 'xp'.
+                // DB also has 'level' column? Maybe, but XP drives logic.
+                // We'll update xp and onboarding_completed.
+                await updateProfile(user.id, {
+                    onboarding_completed: true,
+                    xp: baseXP,
+                    // We don't save roleId to DB as it is computed from XP in UI.
+                    // But if we had a gamification table we would. 
+                    // For now, XP is the source of truth.
+                });
+            } catch (err) {
+                console.error("Failed to save onboarding:", err);
+                // Continue anyway to show success screen
+            }
         }
 
         // Simulate delay for drama
         setTimeout(() => {
             setScoreData({
                 xp: baseXP,
-                role: roldId === "role_founder" ? "Founder" : "Novice",
+                role: roleId === "role_founder" ? "Founder" : "Novice",
                 correct: correctCount
             });
             setIsSubmitting(false);

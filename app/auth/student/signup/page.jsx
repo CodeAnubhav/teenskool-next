@@ -58,7 +58,7 @@ export default function SignupPage() {
       description="Join thousands of students building the future with AI."
       footerLabel="Already have an account?"
       footerLinkText="Login"
-      footerLinkHref="/auth/login"
+      footerLinkHref="/auth/student/login"
     >
       <form onSubmit={handleSignup} className="w-full space-y-4">
         <div className="space-y-2">

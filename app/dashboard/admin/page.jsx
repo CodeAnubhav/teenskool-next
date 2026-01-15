@@ -1,174 +1,225 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import {
     Users,
     BookOpen,
-    BarChart,
-    Search,
-    MoreHorizontal,
+    TrendingUp,
+    MoreVertical,
     Plus,
-    Edit,
-    Trash2,
+    Search,
+    Loader2,
+    Shield,
     ShieldAlert
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-
-// MOCK ADMIN DATA
-const MOCK_USERS = [
-    { id: 1, name: "Raj Singh", email: "raj@teenskool.com", role: "admin", game_role: "Unicorn", xp: 12500 },
-    { id: 2, name: "Sarah Miller", email: "sarah@student.com", role: "student", game_role: "Founder", xp: 4200 },
-    { id: 3, name: "Mike Chen", email: "mike@student.com", role: "student", game_role: "Novice", xp: 450 },
-    { id: 4, name: "Emma Wilson", email: "emma@student.com", role: "student", game_role: "Visionary", xp: 8900 },
-];
-
-const MOCK_COURSES_ADMIN = [
-    { id: 1, title: "Startup 101", students: 124, status: "Published", revenue: "$0" },
-    { id: 2, title: "AI Tools", students: 85, status: "Published", revenue: "$0" },
-    { id: 3, title: "Pitch Perfect", students: 0, status: "Draft", revenue: "$0" },
-];
+import { getAllCourses, getAllProfiles, updateUserRole } from "@/lib/db";
+// import { toast } from "sonner"; 
 
 export default function AdminDashboardPage() {
-    const [activeTab, setActiveTab] = useState("users");
-    const [searchTerm, setSearchTerm] = useState("");
+    const searchParams = useSearchParams();
+    const router = useRouter();  // Optional, if we want to update URL on button click
+    const initialTab = searchParams.get("tab") || "overview";
+
+    // Initial state from URL, but we also sync on change
+    const [activeTab, setActiveTab] = useState(initialTab);
+
+    // Sync state if URL changes (e.g. Sidebar click)
+    useEffect(() => {
+        const tab = searchParams.get("tab");
+        if (tab) {
+            setActiveTab(tab);
+        }
+    }, [searchParams]);
+
+    // When clicking buttons internal to the page, we should also update URL for consistency
+    const updateTab = (tab) => {
+        setActiveTab(tab);
+        router.push(`/dashboard/admin?tab=${tab}`);
+    };
+
+    // Data State
+    const [users, setUsers] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // Load Data
+    const loadData = async () => {
+        try {
+            const [usersData, coursesData] = await Promise.all([
+                getAllProfiles(),
+                getAllCourses(false) // fetch all, including drafts
+            ]);
+            setUsers(usersData || []);
+            setCourses(coursesData || []);
+        } catch (err) {
+            console.error("Admin Load Error:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    // Action: Change Role
+    const handleRoleChange = async (userId, currentRole) => {
+        const newRole = currentRole === 'admin' ? 'student' : 'admin';
+        if (!confirm(`Are you sure you want to change this user to ${newRole.toUpperCase()}?`)) return;
+
+        try {
+            await updateUserRole(userId, newRole);
+            alert(`User updated to ${newRole}`);
+            loadData(); // Refresh list
+        } catch (err) {
+            alert("Failed to update role: " + err.message);
+        }
+    };
+
+    if (loading) return <div className="flex h-96 items-center justify-center"><Loader2 className="animate-spin text-primary" /></div>;
 
     return (
-        <div className="max-w-7xl mx-auto space-y-8">
-            {/* HEADER */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="space-y-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold flex items-center gap-2">
-                        <ShieldAlert className="w-8 h-8 text-red-500" /> Admin Command Center
-                    </h1>
-                    <p className="text-muted-foreground">Manage your empire: Users, Content, and Analytics.</p>
+                    <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+                    <p className="text-muted-foreground">Manage users, content, and platform settings.</p>
                 </div>
-                <div className="flex bg-surface border border-border p-1 rounded-xl">
-                    <TabButton active={activeTab === "users"} onClick={() => setActiveTab("users")} icon={<Users className="w-4 h-4" />} label="Users" />
-                    <TabButton active={activeTab === "courses"} onClick={() => setActiveTab("courses")} icon={<BookOpen className="w-4 h-4" />} label="Courses" />
-                    <TabButton active={activeTab === "analytics"} onClick={() => setActiveTab("analytics")} icon={<BarChart className="w-4 h-4" />} label="Analytics" />
-                </div>
+                {/* 
+                   Tabs are now controlled via Sidebar. 
+                   Redundant buttons removed as per request.
+                */}
             </div>
 
-            {/* SEARCH BAR (Common) */}
-            <div className="flex items-center gap-4 bg-surface p-4 rounded-xl border border-border">
-                <Search className="w-5 h-5 text-muted-foreground" />
-                <Input
-                    className="border-none bg-transparent focus-visible:ring-0 shadow-none text-lg"
-                    placeholder={`Search ${activeTab}...`}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </div>
+            {/* OVERVIEW TAB */}
+            {activeTab === "overview" && (
+                <div className="grid gap-6 md:grid-cols-3">
+                    <StatsCard title="Total Users" value={users.length} icon={Users} trend="Real-time" />
+                    <StatsCard title="Total Courses" value={courses.length} icon={BookOpen} trend="Live Content" />
+                    <StatsCard title="Revenue (Est)" value="$0" icon={TrendingUp} trend="Beta" />
+                </div>
+            )}
 
-            {/* CONTENT AREA */}
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-
-                {/* --- USERS TAB --- */}
-                {activeTab === "users" && (
-                    <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-                        <table className="w-full text-left border-collapse">
-                            <thead className="bg-background/50 text-xs uppercase text-muted-foreground font-semibold">
+            {/* USERS TAB */}
+            {activeTab === "users" && (
+                <div className="bg-surface border border-border rounded-xl overflow-hidden">
+                    <div className="p-4 border-b border-border flex justify-between items-center">
+                        <h3 className="font-bold">All Users</h3>
+                        <div className="relative w-64">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                            <Input placeholder="Search users..." className="pl-10 h-9" />
+                        </div>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead className="bg-white/5 text-muted-foreground">
                                 <tr>
-                                    <th className="p-4">User</th>
-                                    <th className="p-4">System Role</th>
-                                    <th className="p-4">Game Context</th>
-                                    <th className="p-4">XP</th>
-                                    <th className="p-4 text-right">Actions</th>
+                                    <th className="px-6 py-3 text-left">User</th>
+                                    <th className="px-6 py-3 text-left">Role</th>
+                                    <th className="px-6 py-3 text-left">Joined</th>
+                                    <th className="px-6 py-3 text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {MOCK_USERS.map((user) => (
-                                    <tr key={user.id} className="border-t border-border/50 hover:bg-white/5 transition-colors">
-                                        <td className="p-4">
-                                            <div className="font-bold">{user.name}</div>
-                                            <div className="text-xs text-muted-foreground">{user.email}</div>
+                            <tbody className="divide-y divide-border">
+                                {users.map((user) => (
+                                    <tr key={user.id} className="hover:bg-white/5">
+                                        <td className="px-6 py-4 flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold shrink-0">
+                                                {user.full_name?.[0]?.toUpperCase() || user.email.substring(0, 2).toUpperCase()}
+                                            </div>
+                                            <div>
+                                                <div className="font-medium">{user.full_name || "Unknown"}</div>
+                                                <div className="text-muted-foreground text-xs">{user.email}</div>
+                                            </div>
                                         </td>
-                                        <td className="p-4">
-                                            <span className={`px-2 py-1 rounded text-xs font-bold uppercase
-                                 ${user.role === 'admin' ? 'bg-red-500/10 text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.2)]' : 'bg-secondary text-foreground'}
-                              `}>
-                                                {user.role}
+                                        <td className="px-6 py-4 capitalize">
+                                            <span className={`px-2 py-1 rounded-full text-xs font-bold ${user.system_role === 'admin' ? 'bg-purple-500/20 text-purple-400' : 'bg-green-500/20 text-green-400'}`}>
+                                                {user.system_role}
                                             </span>
                                         </td>
-                                        <td className="p-4">
-                                            <span className="text-primary font-mono text-sm">{user.game_role}</span>
+                                        <td className="px-6 py-4 text-muted-foreground">
+                                            {new Date(user.created_at).toLocaleDateString()}
                                         </td>
-                                        <td className="p-4 font-mono text-muted-foreground">{user.xp.toLocaleString()}</td>
-                                        <td className="p-4 text-right">
-                                            <Button variant="ghost" size="icon"><MoreHorizontal className="w-4 h-4" /></Button>
+                                        <td className="px-6 py-4 text-right">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => handleRoleChange(user.id, user.system_role)}
+                                                title="Toggle Admin Role"
+                                            >
+                                                {user.system_role === 'student' ? (
+                                                    <Shield className="w-4 h-4 text-muted-foreground hover:text-primary" />
+                                                ) : (
+                                                    <ShieldAlert className="w-4 h-4 text-purple-500" />
+                                                )}
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                )}
+                </div>
+            )}
 
-                {/* --- COURSES TAB --- */}
-                {activeTab === "courses" && (
-                    <div className="space-y-6">
-                        <div className="grid md:grid-cols-3 gap-6">
-                            {/* Create New Card */}
-                            <Link href="/dashboard/admin/courses/new" className="block h-full">
-                                <div className="border border-dashed border-border rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:bg-white/5 cursor-pointer transition-colors group h-full min-h-[200px]">
-                                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                        <Plus className="w-6 h-6 text-primary" />
-                                    </div>
-                                    <h3 className="font-bold text-lg">Create New Course</h3>
-                                    <p className="text-sm text-muted-foreground">Design a new learning path</p>
+            {/* COURSES TAB */}
+            {activeTab === "courses" && (
+                <div className="space-y-6">
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {/* Create New Card */}
+                        <Link href="/dashboard/admin/courses/new" className="block h-full">
+                            <div className="border border-dashed border-border rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:bg-white/5 cursor-pointer transition-colors group h-full min-h-[200px]">
+                                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <Plus className="w-6 h-6 text-primary" />
                                 </div>
-                            </Link>
+                                <h3 className="font-bold text-lg">Create New Course</h3>
+                                <p className="text-sm text-muted-foreground">Design a new learning path</p>
+                            </div>
+                        </Link>
 
-                            {MOCK_COURSES_ADMIN.map((course) => (
-                                <div key={course.id} className="bg-surface border border-border rounded-2xl p-6 flex flex-col justify-between h-full min-h-[200px]">
-                                    <div>
-                                        <div className="flex justify-between items-start mb-4">
-                                            <div className={`px-2 py-1 rounded text-xs font-bold 
-                                 ${course.status === 'Published' ? 'bg-green-500/10 text-green-500' : 'bg-yellow-500/10 text-yellow-500'}
-                              `}>
-                                                {course.status}
-                                            </div>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8"><MoreHorizontal className="w-4 h-4" /></Button>
-                                        </div>
-                                        <h3 className="font-bold text-xl mb-1">{course.title}</h3>
-                                        <p className="text-sm text-muted-foreground">{course.students} Students Enrolled</p>
+                        {/* Real Courses List */}
+                        {courses.map((course) => (
+                            <div key={course.id} className="bg-surface border border-border rounded-2xl p-6 flex flex-col justify-between h-full min-h-[200px] group hover:border-primary/50 transition-colors">
+                                <div>
+                                    <div className="flex justify-between items-start mb-4">
+                                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${course.is_published ? "bg-green-500/20 text-green-400" : "bg-yellow-500/20 text-yellow-400"}`}>
+                                            {course.is_published ? "Published" : "Draft"}
+                                        </span>
+                                        <Button variant="ghost" size="icon" className="h-8 w-8"><MoreVertical className="w-4 h-4" /></Button>
                                     </div>
-                                    <div className="flex gap-2 mt-6">
-                                        <Button className="flex-1 bg-secondary text-primary-foreground hover:bg-secondary/80 text-xs">
-                                            <Edit className="w-3 h-3 mr-2" /> Edit Content
-                                        </Button>
-                                    </div>
+                                    <h3 className="font-bold text-lg mb-2">{course.title}</h3>
+                                    <p className="text-sm text-muted-foreground line-clamp-2">{course.description || "No description provided."}</p>
                                 </div>
-                            ))}
-                        </div>
+                                <div className="mt-4 pt-4 border-t border-border flex items-center justify-between text-sm text-muted-foreground">
+                                    <span>{course.difficulty_level}</span>
+                                    <span>{new Date(course.created_at).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                )}
-
-                {/* --- ANALYTICS TAB --- */}
-                {activeTab === "analytics" && (
-                    <div className="bg-surface border border-border rounded-2xl p-8 text-center py-20">
-                        <BarChart className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                        <h3 className="text-xl font-bold">Analytics Engine</h3>
-                        <p className="text-muted-foreground">Connect Supabase to view real revenue and engagement stats.</p>
-                    </div>
-                )}
-
-            </div>
+                </div>
+            )}
         </div>
     );
 }
 
-function TabButton({ active, onClick, icon, label }) {
+function StatsCard({ title, value, icon: Icon, trend }) {
     return (
-        <button
-            onClick={onClick}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all
-            ${active ? "bg-primary text-black shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-white/5"}
-         `}
-        >
-            {icon} {label}
-        </button>
+        <div className="bg-surface border border-border rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-4">
+                <h3 className="text-muted-foreground font-medium">{title}</h3>
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-primary" />
+                </div>
+            </div>
+            <div className="flex items-end gap-3">
+                <span className="text-3xl font-bold">{value}</span>
+                <span className="text-sm text-green-400 mb-1">{trend}</span>
+            </div>
+        </div>
     );
 }

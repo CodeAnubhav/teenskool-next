@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, PlayCircle, CheckCircle, Lock, ChevronRight, ChevronLeft, Menu } from "lucide-react";
+import { ArrowLeft, PlayCircle, CheckCircle, Lock, ChevronRight, ChevronLeft, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // MOCK LESSON DATA
@@ -45,14 +45,29 @@ export default function CoursePlayerPage() {
         <div className="flex h-full bg-background overflow-hidden relative">
             {/* 1. LMS SIDEBAR (Lesson List) */}
             <div className={`
-          fixed inset-y-0 left-0 z-40 w-80 bg-surface border-r border-border transform transition-transform duration-300 md:relative md:translate-x-0
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:w-0 md:opacity-0 md:overflow-hidden"}
+          fixed inset-y-0 left-0 z-50 w-80 bg-surface border-r border-border transform transition-transform duration-300 md:relative md:translate-x-0
+          ${sidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full md:w-0 md:opacity-0 md:overflow-hidden"}
        `}>
                 <div className="h-full flex flex-col p-4">
-                    <div className="flex items-center gap-2 mb-6">
-                        <Link href="/dashboard/student/courses" className="p-2 hover:bg-background rounded-lg transition-colors">
-                            <ArrowLeft className="w-5 h-5 text-muted-foreground" />
-                        </Link>
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-2">
+                            <Link href="/dashboard/student/courses" className="p-2 hover:bg-background rounded-lg transition-colors">
+                                <ArrowLeft className="w-5 h-5 text-muted-foreground" />
+                            </Link>
+                            <h2 className="font-bold text-sm line-clamp-1 md:hidden">Course Content</h2>
+                        </div>
+                        {/* Mobile Close Button */}
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="md:hidden"
+                            onClick={() => setSidebarOpen(false)}
+                        >
+                            <X className="w-5 h-5" />
+                        </Button>
+                    </div>
+
+                    <div className="hidden md:block mb-6 pt-1">
                         <h2 className="font-bold text-sm line-clamp-1">{COURSE_CONTENT.title}</h2>
                     </div>
 
@@ -62,7 +77,13 @@ export default function CoursePlayerPage() {
                             return (
                                 <button
                                     key={lesson.id}
-                                    onClick={() => !lesson.isLocked && setActiveLessonIndex(idx)}
+                                    onClick={() => {
+                                        if (!lesson.isLocked) {
+                                            setActiveLessonIndex(idx);
+                                            // Close sidebar on mobile after selection
+                                            if (window.innerWidth < 768) setSidebarOpen(false);
+                                        }
+                                    }}
                                     className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all
                            ${isActive ? "bg-primary text-black font-semibold shadow-lg shadow-primary/20" : "hover:bg-white/5"}
                            ${lesson.isLocked ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}

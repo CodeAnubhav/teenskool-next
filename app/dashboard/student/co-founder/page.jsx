@@ -1,14 +1,24 @@
 "use client";
 
 import React from "react";
-import ChatPanel from "@/app/ai-cofounder/ChatPanel";
-import { getGameRoleById, getMockUserProfile } from "@/lib/mock-lms";
+import ChatPanel from "@/components/ai-cofounder/ChatPanel";
+import { GAME_ROLES } from "@/lib/gamification";
+import { getProfile } from "@/lib/db";
 import { useSupabase } from "@/contexts/SupabaseContext";
+import { useEffect, useState } from "react";
 
 export default function CoFounderPage() {
     const { user } = useSupabase();
-    const profile = getMockUserProfile(user);
-    const gameRole = profile ? getGameRoleById(profile.game_role_id) : null;
+    const [profile, setProfile] = useState(null);
+
+    useEffect(() => {
+        if (user) {
+            getProfile(user.id).then(setProfile);
+        }
+    }, [user]);
+
+    const xp = profile?.xp || 0;
+    const gameRole = GAME_ROLES.slice().reverse().find(r => xp >= r.min_xp) || GAME_ROLES[0];
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">

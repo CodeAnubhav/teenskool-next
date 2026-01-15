@@ -52,7 +52,7 @@ export default function LoginPage() {
       description="Log in to access your dashboard and continue your journey."
       footerLabel="Don't have an account?"
       footerLinkText="Sign Up"
-      footerLinkHref="/auth/signup"
+      footerLinkHref="/auth/student/signup"
     >
       <form onSubmit={handleLogin} className="w-full space-y-4">
         <div className="space-y-2">

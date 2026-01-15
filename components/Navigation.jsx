@@ -119,10 +119,10 @@ export default function Navigation() {
             </Link>
           ) : (
             <>
-              <Link href="/auth/login">
+              <Link href="/auth/student/login">
                 <Button variant="ghost">Sign In</Button>
               </Link>
-              <Link href="/auth/signup">
+              <Link href="/auth/student/signup">
                 <Button>Get Started</Button>
               </Link>
             </>
@@ -175,12 +175,12 @@ export default function Navigation() {
               </Link>
             ) : (
               <>
-                <Link href="/auth/login" className="w-full">
+                <Link href="/auth/student/login" className="w-full">
                   <Button variant="outline" className="w-full" size="lg">
                     Sign In
                   </Button>
                 </Link>
-                <Link href="/auth/signup" className="w-full">
+                <Link href="/auth/student/signup" className="w-full">
                   <Button className="w-full" size="lg">
                     Get Started
                   </Button>

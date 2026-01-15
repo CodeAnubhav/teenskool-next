@@ -2,36 +2,27 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
     Home,
     Map,
     Bot,
-    ShieldCheck,
-    LogOut,
     Settings,
+    LogOut,
     ChevronLeft,
-    ChevronRight,
-    LayoutTemplate
+    ChevronRight
 } from "lucide-react";
 import { useSupabase } from "@/contexts/SupabaseContext";
 import { cn } from "@/lib/utils";
-import { GAME_ROLES, getLevelProgress } from "@/lib/gamification"; // UPDATED IMPORT
-import { useRouter } from "next/navigation";
+import { GAME_ROLES, getLevelProgress } from "@/lib/gamification";
 
-// 1. DEFINE NAV ITEMS PER ROLE
 const STUDENT_NAV = [
     { label: "Dashboard", href: "/dashboard/student", icon: Home },
     { label: "My Journey", href: "/dashboard/student/courses", icon: Map },
     { label: "AI Co-Founder", href: "/dashboard/student/co-founder", icon: Bot },
 ];
 
-const ADMIN_NAV = [
-    { label: "Overview", href: "/dashboard/admin", icon: LayoutTemplate },
-    // Admin specific items could go here, for now they are all in the tabs on the page
-];
-
-export function Sidebar({ userProfile, isCollapsed, toggleSidebar }) {
+export function StudentSidebar({ userProfile, isCollapsed, toggleSidebar }) {
     const pathname = usePathname();
     const { supabase } = useSupabase();
     const router = useRouter();
@@ -43,24 +34,17 @@ export function Sidebar({ userProfile, isCollapsed, toggleSidebar }) {
 
     if (!userProfile) return null;
 
-    // 2. DETERMINE NAV ITEMS
-    const isSystemAdmin = userProfile.system_role === 'admin';
-    const navItems = isSystemAdmin ? ADMIN_NAV : STUDENT_NAV;
-
-    // 3. GAMIFICATION (REAL)
-    const xp = userProfile.xp || 0; // Use 'xp' from DB
-    // Calculate Role dynamically based on XP
+    // Gamification Logic
+    const xp = userProfile.xp || 0;
     const gameRole = GAME_ROLES.slice().reverse().find(r => xp >= r.min_xp) || GAME_ROLES[0];
-
-    // Calculate Progress
     const { progress } = getLevelProgress(xp);
 
     return (
         <div className={cn(
-            "h-screen bg-surface border-r border-border fixed left-0 top-0 flex flex-col z-50 transition-all duration-300",
+            "h-screen bg-surface border-r border-border flex flex-col transition-all duration-300",
             isCollapsed ? "w-[80px]" : "w-64"
         )}>
-            {/* 1. Toggle Button & Header */}
+            {/* Header */}
             <div className="p-4 flex items-center justify-between border-b border-border/50 h-[88px]">
                 {!isCollapsed && (
                     <div className="flex items-center gap-3 animate-in fade-in duration-300">
@@ -94,8 +78,8 @@ export function Sidebar({ userProfile, isCollapsed, toggleSidebar }) {
                 </button>
             </div>
 
-            {/* XP Bar (Only visible when open & for STUDENTS) */}
-            {!isCollapsed && !isSystemAdmin && (
+            {/* XP Bar (Student Only) */}
+            {!isCollapsed && (
                 <div className="px-6 py-4 border-b border-border/50 animate-in fade-in slide-in-from-left-2">
                     <div className="flex justify-between text-xs text-muted-foreground mb-1">
                         <span>{Math.floor(progress)}%</span>
@@ -107,13 +91,9 @@ export function Sidebar({ userProfile, isCollapsed, toggleSidebar }) {
                 </div>
             )}
 
-            {/* 2. Navigation */}
+            {/* Navigation */}
             <nav className="flex-1 p-3 space-y-2 overflow-y-auto overflow-x-hidden mt-2">
-                {isSystemAdmin && !isCollapsed && (
-                    <div className="px-3 text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Admin Menu</div>
-                )}
-
-                {navItems.map((item) => {
+                {STUDENT_NAV.map((item) => {
                     const isActive = pathname === item.href;
                     return (
                         <Link
@@ -135,14 +115,13 @@ export function Sidebar({ userProfile, isCollapsed, toggleSidebar }) {
                 })}
             </nav>
 
-            {/* 3. Footer Actions */}
+            {/* Footer */}
             <div className="p-3 border-t border-border/50 space-y-2">
                 <button
                     className={cn(
                         "flex items-center gap-3 px-3 py-3 w-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-xl transition-colors",
                         isCollapsed ? "justify-center" : ""
                     )}
-                    title="Settings"
                 >
                     <Settings className="w-5 h-5 shrink-0" />
                     {!isCollapsed && <span>Settings</span>}
@@ -153,7 +132,6 @@ export function Sidebar({ userProfile, isCollapsed, toggleSidebar }) {
                         "flex items-center gap-3 px-3 py-3 w-full text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors",
                         isCollapsed ? "justify-center" : ""
                     )}
-                    title="Logout"
                 >
                     <LogOut className="w-5 h-5 shrink-0" />
                     {!isCollapsed && <span>Logout</span>}

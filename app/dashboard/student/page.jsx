@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSupabase } from "@/contexts/SupabaseContext";
-import { getMockUserProfile, getGameRoleById, getLevelProgress } from "@/lib/mock-lms";
+import { getProfile } from "@/lib/db";
+import { getGameRoleById, getLevelProgress } from "@/lib/gamification";
 import {
   Trophy,
   Flame,
@@ -12,18 +13,58 @@ import {
   BookOpen,
   Award,
   Zap,
-  TrendingUp
+  TrendingUp,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function DashboardPage() {
   const { user } = useSupabase();
-  const profile = getMockUserProfile(user);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadProfile() {
+      if (user) {
+        try {
+          const data = await getProfile(user.id);
+          setProfile(data);
+        } catch (e) {
+          console.error("Profile load failed", e);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+    loadProfile();
+  }, [user]);
+
+  if (loading) {
+    return <div className="flex h-96 items-center justify-center"><Loader2 className="animate-spin text-primary w-8 h-8" /></div>;
+  }
 
   if (!profile) return null;
 
-  const gameRole = getGameRoleById(profile.game_role_id);
-  const { progress, next_role, xp_needed } = getLevelProgress(profile.total_xp);
+  // Default values if DB fields are empty
+  const totalXp = profile.xp || 0; // DB column is 'xp' (from schema), check if it's 'total_xp' or 'xp'. SQL schema says 'xp'. Mock said 'total_xp'. verify schema.
+  // Schema: "xp integer default 0"
+
+  // Wait, mock-lms used 'total_xp' and 'game_role_id'.
+  // My SQL schema for profiles has: 'xp', 'level', 'onboarding_completed'. 
+  // It does NOT have 'game_role_id'. We should calculate role dynamically from XP.
+
+  const { progress, next_role, xp_needed } = getLevelProgress(totalXp);
+  // getLevelProgress finds the role based on XP.
+  // Need to modify getLevelProgress? No, it uses MIN_XP. 
+  // We can just find the current role:
+  const GAME_ROLES = [
+    { id: "role_novice", min_xp: 0, badge: "🌱", name: "Novice", color: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" },
+    { id: "role_founder", min_xp: 1000, badge: "🚀", name: "Founder", color: "bg-blue-500/10 text-blue-500 border-blue-500/20" },
+    { id: "role_visionary", min_xp: 5000, badge: "🔮", name: "Visionary", color: "bg-purple-500/10 text-purple-500 border-purple-500/20" },
+    { id: "role_unicorn", min_xp: 20000, badge: "🦄", name: "Unicorn", color: "bg-pink-500/10 text-pink-500 border-pink-500/20" }
+  ];
+  // Since I don't have game_role_id in DB, I deduce it:
+  const gameRole = GAME_ROLES.slice().reverse().find(r => totalXp >= r.min_xp) || GAME_ROLES[0];
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
@@ -42,7 +83,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Welcome back, {profile.full_name?.split(" ")[0]}!
+              Welcome back, {profile.full_name?.split(" ")[0] || "Student"}!
             </h1>
             <p className="text-muted-foreground text-lg max-w-xl">
               You are {xp_needed} XP away from becoming a <strong>{next_role?.name || "Unicorn"}</strong>.
@@ -55,7 +96,7 @@ export default function DashboardPage() {
             <div className="flex justify-center mb-2 text-orange-500">
               <Flame className="w-8 h-8 fill-orange-500 animate-pulse" />
             </div>
-            <div className="text-3xl font-bold text-foreground mb-1">3 Day</div>
+            <div className="text-3xl font-bold text-foreground mb-1">1 Day</div>
             <div className="text-xs text-muted-foreground uppercase tracking-widest">Building Streak</div>
           </div>
         </div>
@@ -66,7 +107,7 @@ export default function DashboardPage() {
         <StatCard
           icon={<Trophy className="w-5 h-5 text-yellow-500" />}
           label="Total XP"
-          value={profile.total_xp}
+          value={totalXp}
         />
         <StatCard
           icon={<BookOpen className="w-5 h-5 text-blue-500" />}
@@ -81,7 +122,7 @@ export default function DashboardPage() {
         <StatCard
           icon={<Zap className="w-5 h-5 text-primary" />}
           label="Skill Rank"
-          value="Top 10%"
+          value="Rising Star"
         />
       </div>
 
@@ -101,9 +142,9 @@ export default function DashboardPage() {
               <span className="inline-block px-3 py-1 rounded-lg bg-green-500/10 text-green-500 text-xs font-bold mb-4 border border-green-500/20">
                 RECOMMENDED
               </span>
-              <h3 className="text-2xl font-bold mb-2">Complete "Startup 101"</h3>
+              <h3 className="text-2xl font-bold mb-2">Startup 101</h3>
               <p className="text-muted-foreground mb-6 max-w-md">
-                You are 35% through the basics. Finish 2 more lessons to earn 200 XP and unlock the "Idea Validator" badge.
+                Start your journey into entrepreneurship. Learn the basics.
               </p>
 
               <Link href="/dashboard/student/courses/1">
@@ -120,57 +161,15 @@ export default function DashboardPage() {
           <h2 className="text-2xl font-bold">Live Feed</h2>
           <div className="bg-surface border border-border rounded-3xl p-6 space-y-6">
             <ActivityItem
-              user="Alex M."
-              action="earned Founder Role"
-              time="2m ago"
-              icon="🚀"
-            />
-            <ActivityItem
-              user="Sarah K."
-              action="finished 'AI Tools'"
-              time="15m ago"
-              icon="🎓"
-            />
-            <ActivityItem
-              user="You"
+              user={profile.full_name || "You"}
               action="joined TeenSkool"
-              time="1h ago"
+              time="Just now"
               icon="👋"
             />
           </div>
         </div>
       </div>
 
-      {/* DEV TOOL: ROLE SWITCHER (For Demo Purposes) */}
-      <div className="mt-12 p-4 border border-dashed border-red-500/30 bg-red-500/5 rounded-xl">
-        <h4 className="text-xs font-bold text-red-500 uppercase mb-2">Dev Tools (Demo Only)</h4>
-        <div className="flex gap-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              import("@/lib/mock-lms").then(({ updateMockUserProfile }) => {
-                updateMockUserProfile(user, { system_role: "admin" });
-                window.location.reload();
-              });
-            }}
-          >
-            Switch to ADMIN
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              import("@/lib/mock-lms").then(({ updateMockUserProfile }) => {
-                updateMockUserProfile(user, { system_role: "student" });
-                window.location.reload();
-              });
-            }}
-          >
-            Switch to STUDENT
-          </Button>
-        </div>
-      </div>
     </div>
   );
 }
