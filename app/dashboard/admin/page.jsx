@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getAllCourses, getAllProfiles, updateUserRole } from "@/lib/db";
+import AdminCourseCard from "@/components/dashboard/AdminCourseCard";
 // import { toast } from "sonner"; 
 
 export default function AdminDashboardPage() {
@@ -45,13 +46,16 @@ export default function AdminDashboardPage() {
     const [users, setUsers] = useState([]);
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
 
     // Load Data
-    const loadData = async () => {
+    const loadData = async (query = "") => {
         try {
+            // Only show loader if it's the first load, otherwise we just update silently (or small loader)
+            // But for search results, a small loader is better.
             const [usersData, coursesData] = await Promise.all([
-                getAllProfiles(),
-                getAllCourses(false) // fetch all, including drafts
+                getAllProfiles(query), // Pass search query
+                getAllCourses(false)
             ]);
             setUsers(usersData || []);
             setCourses(coursesData || []);
@@ -62,9 +66,21 @@ export default function AdminDashboardPage() {
         }
     };
 
+    // Initial Load
     useEffect(() => {
         loadData();
     }, []);
+
+    // Debounced Search Effect
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (activeTab === "users") {
+                loadData(searchQuery);
+            }
+        }, 500); // 500ms delay
+
+        return () => clearTimeout(timer);
+    }, [searchQuery, activeTab]);
 
     // Action: Change Role
     const handleRoleChange = async (userId, currentRole) => {
@@ -74,7 +90,7 @@ export default function AdminDashboardPage() {
         try {
             await updateUserRole(userId, newRole);
             alert(`User updated to ${newRole}`);
-            loadData(); // Refresh list
+            loadData(searchQuery); // Refresh list with current search
         } catch (err) {
             alert("Failed to update role: " + err.message);
         }
@@ -111,7 +127,12 @@ export default function AdminDashboardPage() {
                         <h3 className="font-bold">All Users</h3>
                         <div className="relative w-64">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                            <Input placeholder="Search users..." className="pl-10 h-9" />
+                            <Input
+                                placeholder="Search users..."
+                                className="pl-10 h-9"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
                         </div>
                     </div>
                     <div className="overflow-x-auto">
@@ -183,22 +204,11 @@ export default function AdminDashboardPage() {
 
                         {/* Real Courses List */}
                         {courses.map((course) => (
-                            <div key={course.id} className="bg-surface border border-border rounded-2xl p-6 flex flex-col justify-between h-full min-h-[200px] group hover:border-primary/50 transition-colors">
-                                <div>
-                                    <div className="flex justify-between items-start mb-4">
-                                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${course.is_published ? "bg-green-500/20 text-green-400" : "bg-yellow-500/20 text-yellow-400"}`}>
-                                            {course.is_published ? "Published" : "Draft"}
-                                        </span>
-                                        <Button variant="ghost" size="icon" className="h-8 w-8"><MoreVertical className="w-4 h-4" /></Button>
-                                    </div>
-                                    <h3 className="font-bold text-lg mb-2">{course.title}</h3>
-                                    <p className="text-sm text-muted-foreground line-clamp-2">{course.description || "No description provided."}</p>
-                                </div>
-                                <div className="mt-4 pt-4 border-t border-border flex items-center justify-between text-sm text-muted-foreground">
-                                    <span>{course.difficulty_level}</span>
-                                    <span>{new Date(course.created_at).toLocaleDateString()}</span>
-                                </div>
-                            </div>
+                            <AdminCourseCard
+                                key={course.id}
+                                course={course}
+                                onRefresh={() => loadData(searchQuery)}
+                            />
                         ))}
                     </div>
                 </div>

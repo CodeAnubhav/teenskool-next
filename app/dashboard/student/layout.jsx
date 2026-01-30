@@ -30,18 +30,11 @@ export default function StudentLayout({ children }) {
                 const profile = await getProfile(user.id);
 
                 // 1. Role Enforcement
-                // If not a student (and not null), kick them out. 
-                // Admins should not be here unless they are "impersonating" which we don't support yet.
-                // Strict separation requested.
                 if (profile?.system_role !== 'student') {
-                    // If they are admin, send them to admin.
                     if (profile?.system_role === 'admin') {
                         router.replace("/dashboard/admin");
                         return;
                     }
-                    // Unknown role? Logout.
-                    // router.replace("/auth/login");
-                    // return;
                 }
 
                 setUserProfile(profile);
@@ -90,17 +83,19 @@ export default function StudentLayout({ children }) {
     const isPlayerPage = pathname?.match(/\/dashboard\/student\/courses\/.+/);
 
     return (
-        <div className="flex h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-hidden">
-            {/* Desktop Sidebar */}
+        <div className="flex h-screen bg-secondary/10 p-2 md:p-4 gap-4 overflow-hidden font-sans selection:bg-primary/20">
+            {/* Desktop Sidebar - Floating Card */}
             <div className={cn(
-                "hidden md:block transition-all duration-300 relative z-50 border-r border-border bg-surface",
+                "hidden md:block transition-all duration-300 relative z-50 h-full",
                 isSidebarCollapsed ? "w-[80px]" : "w-64"
             )}>
-                <StudentSidebar
-                    userProfile={userProfile}
-                    isCollapsed={isSidebarCollapsed}
-                    toggleSidebar={toggleSidebar}
-                />
+                <div className="h-full w-full rounded-[2rem] overflow-hidden border border-border/50 shadow-xl bg-surface">
+                    <StudentSidebar
+                        userProfile={userProfile}
+                        isCollapsed={isSidebarCollapsed}
+                        toggleSidebar={toggleSidebar}
+                    />
+                </div>
             </div>
 
             {/* Mobile Nav */}
@@ -108,13 +103,18 @@ export default function StudentLayout({ children }) {
 
             {/* Main Content */}
             <main className={cn(
-                "flex-1 relative transition-all duration-300",
-                isSidebarCollapsed ? "md:p-0" : "md:p-8",
-                isPlayerPage ? "p-0 pb-0" : "p-4 pb-24",
-                isPlayerPage ? "overflow-hidden" : "overflow-y-auto"
+                "flex-1 relative transition-all duration-300 flex flex-col overflow-hidden",
+                // Only apply card styling if NOT player page
+                !isPlayerPage && "rounded-[2rem] bg-background border border-border/50 shadow-xl"
             )}>
-                <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(163,230,53,0.05),transparent_40%)] pointer-events-none" />
-                {children}
+                <div className={cn(
+                    "flex-1 h-full w-full",
+                    // Only apply scroll and padding if NOT player page
+                    !isPlayerPage && "overflow-y-auto p-6 md:p-8"
+                )}>
+                    {!isPlayerPage && <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(163,230,53,0.05),transparent_40%)] pointer-events-none" />}
+                    {children}
+                </div>
             </main>
         </div>
     );

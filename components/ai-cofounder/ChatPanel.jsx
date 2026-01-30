@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUp, Loader2, Copy, Check, User, Bot, Maximize2, X } from "lucide-react";
+import { ArrowUp, Loader2, Copy, Check, User, Bot, Maximize2, X, Send } from "lucide-react";
 import { useSupabase } from "@/contexts/SupabaseContext";
 import { sendMessage as sendMessageAction } from "./actions";
 
@@ -168,8 +168,8 @@ const FullScreenChat = ({ isOpen, onClose, messages, sending, sendMessage, input
             <Bot className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-foreground">Virtual Mentor</h2>
-            <p className="text-sm text-foreground/60">Ask anything about business, ideas, or growth</p>
+            <h2 className="text-lg font-bold text-foreground tracking-tight">AI Co-Founder</h2>
+            <p className="text-sm text-muted-foreground">Your strategic partner for building the next big thing.</p>
           </div>
         </div>
         <button
@@ -204,12 +204,16 @@ const FullScreenChat = ({ isOpen, onClose, messages, sending, sendMessage, input
 
           {sending && (
             <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-background border-2 border-border flex items-center justify-center">
-                <Bot className="w-5 h-5" />
+              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center shadow-sm">
+                <Bot className="w-5 h-5 text-primary" />
               </div>
-              <div className="inline-flex items-center gap-3 bg-surface border border-border rounded-2xl px-6 py-4 text-sm">
-                <Loader2 className="w-5 h-5 animate-spin" />
-                <span className="text-foreground/80">Thinking…</span>
+              <div className="inline-flex items-center gap-3 bg-surface border border-border rounded-2xl px-6 py-4 text-sm shadow-sm">
+                <div className="flex gap-1.5">
+                  <span className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]" />
+                  <span className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]" />
+                  <span className="w-2 h-2 bg-primary rounded-full animate-bounce" />
+                </div>
+                <span className="text-muted-foreground font-medium text-xs uppercase tracking-wider">Analyzing</span>
               </div>
             </div>
           )}
@@ -219,25 +223,23 @@ const FullScreenChat = ({ isOpen, onClose, messages, sending, sendMessage, input
       {/* Input */}
       <div className="p-6 border-t border-border bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/60">
         <div className="max-w-4xl mx-auto">
-          <form onSubmit={sendMessage} className="flex gap-3">
-            <div className="flex-1 relative">
-              <input
-                className="w-full rounded-xl border border-border bg-background px-6 py-4 pr-14 text-base text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
-                placeholder="Type your question…"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                disabled={sending}
-                autoFocus
-              />
-              <button
-                type="submit"
-                disabled={sending || !input.trim()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground w-10 h-10 disabled:opacity-50 transition-all hover:bg-primary/90 active:scale-95"
-                aria-label="Send"
-              >
-                <ArrowUp className="w-5 h-5" />
-              </button>
-            </div>
+          <form onSubmit={sendMessage} className="flex gap-3 relative group">
+            <input
+              className="w-full rounded-2xl border border-border bg-background px-6 py-4 pr-16 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 transition-all shadow-sm"
+              placeholder="Type your question..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={sending}
+              autoFocus
+            />
+            <button
+              type="submit"
+              disabled={sending || !input.trim()}
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl bg-primary text-black w-10 h-10 flex items-center justify-center hover:bg-primary/90 transition-all disabled:opacity-50 shadow-lg shadow-primary/20 cursor-pointer disabled:cursor-not-allowed"
+              aria-label="Send"
+            >
+              {sending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5 ml-0.5" />}
+            </button>
           </form>
         </div>
       </div>
@@ -251,7 +253,7 @@ export default function ChatPanel() {
   const { user } = useSupabase();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
-    { role: "assistant", text: "Hi! I'm your Virtual Mentor. Ask me anything about startups, ideas, or growth." }
+    { role: "assistant", text: "I'm your AI Co-Founder. Let's build something great. What's on your mind?" }
   ]);
   const [sending, setSending] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -296,7 +298,9 @@ export default function ChatPanel() {
 
   return (
     <>
-      <div className="flex flex-col h-[520px] bg-surface rounded-2xl border border-border">
+      <div className="flex flex-col h-full bg-surface rounded-3xl border border-border shadow-2xl relative overflow-hidden">
+        {/* Glow Effect */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50" />
 
         {/* --- NEW HEADER --- */}
         <div className="p-4 border-b border-border flex items-center justify-between">
@@ -305,8 +309,8 @@ export default function ChatPanel() {
               <Bot className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h2 className="font-semibold text-foreground text-sm">Your Virtual Mentor</h2>
-              <p className="text-xs text-foreground/70">Ask anything about business</p>
+              <h2 className="font-bold text-foreground text-sm tracking-tight">AI Co-Founder</h2>
+              <p className="text-xs text-muted-foreground">Always available to help</p>
             </div>
           </div>
           <button
@@ -339,13 +343,17 @@ export default function ChatPanel() {
           ))}
 
           {sending && (
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center">
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-card border border-border flex items-center justify-center text-primary shadow-sm">
                 <Bot className="w-4 h-4" />
               </div>
-              <div className="inline-flex items-center gap-2 bg-background rounded-2xl px-4 py-3 text-sm">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-foreground/80">Thinking…</span>
+              <div className="inline-flex items-center gap-2.5 bg-card border border-border/50 rounded-2xl px-5 py-3 text-sm shadow-sm">
+                <div className="flex gap-1">
+                  <span className="w-1.5 h-1.5 bg-primary/50 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                  <span className="w-1.5 h-1.5 bg-primary/50 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                  <span className="w-1.5 h-1.5 bg-primary/50 rounded-full animate-bounce" />
+                </div>
+                <span className="text-muted-foreground font-medium text-xs uppercase tracking-wider">Analyzing</span>
               </div>
             </div>
           )}
@@ -365,10 +373,10 @@ export default function ChatPanel() {
               <button
                 type="submit"
                 disabled={sending || !input.trim()}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground w-8 h-8 disabled:opacity-50 transition-all hover:bg-primary/90 active:scale-95"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-xl bg-primary text-black w-9 h-9 disabled:opacity-50 transition-all hover:bg-primary/90 hover:scale-105 shadow-md shadow-primary/20 active:scale-95 cursor-pointer disabled:cursor-not-allowed"
                 aria-label="Send"
               >
-                <ArrowUp className="w-4 h-4" />
+                <Send className="w-4 h-4 ml-0.5" />
               </button>
             </div>
           </form>
