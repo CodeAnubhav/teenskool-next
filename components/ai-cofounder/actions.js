@@ -19,7 +19,7 @@ export async function sendMessage(message) {
         "X-Title": "TeenSkool", // Optional
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-lite-preview-02-05:free",
+        model: "arcee-ai/trinity-large-preview:free",
         messages: [
           {
             role: "system",
