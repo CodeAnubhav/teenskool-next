@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import MotionDiv from '@/components/ui/MotionDiv';
 import ProgramSidebar from './ProgramSidebar';
+import MobileStickyCTA from './MobileStickyCTA';
 import programs from '@/data/programs';
 import {
   CheckCircle,
@@ -262,6 +263,8 @@ export default async function ProgramDetailPage({ params }) {
           </div>
         </div>
       </div>
+
+      <MobileStickyCTA program={program} />
     </div>
   );
 }

@@ -81,29 +81,29 @@ export default function DashboardPage() {
     <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
 
       {/* 1. WELCOME BANNER (Top Left) */}
-      <div className="col-span-12 lg:col-span-8 relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/20 via-surface to-surface border border-primary/20 p-8 flex flex-col justify-center min-h-[220px]">
-        <div className="relative z-10">
-          <span className="text-primary font-bold tracking-wider mb-2 block">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
+      <div className="col-span-12 lg:col-span-8 relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/20 via-surface to-surface border border-primary/20 p-6 md:p-8 flex flex-col justify-center min-h-[200px] md:min-h-[220px]">
+        <div className="relative z-10 max-w-[calc(100%-80px)] md:max-w-full">
+          <span className="text-primary font-bold tracking-wider mb-2 block text-sm md:text-base">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
+          <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold mb-4 text-foreground">
             Welcome back, {profile.full_name?.split(" ")[0]}!
           </h1>
-          <p className="text-muted-foreground max-w-md text-lg">
+          <p className="text-muted-foreground max-w-md text-base md:text-lg">
             Always stay updated in your student portal. You are doing great!
           </p>
         </div>
 
         {/* Decorative Elements */}
         <div className="absolute right-[-50px] top-[-50px] w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute right-10 top-1/2 -translate-y-1/2 hidden md:block opacity-20 rotate-12">
+        <div className="absolute right-4 md:right-10 bottom-4 md:top-1/2 md:-translate-y-1/2 opacity-20 rotate-12">
           {/* Simple decoration */}
-          <Trophy className="w-40 h-40 text-primary" />
+          <Trophy className="w-24 h-24 md:w-40 md:h-40 text-primary" />
         </div>
       </div>
 
       {/* 2. STATS (Top Right) */}
-      <div className="col-span-12 lg:col-span-4 grid grid-rows-2 gap-6">
+      <div className="col-span-12 lg:col-span-4 grid grid-cols-2 md:grid-cols-1 lg:grid-rows-2 gap-4 md:gap-6">
         {/* Streak */}
-        <div className="bg-surface border border-border rounded-3xl p-6 flex items-center justify-between shadow-sm hover:border-primary/50 transition-colors">
+        <div className="bg-surface border border-border rounded-3xl p-5 md:p-6 flex items-center justify-between shadow-sm hover:border-primary/50 transition-colors">
           <div>
             <div className="text-muted-foreground text-sm font-bold uppercase tracking-wider mb-1">Daily Streak</div>
             <div className="text-3xl font-bold">1 Day</div>

@@ -109,7 +109,7 @@ export default function Navigation() {
 
         {/* Right Side Actions */}
         <div className="hidden md:flex items-center gap-2">
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
           {user ? (
             <Link href="/dashboard">
               <Button>
@@ -131,7 +131,7 @@ export default function Navigation() {
 
         {/* Mobile Toggle */}
         <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
           <Button size="icon" variant="ghost" onClick={() => setOpen(!open)} className="z-50">
             <MenuToggleIcon open={open} className="size-6" duration={300} />
           </Button>

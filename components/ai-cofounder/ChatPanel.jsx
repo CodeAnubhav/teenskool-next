@@ -145,7 +145,7 @@ const ChatInterface = ({ messages, input, setInput, onSend, sending, isFullScree
   // Dynamic Class for Input Container (Floating if active chat)
   const inputContainerClass = messages.length === 0
     ? "w-full max-w-3xl mx-auto p-6 relative z-20 mt-auto" // Bottom anchored for empty
-    : "absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-3xl z-30"; // Floating for active
+    : "absolute bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-3xl z-30"; // Floating for active
 
   return (
     <div className="flex flex-col h-full bg-[#050505] rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden text-white font-sans selection:bg-primary/30">
@@ -270,7 +270,7 @@ const ChatInterface = ({ messages, input, setInput, onSend, sending, isFullScree
 
           {/* Quick Prompts - Show only in Empty State */}
           {messages.length === 0 && (
-            <div className="flex flex-wrap items-center justify-center gap-3 mt-8 animate-in fade-in slide-in-from-bottom-2 duration-1000 delay-200">
+            <div className="hidden md:flex flex-wrap items-center justify-center gap-3 mt-8 animate-in fade-in slide-in-from-bottom-2 duration-1000 delay-200">
               {prompts.map((p, i) => (
                 <button
                   key={i}
