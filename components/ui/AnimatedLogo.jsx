@@ -12,8 +12,9 @@ export default function AnimatedLogo() {
         <Image
           src={logoUrl}
           alt="TeenSkool Logo"
-          height={48} // h-12
-          className="w-auto"
+          className="w-auto h-12 object-contain"
+          quality={100}
+          priority
         />
       </motion.div>
     </Link>

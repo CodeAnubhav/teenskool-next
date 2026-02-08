@@ -11,7 +11,8 @@ import {
     ChevronLeft,
     ChevronRight,
     Settings,
-    LogOut
+    LogOut,
+    Rocket
 } from "lucide-react";
 import { useSupabase } from "@/contexts/SupabaseContext";
 import { cn } from "@/lib/utils";
@@ -20,8 +21,9 @@ import { ProfileModal } from "./ProfileModal";
 
 const STUDENT_NAV = [
     { label: "Dashboard", href: "/dashboard/student", icon: Home },
-    { label: "My Journey", href: "/dashboard/student/courses", icon: Map },
+    { label: "Self Paced Learning", href: "/dashboard/student/courses", icon: Map },
     { label: "AI Co-Founder", href: "/dashboard/student/co-founder", icon: Bot },
+    { label: "Founder OS", href: "/dashboard/student/founder-os", icon: Rocket },
 ];
 
 export function StudentSidebar({ userProfile, isCollapsed, toggleSidebar }) {

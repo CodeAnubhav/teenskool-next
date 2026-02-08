@@ -4,56 +4,53 @@
 const programs = [
   {
     id: "ai-startup-masterclass",
-    title: "AI Startup Masterclass",
-    shortDescription: "Launch your first business idea in 3 hours using only AI tools.",
-    description: "This is a super-fast, hands-on workshop designed for new founders. You will learn the ultimate AI-First strategy to build a complete business prototype including a validated idea, brand, website, and investor pitch all in one single 3 hour session without writing a single line of code.",
-    
+    title: "AI Founder Launchpad",
+    shortDescription: "Launch your AI startup in 4 simple steps: Idea, Brand, MVP, Pitch.",
+    description: "The AI Founder Launchpad is your express ticket to becoming a founder. This intensive program guides you through a proven 4-step framework to research ideas, build a brand, launch an MVP, and create a winning pitch deck—all powered by AI tools.",
+
     // Core Data
     Image: "/assets/programimage.png",
     price: 1999,
-    duration: "3 Hours Live Workshop",
-    nextBatch: "December 1, 2025",
-    format: "Live Interactive Session", // Kept for sidebar
-    level: "Beginner to Intermediate", // Kept for sidebar
-    
+    duration: "4-Module Self-Paced Program",
+    nextBatch: "Instant Access",
+    format: "Interactive AI-Guided Modules", // Kept for sidebar
+    level: "Beginner", // Kept for sidebar
+
     // Key Features - Highly compressed (max 3 words each)
     features: [
-      "Idea to Prototype",
-      "Zero Code", 
-      "AI Automation",
-      "Pitch Deck Ready"
+      "Idea to Launch",
+      "No-Code MVP",
+      "AI Branding",
+      "Investor Pitch"
     ],
 
     // What's Included - Focused on core deliverables
     includes: [
-      "3 hours intensive hands-on training",
-      "Functional startup prototype (live assets)",
-      "Lifetime resource access & templates",
-      "Professional certificate of completion",
-      "90-day implementation support",
+      "Full access to AI Founder OS",
+      "Step-by-step interactive guides",
+      "AI-powered startup tools",
+      "Certificate of Founder Status",
+      "Community access",
     ],
 
     // Core Strategy (Simplified from 'Methodology')
     strategy: {
-      approach: "The AI-First Fast-Build Plan", // Simplified
-      philosophy: "Get maximum results with minimum effort by focusing entirely on smart AI tools.", // Simplified
+      approach: "The 4-Step Launchpad", // Simplified
+      philosophy: "Don't just learn about startups—build one. We focus on execution over theory.", // Simplified
       focusAreas: [
-        "Rapid Automation",
-        "Zero Code Development", 
-        "Data Driven Validation",
-        "Professinal Branding"
+        "Rapid Validation",
+        "Visual Identity",
+        "No-Code Building",
+        "Storytelling"
       ]
     },
 
     // Simplified Curriculum for Timeline
     curriculum: [
-      { segment: 1, title: "Mindset & Setup", timeframe: "0:00 - 0:22", keyFocus: "Learn the rules of building fast with AI and set up your tools." },
-      { segment: 2, title: "Idea Validation", timeframe: "0:22 - 0:45", keyFocus: "Quickly check if your idea will make money and who your customer is." },
-      { segment: 3, title: "Branding & Assets", timeframe: "0:45 - 1:10", keyFocus: "Create a unique logo, slogan, and visual style using AI." },
-      { segment: 4, title: "Website Deployment", timeframe: "1:10 - 1:35", keyFocus: "Launch a live, mobile-friendly website in minutes." },
-      { segment: 5, title: "Content Strategy", timeframe: "1:35 - 2:00", keyFocus: "Build a 30-day social media plan and make a promo video." },
-      { segment: 6, title: "Pitch Deck Creation", timeframe: "2:00 - 2:25", keyFocus: "Create a professional presentation ready for investors." },
-      { segment: 7, title: "Final Demo & Plan", timeframe: "2:25 - 3:00", keyFocus: "Show your finished prototype and plan your next 90 days." }
+      { segment: 1, title: "Idea Research & Validation", timeframe: "Module 1", keyFocus: "Find a problem worth solving and use AI to validate market demand." },
+      { segment: 2, title: "Branding & Marketing", timeframe: "Module 2", keyFocus: "Create a pro logo, color palette, and marketing strategy in minutes." },
+      { segment: 3, title: "MVP Building", timeframe: "Module 3", keyFocus: "Launch a functional Minimum Viable Product using no-code tools." },
+      { segment: 4, title: "Final Pitch Deck Building", timeframe: "Module 4", keyFocus: "Craft a slide deck that tells your story and attracts investors." }
     ],
 
     // Learning Outcomes - Renamed to key results
@@ -76,15 +73,15 @@ const programs = [
       { name: "Gamma", logo: "/assets/tools/gamma.png" },
       { name: "Durable", logo: "/assets/tools/durable.png" },
     ],
-    
+
     // Support simplified to a single object
     support: {
-        duration: "90 days",
-        includes: [
-            "Email support for implementation questions",
-            "Monthly group office hours sessions",
-            "Private alumni community access",
-        ]
+      duration: "90 days",
+      includes: [
+        "Email support for implementation questions",
+        "Monthly group office hours sessions",
+        "Private alumni community access",
+      ]
     }
   }
 ];

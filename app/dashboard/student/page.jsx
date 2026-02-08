@@ -59,7 +59,7 @@ export default function DashboardPage() {
   }
 
   const totalXp = profile.xp || 0;
-  const { xp_needed, next_role } = getLevelProgress(totalXp);
+  const { xp_needed, current_role } = getLevelProgress(totalXp);
 
   const activeEnrollment = enrollments.length > 0 ? enrollments[0] : null;
   const nextCourse = activeEnrollment?.course;
@@ -101,26 +101,14 @@ export default function DashboardPage() {
       </div>
 
       {/* 2. STATS (Top Right) */}
-      <div className="col-span-12 lg:col-span-4 grid grid-cols-2 md:grid-cols-1 lg:grid-rows-2 gap-4 md:gap-6">
-        {/* Streak */}
-        <div className="bg-surface border border-border rounded-3xl p-5 md:p-6 flex items-center justify-between shadow-sm hover:border-primary/50 transition-colors">
-          <div>
-            <div className="text-muted-foreground text-sm font-bold uppercase tracking-wider mb-1">Daily Streak</div>
-            <div className="text-3xl font-bold">1 Day</div>
+      <div className="col-span-12 lg:col-span-4 h-full">
+        <div className="bg-surface border border-border rounded-3xl p-6 h-full flex flex-col justify-center items-center text-center shadow-sm hover:border-primary/50 transition-colors">
+          <div className="w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
+            <Trophy className="w-8 h-8 text-yellow-500 fill-yellow-500" />
           </div>
-          <div className="w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center">
-            <Flame className="w-6 h-6 text-orange-500 fill-orange-500" />
-          </div>
-        </div>
-        {/* XP */}
-        <div className="bg-surface border border-border rounded-3xl p-6 flex items-center justify-between shadow-sm hover:border-primary/50 transition-colors">
-          <div>
-            <div className="text-muted-foreground text-sm font-bold uppercase tracking-wider mb-1">Total XP</div>
-            <div className="text-3xl font-bold">{totalXp}</div>
-          </div>
-          <div className="w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center">
-            <Trophy className="w-6 h-6 text-yellow-500 fill-yellow-500" />
-          </div>
+          <div className="text-muted-foreground text-sm font-bold uppercase tracking-wider mb-2">Total XP</div>
+          <div className="text-4xl font-black text-foreground">{totalXp}</div>
+          <div className="mt-2 text-xs text-muted-foreground">Level: {current_role?.name || "Novice"}</div>
         </div>
       </div>
 
@@ -164,6 +152,7 @@ export default function DashboardPage() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <h4 className="font-bold text-lg mb-1">{nextCourse.title}</h4>
+                <span className="text-xs text-muted-foreground uppercase font-bold">{current_role?.name || "Novice"}</span>
                 <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
                   {completedCount} / {totalLessons} Lessons Completed
                 </span>

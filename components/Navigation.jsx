@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSupabase } from "@/contexts/SupabaseContext";
-import { ThemeToggle } from "@/components/ThemeToggle";
+
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
@@ -83,9 +83,8 @@ export default function Navigation() {
           <Image
             src={logoUrl}
             alt="TeenSkool Logo"
-            height={48}
-            width={48}
             className="w-auto h-12 object-contain"
+            quality={100}
             priority
           />
         </Link>

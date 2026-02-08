@@ -9,7 +9,8 @@ import {
     Bot,
     ShieldCheck,
     LayoutTemplate,
-    User
+    User,
+    Rocket
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ProfileModal } from "./ProfileModal";
@@ -17,8 +18,9 @@ import { ProfileModal } from "./ProfileModal";
 // NAV ITEMS (Mirrors Sidebar)
 const STUDENT_NAV = [
     { label: "Home", href: "/dashboard/student", icon: Home },
-    { label: "Journey", href: "/dashboard/student/courses", icon: Map },
+    { label: "Self Paced", href: "/dashboard/student/courses", icon: Map },
     { label: "AI", href: "/dashboard/student/co-founder", icon: Bot },
+    { label: "OS", href: "/dashboard/student/founder-os", icon: Rocket },
     { label: "Profile", href: "#", icon: User },
 ];
 

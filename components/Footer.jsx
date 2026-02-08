@@ -36,9 +36,8 @@ export default function Footer() {
               <Image
                 src={logoUrl}
                 alt="TeenSkool Logo"
-                width={40}
-                height={40}
                 className="w-10 h-10 object-contain"
+                quality={100}
               />
               <span>TeenSkool</span>
             </Link>
