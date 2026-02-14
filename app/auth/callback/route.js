@@ -21,7 +21,8 @@ export async function GET(request) {
         return NextResponse.redirect(new URL(redirectTo, request.url));
     } catch (error) {
         console.error('Callback error:', error);
-        // Redirect to login with error
-        return NextResponse.redirect(new URL('/auth/student/login?error=AuthFailed', request.url));
+        // Redirect to login with error details
+        const errorMessage = encodeURIComponent(error.message || 'Unknown error');
+        return NextResponse.redirect(new URL(`/auth/student/login?error=AuthFailed&message=${errorMessage}`, request.url));
     }
 }
