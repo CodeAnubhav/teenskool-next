@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, LogOut, Save, User, Mail, Loader2 } from "lucide-react";
+import { X, LogOut, Save, User, Mail, Loader2, Lock, ChevronDown, ChevronUp, Eye, EyeOff } from "lucide-react";
 import { useSupabase } from "@/contexts/SupabaseContext";
 import { updateProfile } from "@/lib/db";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,13 @@ export function ProfileModal({ isOpen, onClose, userProfile }) {
     const [fullName, setFullName] = useState(userProfile?.full_name || "");
     const [isSaving, setIsSaving] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+    // Password Change State
+    const [showPasswordSection, setShowPasswordSection] = useState(false);
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isChangingPassword, setIsChangingPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     if (!isOpen || !userProfile) return null;
 
@@ -43,16 +50,66 @@ export function ProfileModal({ isOpen, onClose, userProfile }) {
         }
     };
 
+    const handleChangePassword = async () => {
+        if (newPassword !== confirmPassword) {
+            toast({
+                title: "Passwords do not match",
+                description: "Please ensure both passwords are the same.",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            toast({
+                title: "Password too short",
+                description: "Password must be at least 6 characters.",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        setIsChangingPassword(true);
+        try {
+            const { error } = await supabase.auth.updateUser({ password: newPassword });
+            if (error) throw error;
+
+            toast({
+                title: "Password Updated",
+                description: "Your password has been changed successfully.",
+                variant: "success",
+            });
+            setNewPassword("");
+            setConfirmPassword("");
+            setShowPasswordSection(false);
+
+        } catch (error) {
+            toast({
+                title: "Update Failed",
+                description: error.message,
+                variant: "destructive",
+            });
+        } finally {
+            setIsChangingPassword(false);
+        }
+    }
+
     const handleLogout = async () => {
         setIsLoggingOut(true);
-        await supabase.auth.signOut();
-        router.push("/");
+        try {
+            // Using server-side route for robust cookie clearing
+            await fetch('/auth/signout', { method: 'POST' });
+            window.location.href = "/";
+        } catch (error) {
+            console.error("Error logging out:", error);
+            window.location.href = "/";
+        }
     };
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in">
             <div
-                className="bg-surface border border-border w-full max-w-md rounded-2xl shadow-2xl p-6 m-4 relative animate-in zoom-in-95 duration-200"
+                className="bg-surface border border-border w-full max-w-md rounded-2xl shadow-2xl p-6 m-4 relative animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
             >
                 <button
@@ -76,7 +133,7 @@ export function ProfileModal({ isOpen, onClose, userProfile }) {
                         </div>
                     </div>
 
-                    {/* Fields */}
+                    {/* Basic Info */}
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-muted-foreground ml-1">Full Name</label>
@@ -101,8 +158,61 @@ export function ProfileModal({ isOpen, onClose, userProfile }) {
                                     className="pl-9 bg-secondary/50 border-transparent text-muted-foreground cursor-not-allowed"
                                 />
                             </div>
-                            <p className="text-[10px] text-muted-foreground ml-1">Email cannot be changed.</p>
                         </div>
+                    </div>
+
+                    {/* Password Change Section */}
+                    <div className="border border-border/50 rounded-xl overflow-hidden">
+                        <button
+                            onClick={() => setShowPasswordSection(!showPasswordSection)}
+                            className="w-full flex items-center justify-between p-3 bg-secondary/20 hover:bg-secondary/40 transition-colors"
+                        >
+                            <div className="flex items-center gap-2 text-sm font-medium">
+                                <Lock className="w-4 h-4" />
+                                Change Password
+                            </div>
+                            {showPasswordSection ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        </button>
+
+                        {showPasswordSection && (
+                            <div className="p-3 space-y-3 bg-background/50">
+                                <div className="space-y-1">
+                                    <div className="relative">
+                                        <Input
+                                            type={showPassword ? "text" : "password"}
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                            className="h-9 text-sm pr-9"
+                                            placeholder="New Password"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-2 top-2.5 text-muted-foreground hover:text-foreground cursor-pointer"
+                                        >
+                                            {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <Input
+                                        type={showPassword ? "text" : "password"}
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        className="h-9 text-sm"
+                                        placeholder="Confirm Password"
+                                    />
+                                </div>
+                                <Button
+                                    onClick={handleChangePassword}
+                                    disabled={isChangingPassword || !newPassword || !confirmPassword}
+                                    size="sm"
+                                    className="w-full"
+                                >
+                                    {isChangingPassword ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : "Update Password"}
+                                </Button>
+                            </div>
+                        )}
                     </div>
 
                     {/* Actions */}

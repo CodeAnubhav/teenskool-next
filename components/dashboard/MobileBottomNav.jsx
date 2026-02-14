@@ -44,27 +44,29 @@ export function MobileBottomNav({ userProfile }) {
 
     return (
         <>
-            <div className="md:hidden fixed bottom-4 left-4 right-4 h-16 bg-surface/80 backdrop-blur-xl border border-white/10 rounded-2xl flex items-center justify-around z-50 shadow-2xl safe-area-bottom">
+            <div className="md:hidden fixed bottom-4 left-4 right-4 h-16 bg-surface/80 backdrop-blur-xl border border-white/10 rounded-2xl flex items-center justify-around z-30 shadow-2xl safe-area-bottom">
                 {navItems.map((item) => {
                     const isProfile = item.label === "Profile";
                     const isActive = isProfile
                         ? isProfileOpen
                         : (pathname === item.href || (pathname?.startsWith(item.href) && item.href !== "/dashboard/student"));
 
+                    const commonClasses = cn(
+                        "flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-200 flex-1 min-w-0",
+                        isActive
+                            ? "text-primary scale-110"
+                            : "text-muted-foreground hover:text-foreground"
+                    );
+
                     if (isProfile) {
                         return (
                             <button
                                 key={item.label}
                                 onClick={() => setIsProfileOpen(true)}
-                                className={cn(
-                                    "flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-200 w-16",
-                                    isActive
-                                        ? "text-primary scale-110"
-                                        : "text-muted-foreground hover:text-foreground"
-                                )}
+                                className={commonClasses}
                             >
-                                <item.icon className={cn("w-6 h-6", isActive && "fill-current")} strokeWidth={isActive ? 2.5 : 2} />
-                                <span className="text-[10px] font-medium">{item.label}</span>
+                                <item.icon className={cn("w-6 h-6 shrink-0", isActive && "fill-current")} strokeWidth={isActive ? 2.5 : 2} />
+                                <span className="text-[10px] font-medium whitespace-nowrap">{item.label}</span>
                             </button>
                         );
                     }
@@ -73,16 +75,11 @@ export function MobileBottomNav({ userProfile }) {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={cn(
-                                "flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-200 w-16",
-                                isActive
-                                    ? "text-primary scale-110"
-                                    : "text-muted-foreground hover:text-foreground"
-                            )}
+                            className={commonClasses}
                             suppressHydrationWarning
                         >
-                            <item.icon className={cn("w-6 h-6", isActive && "fill-current")} strokeWidth={isActive ? 2.5 : 2} />
-                            <span className="text-[10px] font-medium">{item.label}</span>
+                            <item.icon className={cn("w-6 h-6 shrink-0", isActive && "fill-current")} strokeWidth={isActive ? 2.5 : 2} />
+                            <span className="text-[10px] font-medium whitespace-nowrap">{item.label}</span>
                         </Link>
                     );
                 })}

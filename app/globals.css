@@ -12,17 +12,17 @@
 
 @theme {
   --font-sans: 'Inter', sans-serif;
-  
+
   /* Use CSS variables for colors so they can switch at runtime */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
+
   --color-surface: var(--surface);
   --color-border: var(--border);
-  
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
 
@@ -33,29 +33,36 @@
 :root {
   /* Light Mode */
   --background: #ffffff;
-  --foreground: #0f172a; /* Slate 900 */
-  
-  --surface: #f1f5f9; /* Slate 100 */
-  --border: #e2e8f0; /* Slate 200 */
-  
-  --primary: #84cc16; /* Lime 500 - slightly darker for visibility on white */
+  --foreground: #0f172a;
+  /* Slate 900 */
+
+  --surface: #f1f5f9;
+  /* Slate 100 */
+  --border: #e2e8f0;
+  /* Slate 200 */
+
+  --primary: #84cc16;
+  /* Lime 500 - slightly darker for visibility on white */
   --primary-foreground: #ffffff;
-  
+
   --muted: #f8fafc;
   --muted-foreground: #64748b;
 }
 
 .dark {
   /* Dark Mode */
-  --background: #030303; /* Deep black/gray */
+  --background: #030303;
+  /* Deep black/gray */
   --foreground: #ffffff;
-  
+
   --surface: #121212;
-  --border: #27272a; /* Zinc 800 */
-  
-  --primary: #a3e635; /* Neon Lime */
+  --border: #27272a;
+  /* Zinc 800 */
+
+  --primary: #a3e635;
+  /* Neon Lime */
   --primary-foreground: #000000;
-  
+
   --muted: #1e1e1e;
   --muted-foreground: #a1a1aa;
 }
@@ -73,6 +80,7 @@ body {
   0% {
     background-position: 0 0;
   }
+
   100% {
     background-position: 100px 100px;
   }

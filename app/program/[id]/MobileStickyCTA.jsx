@@ -65,7 +65,7 @@ export default function MobileStickyCTA({ program }) {
     if (!program) return null;
 
     return (
-        <div className="md:hidden fixed bottom-4 left-4 right-4 z-50 bg-[#050505]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl safe-area-bottom animate-in slide-in-from-bottom duration-500">
+        <div className="md:hidden fixed bottom-4 left-4 right-4 z-30 bg-[#050505]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl safe-area-bottom animate-in slide-in-from-bottom duration-500">
             <div className="flex items-center justify-between gap-4">
                 <div className="flex flex-col">
                     <div className="flex items-center gap-2 mb-1">
