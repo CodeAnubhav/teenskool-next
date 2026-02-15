@@ -10,7 +10,8 @@ const programs = [
 
     // Core Data
     Image: "/assets/programimage.png",
-    price: 1999,
+    price: 4999,
+    brochureLink: "/assets/brochure.pdf",
     duration: "4-Module Self-Paced Program",
     nextBatch: "Instant Access",
     format: "Interactive AI-Guided Modules", // Kept for sidebar
