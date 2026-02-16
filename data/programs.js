@@ -28,10 +28,10 @@ const programs = [
     // What's Included - Focused on core deliverables
     includes: [
       "Full access to AI Founder OS",
-      "Step-by-step interactive guides",
-      "AI-powered startup tools",
-      "Certificate of Founder Status",
-      "Community access",
+      "Certificate of Young Founder",
+      "30 Days Post-Launch Support",
+      "Exclusive Community Access",
+      "Lifetime Access to All Updates"
     ],
 
     // Core Strategy (Simplified from 'Methodology')
