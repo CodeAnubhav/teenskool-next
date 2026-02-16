@@ -20,12 +20,14 @@ export async function GET(request) {
 
         // URL to redirect to after sign in process completes
         // Prefer 'next' param if present, otherwise dashboard
+        const origin = requestUrl.origin;
         const redirectTo = next || '/dashboard';
-        return NextResponse.redirect(new URL(redirectTo, request.url));
+        return NextResponse.redirect(new URL(redirectTo, origin));
     } catch (error) {
         console.error('Callback error:', error);
         // Redirect to login with error details
+        const origin = new URL(request.url).origin;
         const errorMessage = encodeURIComponent(error.message || 'Unknown error');
-        return NextResponse.redirect(new URL(`/auth/student/login?error=AuthFailed&message=${errorMessage}`, request.url));
+        return NextResponse.redirect(new URL(`/auth/student/login?error=AuthFailed&message=${errorMessage}`, origin));
     }
 }

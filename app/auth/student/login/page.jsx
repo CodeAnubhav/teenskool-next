@@ -48,10 +48,18 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     try {
+      // 1. Get the current origin (e.g., https://teenskool.in)
+      const origin = window.location.origin;
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/auth/callback`,
+          // 2. Dynamic redirect based on where the user currently is
+          redirectTo: `${origin}/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
         },
       });
       if (error) throw error;
