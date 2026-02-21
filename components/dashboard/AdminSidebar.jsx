@@ -11,7 +11,8 @@ import {
     LogOut,
     ChevronLeft,
     ChevronRight,
-    ShieldAlert
+    ShieldAlert,
+    FileText
 } from "lucide-react";
 import { useSupabase } from "@/contexts/SupabaseContext";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ import { cn } from "@/lib/utils";
 const ADMIN_NAV = [
     { label: "Overview", href: "/dashboard/admin", icon: LayoutTemplate },
     { label: "Courses", href: "/dashboard/admin?tab=courses", icon: BookOpen }, // Using query params for tabs as implemented in page
+    { label: "Blogs", href: "/dashboard/admin?tab=blogs", icon: FileText },
     { label: "Users", href: "/dashboard/admin?tab=users", icon: Users },
 ];
 
@@ -46,8 +48,8 @@ export function AdminSidebar({ userProfile, isCollapsed, toggleSidebar }) {
             <div className="p-4 flex items-center justify-between border-b border-border/50 h-[88px]">
                 {!isCollapsed && (
                     <div className="flex items-center gap-3 animate-in fade-in duration-300">
-                        <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-xl shrink-0 border border-purple-500/30">
-                            <ShieldAlert className="w-6 h-6 text-purple-500" />
+                        <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-xl shrink-0 border border-primary/30">
+                            <ShieldAlert className="w-6 h-6 text-primary" />
                         </div>
                         <div className="min-w-0">
                             <h3 className="font-bold text-foreground text-sm truncate">Admin Panel</h3>
@@ -59,8 +61,8 @@ export function AdminSidebar({ userProfile, isCollapsed, toggleSidebar }) {
                 )}
                 {isCollapsed && (
                     <div className="w-full flex justify-center">
-                        <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-xl shrink-0 border border-purple-500/30">
-                            <ShieldAlert className="w-6 h-6 text-purple-500" />
+                        <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-xl shrink-0 border border-primary/30">
+                            <ShieldAlert className="w-6 h-6 text-primary" />
                         </div>
                     </div>
                 )}
@@ -96,12 +98,12 @@ export function AdminSidebar({ userProfile, isCollapsed, toggleSidebar }) {
                             className={cn(
                                 "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-200",
                                 isActive
-                                    ? "bg-purple-500/10 text-purple-400 border border-purple-500/20"
+                                    ? "bg-primary/10 text-primary border border-primary/20"
                                     : "text-muted-foreground hover:bg-white/5 hover:text-foreground",
                                 isCollapsed ? "justify-center" : ""
                             )}
                         >
-                            <item.icon className={cn("shrink-0 w-5 h-5", isActive ? "text-purple-400" : "text-muted-foreground")} />
+                            <item.icon className={cn("shrink-0 w-5 h-5", isActive ? "text-primary" : "text-muted-foreground")} />
                             {!isCollapsed && <span className="truncate">{item.label}</span>}
                         </Link>
                     );

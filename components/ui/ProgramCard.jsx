@@ -5,7 +5,7 @@ import MotionDiv from '@/components/ui/MotionDiv';
 import { ArrowUpRight, Zap, Clock, Users } from 'lucide-react';
 
 export default function ProgramCard({ program }) {
-  const originalPrice = program.price + 2000;
+  const originalPrice = program.price + 3000;
   const imageUrl = program.Image || program.image;
 
   return (
@@ -18,7 +18,7 @@ export default function ProgramCard({ program }) {
     >
       <Link href={`/program/${program.id}`} className="block h-full">
         <div className="flex flex-col md:flex-row h-full rounded-3xl overflow-hidden bg-gradient-to-br from-background to-surface shadow-lg shadow-primary/10 border border-border transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/30">
-          
+
           {/* IMAGE SECTION */}
           <div className="relative w-full md:w-1/2 flex-shrink-0">
             <div className="aspect-video md:aspect-square md:h-full w-full overflow-hidden ">

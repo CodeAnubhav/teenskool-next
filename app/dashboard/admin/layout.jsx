@@ -59,7 +59,7 @@ export default function AdminLayout({ children }) {
     }
 
     return (
-        <div className="flex h-screen bg-background text-foreground font-sans selection:bg-purple-500/20 overflow-hidden">
+        <div className="flex h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-hidden">
             {/* Admin Sidebar */}
             <div className={cn(
                 "hidden md:block transition-all duration-300 relative z-50 border-r border-border bg-surface",

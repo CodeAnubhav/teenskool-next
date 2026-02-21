@@ -18,7 +18,8 @@ import {
   Home,
   Users,
   LayoutGrid,
-  Send
+  Send,
+  FileText
 } from "lucide-react";
 
 export default function Navigation() {
@@ -32,7 +33,7 @@ export default function Navigation() {
   const links = [
     { path: "/", label: "Home", icon: Home },
     { path: "/about", label: "About", icon: Users },
-    { path: "/programs", label: "Programs", icon: LayoutGrid },
+    { path: "/blog", label: "Blog", icon: FileText },
     { path: "/contact", label: "Contact", icon: Send },
   ];
 

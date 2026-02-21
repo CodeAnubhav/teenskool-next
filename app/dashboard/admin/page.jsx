@@ -12,12 +12,15 @@ import {
     Search,
     Loader2,
     Shield,
-    ShieldAlert
+    ShieldAlert,
+    FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getAllCourses, getAllProfiles, updateUserRole } from "@/lib/db";
+import { getAllBlogs } from "@/lib/blog";
 import AdminCourseCard from "@/components/dashboard/AdminCourseCard";
+import AdminBlogCard from "@/components/dashboard/AdminBlogCard";
 // import { toast } from "sonner"; 
 
 export default function AdminDashboardPage() {
@@ -45,6 +48,7 @@ export default function AdminDashboardPage() {
     // Data State
     const [users, setUsers] = useState([]);
     const [courses, setCourses] = useState([]);
+    const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -53,12 +57,14 @@ export default function AdminDashboardPage() {
         try {
             // Only show loader if it's the first load, otherwise we just update silently (or small loader)
             // But for search results, a small loader is better.
-            const [usersData, coursesData] = await Promise.all([
+            const [usersData, coursesData, blogsData] = await Promise.all([
                 getAllProfiles(query), // Pass search query
-                getAllCourses(false)
+                getAllCourses(false),
+                getAllBlogs(false)
             ]);
             setUsers(usersData || []);
             setCourses(coursesData || []);
+            setBlogs(blogsData || []);
         } catch (err) {
             console.error("Admin Load Error:", err);
         } finally {
@@ -116,7 +122,7 @@ export default function AdminDashboardPage() {
                 <div className="grid gap-6 md:grid-cols-3">
                     <StatsCard title="Total Users" value={users.length} icon={Users} trend="Real-time" />
                     <StatsCard title="Total Courses" value={courses.length} icon={BookOpen} trend="Live Content" />
-                    <StatsCard title="Revenue (Est)" value="$0" icon={TrendingUp} trend="Beta" />
+                    <StatsCard title="Total Blogs" value={blogs.length} icon={FileText} trend="SEO Content" />
                 </div>
             )}
 
@@ -158,7 +164,7 @@ export default function AdminDashboardPage() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 capitalize">
-                                            <span className={`px-2 py-1 rounded-full text-xs font-bold ${user.system_role === 'admin' ? 'bg-purple-500/20 text-purple-400' : 'bg-green-500/20 text-green-400'}`}>
+                                            <span className={`px-2 py-1 rounded-full text-xs font-bold ${user.system_role === 'admin' ? 'bg-primary/20 text-primary' : 'bg-green-500/20 text-green-400'}`}>
                                                 {user.system_role}
                                             </span>
                                         </td>
@@ -175,7 +181,7 @@ export default function AdminDashboardPage() {
                                                 {user.system_role === 'student' ? (
                                                     <Shield className="w-4 h-4 text-muted-foreground hover:text-primary" />
                                                 ) : (
-                                                    <ShieldAlert className="w-4 h-4 text-purple-500" />
+                                                    <ShieldAlert className="w-4 h-4 text-primary" />
                                                 )}
                                             </Button>
                                         </td>
@@ -207,6 +213,33 @@ export default function AdminDashboardPage() {
                             <AdminCourseCard
                                 key={course.id}
                                 course={course}
+                                onRefresh={() => loadData(searchQuery)}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* BLOGS TAB */}
+            {activeTab === "blogs" && (
+                <div className="space-y-6">
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {/* Create New Card */}
+                        <Link href="/dashboard/admin/blogs/new" className="block h-full">
+                            <div className="border border-dashed border-border rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:bg-white/5 cursor-pointer transition-colors group h-full min-h-[200px]">
+                                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <Plus className="w-6 h-6 text-primary" />
+                                </div>
+                                <h3 className="font-bold text-lg">Write New Post</h3>
+                                <p className="text-sm text-muted-foreground">Publish SEO content</p>
+                            </div>
+                        </Link>
+
+                        {/* Real Blogs List */}
+                        {blogs.map((blog) => (
+                            <AdminBlogCard
+                                key={blog.id}
+                                blog={blog}
                                 onRefresh={() => loadData(searchQuery)}
                             />
                         ))}
