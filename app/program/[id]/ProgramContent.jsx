@@ -1,11 +1,11 @@
 "use strict";
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import MobileStickyCTA from "./MobileStickyCTA";
-import { useToast } from "@/components/ui/use-toast"; // Added useToast import
+import UPIPaymentModal from "@/components/UPIPaymentModal";
 import {
     CheckCircle,
     Lightbulb,
@@ -78,58 +78,11 @@ export default function ProgramContent({ program }) {
     const price = program.price || 4999;
     const originalPrice = price + 3000;
 
-    const { toast } = useToast();
+    const [showPayment, setShowPayment] = useState(false);
 
     // --- ENROLL HANDLER ---
     const handleEnroll = () => {
-        if (typeof window === 'undefined') return;
-
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.async = true;
-
-        script.onerror = () => {
-            toast({
-                title: "Payment Error",
-                description: "Could not load the payment gateway. Please try again.",
-                variant: "destructive",
-            });
-        };
-
-        script.onload = () => {
-            if (typeof window.Razorpay === 'undefined') {
-                script.onerror();
-                return;
-            }
-
-            const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-                amount: price * 100, // Amount in paisa
-                currency: "INR",
-                name: "Teenskool",
-                description: `Enrollment for ${program.title}`,
-                image: "/assets/TSlogo.png",
-                handler: function (response) {
-                    toast({
-                        title: "Payment Successful!",
-                        description: `Thank you for enrolling. Payment ID: ${response.razorpay_payment_id}`,
-                        variant: "success",
-                        className: "bg-green-500 text-white"
-                    });
-                },
-                prefill: {
-                    name: "Student Name",
-                    email: "student@example.com",
-                    contact: "9999999999",
-                },
-                theme: { color: "#a3e635" },
-            };
-
-            const rzp = new window.Razorpay(options);
-            rzp.open();
-        };
-
-        document.body.appendChild(script);
+        setShowPayment(true);
     };
 
     // Floating decoration logic
@@ -603,7 +556,7 @@ export default function ProgramContent({ program }) {
                                         <div className="h-4 w-8 bg-white rounded" />
                                         <div className="h-4 w-8 bg-white rounded" />
                                     </div>
-                                    <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">Secure payment via Razorpay</p>
+                                    <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">Secure payment via UPI</p>
                                 </div>
                             </div>
                         </div>
@@ -612,6 +565,7 @@ export default function ProgramContent({ program }) {
                 </div>
             </div>
             <MobileStickyCTA program={program} />
+            <UPIPaymentModal open={showPayment} onOpenChange={setShowPayment} program={program} />
         </div>
     );
 }
