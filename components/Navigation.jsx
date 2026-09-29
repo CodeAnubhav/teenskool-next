@@ -55,8 +55,8 @@ export default function Navigation() {
     setOpen(false);
   }, [pathname]);
 
-  // Hide navigation on dashboard routes
-  if (pathname?.startsWith("/dashboard")) {
+  // Hide navigation on dashboard routes and on standalone landing pages
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/masterclass")) {
     return null;
   }
 
