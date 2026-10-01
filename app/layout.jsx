@@ -5,6 +5,8 @@ import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { SupabaseProvider } from '@/contexts/SupabaseContext';
+import MetaPixel from '@/components/analytics/MetaPixel';
+import PostHogProvider from '@/components/analytics/PostHogProvider';
 
 export const metadata = {
   title: 'TeenSkool',
@@ -16,14 +18,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body>
-        <ThemeProvider>
-          <SupabaseProvider>
-            <Navigation />
-            <main>{children}</main>
-            <Footer />
-            <Toaster />
-          </SupabaseProvider>
-        </ThemeProvider>
+        <MetaPixel />
+        <PostHogProvider>
+          <ThemeProvider>
+            <SupabaseProvider>
+              <Navigation />
+              <main>{children}</main>
+              <Footer />
+              <Toaster />
+            </SupabaseProvider>
+          </ThemeProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
