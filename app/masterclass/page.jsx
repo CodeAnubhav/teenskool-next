@@ -2,6 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Bricolage_Grotesque, Figtree } from "next/font/google";
 import logoUrl from "@/public/assets/TS.png";
+import teensToCamera from "@/public/assets/masterclassesImages/1bb9291256134df4acc9d52c9133e91f.jpg.webp";
+import teensBuilding from "@/public/assets/masterclassesImages/6e306fb0ca5446408c469ea63ce7eba0.jpg.webp";
+import teensDelighted from "@/public/assets/masterclassesImages/719166dde518487e8fe872135b4ed585.jpg.webp";
+import brandStudents from "@/public/assets/masterclassesImages/Untitled design (11).webp";
 import {
   ArrowRight,
   CalendarBlank,
@@ -72,14 +76,11 @@ export const metadata = {
 };
 
 const IMAGES = {
-  heroMain:
-    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=70",
-  heroInset:
-    "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=70",
-  about:
-    "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=70",
-  outcomes:
-    "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?auto=format&fit=crop&w=1200&q=70",
+  heroMain: teensToCamera,
+  heroInset: teensDelighted,
+  room: teensBuilding,
+  outcome: teensDelighted,
+  ctaBand: brandStudents,
 };
 
 const SESSION_PLAN = [
@@ -170,7 +171,7 @@ const PAGE_CSS = `
 .ts-page .font-display { font-family: var(--font-display), system-ui, sans-serif; }
 .ts-glass {
   isolation: isolate;
-  background: linear-gradient(140deg, rgba(255,255,255,0.62), rgba(255,255,255,0.26));
+  background: linear-gradient(140deg, rgba(255,255,255,0.82), rgba(255,255,255,0.58));
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid rgba(255,255,255,0.6);
@@ -274,7 +275,7 @@ function Price({ size = "md", align = "left" }) {
           <s>{inr(PRICING.mrp)}</s>
         </span>
       </p>
-      <p className="mt-2 inline-flex w-fit items-center rounded-full bg-[#14201a] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.06em] text-[#c6ef6b]">
+      <p className="mt-2 inline-flex w-fit items-center rounded-full bg-[#14201a] px-2.5 py-1 text-xs font-bold uppercase tracking-[0.06em] text-[#c6ef6b]">
         Save {DISCOUNT_PCT}%
       </p>
     </div>
@@ -402,31 +403,33 @@ export default function MasterclassPage() {
             {/* Hero visual with glass session card */}
             <div className="animate-in fade-in slide-in-from-bottom-6 delay-150 duration-700 motion-reduce:animate-none lg:col-span-5">
               <div className="relative lg:pl-4">
-                <div className="relative aspect-[4/3.6] overflow-hidden rounded-[2rem] bg-[#dfe7d8] shadow-[0_40px_80px_-40px_rgba(30,52,18,0.45)] sm:aspect-[4/3.2] lg:aspect-[4/4.4]">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-[#dfe7d8] shadow-[0_40px_80px_-40px_rgba(30,52,18,0.45)] lg:aspect-[4/3.5]">
                   <Image
                     src={IMAGES.heroMain}
-                    alt="Teenagers working together on laptops during a live session"
+                    alt="Three students looking up from the laptop they are building on"
                     fill
                     sizes="(max-width: 1024px) 100vw, 540px"
                     className="object-cover"
+                    placeholder="blur"
                     priority
                   />
                   <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#14201a]/25 via-transparent to-transparent" />
                 </div>
 
-                <div className="absolute -right-3 -top-6 hidden w-36 rotate-[4deg] overflow-hidden rounded-2xl ring-[6px] ring-white/80 shadow-[0_24px_40px_-20px_rgba(30,52,18,0.5)] sm:block lg:-right-5 lg:w-40">
+                <div className="absolute -right-4 -top-8 hidden w-36 rotate-[4deg] overflow-hidden rounded-2xl ring-[6px] ring-white/80 shadow-[0_24px_40px_-20px_rgba(30,52,18,0.5)] sm:block lg:-right-8 lg:w-40">
                   <div className="relative aspect-[4/3.3]">
                     <Image
                       src={IMAGES.heroInset}
-                      alt="A student presenting the idea she is building"
+                      alt="Students grinning at something they just got working"
                       fill
                       sizes="160px"
                       className="object-cover"
+                      placeholder="blur"
                     />
                   </div>
                 </div>
 
-                <div className="ts-glass relative mx-4 -mt-24 rounded-[1.6rem] p-5 sm:mx-10 sm:p-6 lg:absolute lg:-left-6 lg:bottom-8 lg:mx-0 lg:mt-0 lg:w-[19rem]">
+                <div className="ts-glass relative mx-4 -mt-16 rounded-[1.6rem] p-5 sm:mx-10 sm:p-6 lg:mx-6 lg:-mt-14">
                   <p className="font-display text-[15px] font-semibold">Next session</p>
                   <SessionFacts className="mt-4" />
                   <div className="mt-5 flex items-end justify-between gap-3 border-t border-[#14201a]/10 pt-4">
@@ -458,11 +461,12 @@ export default function MasterclassPage() {
           <div className="relative mt-14">
             <div className="relative aspect-[4/3] overflow-hidden rounded-[2.25rem] bg-[#dfe7d8] sm:aspect-[16/9] lg:aspect-[21/9]">
               <Image
-                src={IMAGES.about}
-                alt="A mentor guiding a student through their project on a laptop"
+                src={IMAGES.room}
+                alt="Students working through an idea together on a laptop"
                 fill
                 sizes="(max-width: 1152px) 100vw, 1152px"
                 className="object-cover"
+                placeholder="blur"
               />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#14201a]/30" />
             </div>
@@ -548,11 +552,12 @@ export default function MasterclassPage() {
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
             <article className="relative min-h-[26rem] overflow-hidden rounded-[2rem] bg-[#dfe7d8] sm:col-span-2 lg:row-span-2 lg:min-h-0">
               <Image
-                src={IMAGES.outcomes}
-                alt="Students smiling as they show the project they built"
+                src={IMAGES.outcome}
+                alt="Students smiling at the project they built together"
                 fill
                 sizes="(max-width: 1024px) 100vw, 580px"
                 className="object-cover"
+                placeholder="blur"
               />
               <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#14201a]/45 via-transparent to-transparent" />
               <div className="ts-glass absolute inset-x-4 bottom-4 rounded-[1.5rem] p-6 sm:inset-x-5 sm:bottom-5">
@@ -628,7 +633,7 @@ export default function MasterclassPage() {
         <section className="mx-auto max-w-6xl px-5 pb-24 sm:px-6 md:pb-32 lg:px-8">
           <div className="relative overflow-hidden rounded-[2.5rem] bg-[#cfe3b4]">
             <Image
-              src={IMAGES.heroInset}
+              src={IMAGES.ctaBand}
               alt=""
               fill
               sizes="(max-width: 1152px) 100vw, 1152px"
