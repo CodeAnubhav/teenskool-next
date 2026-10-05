@@ -8,20 +8,25 @@ import teensDelighted from "@/public/assets/masterclassesImages/719166dde518487e
 import brandStudents from "@/public/assets/masterclassesImages/Untitled design (11).webp";
 import {
   ArrowRight,
+  Brain,
   CalendarBlank,
   ChatCircleText,
   CheckCircle,
   Clock,
   CursorClick,
+  GraduationCap,
   Hammer,
   LockKey,
   MagnifyingGlass,
+  Megaphone,
   Path,
-  PencilRuler,
-  ShareNetwork,
+  Rocket,
+  SealCheck,
   Sparkle,
-  TrendUp,
+  Trophy,
+  Users,
   VideoCamera,
+  YoutubeLogo,
 } from "@phosphor-icons/react/dist/ssr";
 
 const display = Bricolage_Grotesque({
@@ -38,16 +43,19 @@ const body = Figtree({
 const PAYMENT_URL = "https://payments.cashfree.com/forms/AIFounderMasterclass";
 
 const DETAILS = {
-  cadence: "Every weekend",
-  ages: "13-18",
+  time: "10 AM to 2 PM",
+  duration: "4 hours",
+  ages: "13 to 18",
+  grades: "Class 8 to 12",
   format: "Virtual, live online",
+  seats: 20,
 };
 
 const PRICING = { mrp: 1999, now: 499 };
 const DISCOUNT_PCT = Math.round((1 - PRICING.now / PRICING.mrp) * 100);
 const inr = (n) => `₹${n.toLocaleString("en-IN")}`;
 
-// The masterclass runs every weekend, so the date is derived at render time
+// The masterclass runs every Saturday, so the date is derived at render time
 // (see `revalidate` below) instead of being hardcoded and going stale.
 function upcomingSaturday() {
   const parts = new Intl.DateTimeFormat("en-CA", {
@@ -61,7 +69,7 @@ function upcomingSaturday() {
   dt.setUTCDate(dt.getUTCDate() + ((6 - dt.getUTCDay() + 7) % 7));
   return new Intl.DateTimeFormat("en-IN", {
     timeZone: "UTC",
-    weekday: "short",
+    weekday: "long",
     day: "numeric",
     month: "short",
   }).format(dt);
@@ -70,102 +78,175 @@ function upcomingSaturday() {
 export const revalidate = 3600;
 
 export const metadata = {
-  title: "AI Founder Masterclass for Young Minds | TeenSkool",
+  title: "Young AI Masterminds | TeenSkool AI & Entrepreneurship Masterclass",
   description:
-    "A live, hands-on online masterclass where teens aged 13-18 turn a real problem into a working AI-built prototype, guided by industry experts and working professionals.",
+    "A live 4 hour Saturday masterclass where your child builds a real startup with AI, guided by IIT mentors and working founders. Ages 13 to 18. No coding required.",
 };
 
-const IMAGES = {
-  heroMain: teensToCamera,
-  heroInset: teensDelighted,
-  room: teensBuilding,
-  outcome: teensDelighted,
-  ctaBand: brandStudents,
-};
-
-const SESSION_PLAN = [
+const MODULES = [
   {
-    verb: "Spot",
+    tag: "Mindset",
+    icon: Brain,
+    title: "Think like a founder",
+    body: "Before building anything, your child shifts from consuming to creating. This is the foundation everything else sits on.",
+    topics: [
+      "How founders see the world differently",
+      "Making decisions without all the answers",
+      "Treating failure as feedback",
+      "The builder identity exercise",
+    ],
+  },
+  {
+    tag: "Problem",
     icon: MagnifyingGlass,
     title: "Find a problem worth solving",
-    body: "Not another school project. Your child looks at their own world (school, street, daily frustrations) and picks a problem that matters to someone.",
+    body: "The best startups do not begin with ideas. They begin with real problems. Your child learns to spot one and check whether it is real.",
+    topics: [
+      "Telling real problems from imagined ones",
+      "Market research using AI",
+      "Looking at what already exists",
+      "A live peer validation round",
+    ],
   },
   {
-    verb: "Shape",
-    icon: PencilRuler,
-    title: "Use AI to sharpen the idea",
-    body: "Who is it for? Why would they care? They use AI the way professionals do, to pressure-test a vague thought until it fits in one clear sentence.",
-  },
-  {
-    verb: "Build",
+    tag: "Build",
     icon: Hammer,
-    title: "Make a working prototype, no code",
-    body: "By the end there is something real on screen that another person can click through and use. No programming background needed.",
+    title: "Build with AI, no code needed",
+    body: "Your child uses AI tools to create something real: a name, a logo, a brand identity and a pitch deck they can actually show you.",
+    topics: [
+      "The AI tools professionals use daily",
+      "Logo and brand creation",
+      "Building the pitch deck",
+      "Live feedback from mentors",
+    ],
   },
   {
-    verb: "Share",
-    icon: ShareNetwork,
-    title: "Put it in front of real people",
-    body: "The part most classes skip. They learn how builders launch and share an idea online, so the work does not stop at a slide.",
+    tag: "Market",
+    icon: Megaphone,
+    title: "Tell the world about it",
+    body: "A product nobody knows about is a hobby. Your child learns how founders actually find their first users.",
+    topics: [
+      "Market research basics",
+      "Branding and positioning",
+      "Content marketing with AI",
+      "The live pitch competition",
+    ],
+  },
+];
+
+const TIMELINE = [
+  {
+    time: "10:00 AM",
+    title: "Welcome and mindset shift",
+    body: "Your child stops thinking like a student and starts thinking like a builder. The founder identity is set here.",
+  },
+  {
+    time: "10:45 AM",
+    title: "Problem finding and validation",
+    body: "They pick a real problem and use AI to check it. Who actually has this problem? Would anyone pay to solve it?",
+  },
+  {
+    time: "11:45 AM",
+    title: "Break",
+    body: "Fifteen minutes to recharge before the building starts.",
+  },
+  {
+    time: "12:00 PM",
+    title: "Build with AI tools",
+    body: "Startup name, logo, brand identity and pitch deck, all created live. Mentors guide each student in real time.",
+  },
+  {
+    time: "1:30 PM",
+    title: "Mini pitch competition",
+    body: "Your child presents their idea to IIT mentors and working founders, and gets honest feedback on the spot.",
+    badge: "Pitch recorded and published on YouTube",
+  },
+  {
+    time: "2:00 PM",
+    title: "Certificate and community",
+    body: "Completion certificate issued, and your child joins the Young AI Masterminds community of builders.",
+  },
+];
+
+const PROBLEMS = [
+  {
+    n: "01",
+    title: "Information is not skill",
+    body: "Your child can look up anything. What is missing is applying it: making a decision, taking initiative, building something that did not exist before.",
+  },
+  {
+    n: "02",
+    title: "School will not teach this",
+    body: "Critical thinking, creative confidence, an entrepreneurial mindset. These shape careers, and they are not in any syllabus.",
+  },
+  {
+    n: "03",
+    title: "The AI era is already here",
+    body: "Children who learn to use AI as a tool rather than a shortcut will lead. The rest will be catching up with people who started earlier.",
   },
 ];
 
 const OUTCOMES = [
   {
+    icon: Brain,
+    title: "The builder mindset",
+    body: "They stop seeing problems as obstacles and start seeing them as openings. That thinking carries into everything else.",
+  },
+  {
     icon: Sparkle,
-    title: "Real fluency with AI tools",
-    body: "Hands-on time with the tools professionals use every day.",
-    tone: "lime",
+    title: "Lifetime platform access",
+    body: "AI Co-Founder, the community of young builders, founder sessions and weekly challenges. All of it, for good.",
   },
   {
     icon: ChatCircleText,
-    title: "Confidence to present an idea",
-    body: "They practise explaining their thinking to adults who build for a living.",
-    tone: "white",
+    title: "Confidence to present and lead",
+    body: "Standing up and defending your thinking in front of people who know more than you. That confidence comes from having done it once.",
   },
   {
     icon: Path,
     title: "A way of thinking that transfers",
-    body: "Spot a problem, test assumptions, ship something imperfect, improve it.",
-    tone: "ink",
+    body: "Spot a problem, test the assumption, ship something imperfect, improve it. It works far beyond startups.",
   },
-  {
-    icon: TrendUp,
-    title: "A head start that compounds",
-    body: "Habits for an AI-shaped world, learned early instead of catching up later.",
-    tone: "glass",
-  },
+];
+
+const STATS = [
+  { value: "500", suffix: "+", label: "Students trained" },
+  { value: "20", suffix: "", label: "Max seats per batch" },
+  { value: "4", suffix: "hrs", label: "One Saturday morning" },
+  { value: "100", suffix: "%", label: "Hands on, not theory" },
 ];
 
 const QUESTIONS = [
   {
     q: "Does my child need to know how to code?",
-    a: "No. Everything is built with no-code AI tools, and no prior experience is needed. Curiosity is enough.",
+    a: "No. Zero coding and no prior tech knowledge. The AI tools handle the technical side, so your child brings ideas and curiosity. Some of our strongest sessions have come from students who had never built anything before.",
+  },
+  {
+    q: "My child is not interested in entrepreneurship. Is this still worth it?",
+    a: "Most students feel that way before joining. Interest tends to appear once they are building around something they already care about, like a sport or a problem they notice every day. The session is designed to create that interest rather than assume it.",
   },
   {
     q: "Will they just be watching a screen?",
-    a: "No. The session is live and hands-on. Your child works on their own idea while mentors look at their screen and help them move forward.",
+    a: "No. Your child is using AI tools, building, working with others and presenting live. When a teenager is making something they own, attention is rarely the problem.",
   },
   {
-    q: "What if they don't have an idea yet?",
-    a: "That is where we start. The first part of the session is about finding a problem worth solving in their own life.",
+    q: "What if they do not have an idea yet?",
+    a: "That is exactly where we start. The first module is about finding a problem worth solving, so nobody needs to arrive with an idea ready.",
   },
   {
-    q: "Who is teaching?",
-    a: "Industry experts and working professionals who build for a living, not a pre-recorded video.",
+    q: "Who is teaching the session?",
+    a: "IIT graduates and working startup founders who build for a living, not a pre recorded video. Your child gets live feedback on their own idea.",
   },
   {
-    q: "Is there a recording to watch later?",
-    a: "The masterclass is live only, so please plan for your child to attend the full session.",
+    q: "What if my child cannot attend on the session date?",
+    a: "Tell us and we will move your child to the next available batch at no extra cost.",
   },
   {
     q: "What do they need on the day?",
-    a: "A laptop or desktop, a steady internet connection, and the joining link we send after registration.",
+    a: "A laptop or desktop, a steady internet connection, and the joining link we send after registration. That is all.",
   },
 ];
 
-// Liquid glass, focus rings and ambient motion. Kept here so the page is a
-// single drop-in file; move to globals.css if you prefer.
 const PAGE_CSS = `
 .ts-page { color-scheme: light; font-family: var(--font-body), system-ui, sans-serif; }
 .ts-page .font-display { font-family: var(--font-display), system-ui, sans-serif; }
@@ -178,7 +259,6 @@ const PAGE_CSS = `
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.95),
     inset 0 -1px 0 rgba(255,255,255,0.3),
-    inset 0 0 24px rgba(255,255,255,0.18),
     0 30px 60px -28px rgba(30,52,18,0.38);
 }
 .ts-glass::before {
@@ -201,10 +281,8 @@ const PAGE_CSS = `
   mix-blend-mode: multiply;
 }
 .ts-page a, .ts-page button { touch-action: manipulation; }
-.ts-page :focus-visible {
-  outline: 2px solid #3f6b0c;
-  outline-offset: 3px;
-}
+.ts-page :focus-visible { outline: 2px solid #3f6b0c; outline-offset: 3px; }
+.ts-dark :focus-visible { outline-color: #c6ef6b; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: no-preference) {
   @keyframes ts-drift {
@@ -214,22 +292,19 @@ html { scroll-behavior: smooth; }
   .ts-drift { animation: ts-drift 18s ease-in-out infinite; }
   .ts-drift-slow { animation: ts-drift 26s ease-in-out infinite reverse; }
 }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 `;
 
-function PrimaryCta({ className = "", size = "md" }) {
-  const sizing =
-    size === "lg" ? "h-14 px-8 text-[17px]" : "h-12 px-6 text-base";
+function PrimaryCta({ children = "Reserve a seat", className = "", size = "md" }) {
+  const sizing = size === "lg" ? "h-14 px-8 text-[17px]" : "h-12 px-6 text-base";
   return (
     <a
       href={PAYMENT_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#9ed62f] font-semibold text-[#14201a] shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_30px_-12px_rgba(90,140,20,0.7)] transition-[transform,background-color,box-shadow] duration-200 hover:bg-[#aee344] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_18px_36px_-12px_rgba(90,140,20,0.75)] active:scale-[0.98] ${sizing} ${className}`}
+      className={`group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#9ed62f] font-semibold text-[#14201a] shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_30px_-12px_rgba(90,140,20,0.7)] transition-[transform,background-color,box-shadow] duration-200 hover:bg-[#aee344] active:scale-[0.98] ${sizing} ${className}`}
     >
-      Reserve a seat
+      {children}
       <ArrowRight
         weight="bold"
         aria-hidden
@@ -241,20 +316,17 @@ function PrimaryCta({ className = "", size = "md" }) {
 
 // The TS.png wordmark is white-on-dark, so only the lime mark is cropped out
 // of it and the wordmark is set as text on this light page.
-function Brand({ size = "h-8" }) {
+function Brand({ size = "h-8", tone = "light" }) {
   return (
     <span className="flex items-center gap-2">
       <span className={`relative ${size} aspect-square flex-none overflow-hidden rounded-lg`}>
-        <Image
-          src={logoUrl}
-          alt=""
-          fill
-          sizes="36px"
-          className="object-cover object-left"
-          priority
-        />
+        <Image src={logoUrl} alt="" fill sizes="36px" className="object-cover object-left" priority />
       </span>
-      <span className="font-display text-lg font-bold tracking-tight text-[#14201a]">
+      <span
+        className={`font-display text-lg font-bold tracking-tight ${
+          tone === "dark" ? "text-white" : "text-[#14201a]"
+        }`}
+      >
         Teen<span className="text-[#4d7f12]">Skool</span>
       </span>
     </span>
@@ -284,8 +356,8 @@ function Price({ size = "md", align = "left" }) {
 
 function SessionFacts({ className = "" }) {
   const rows = [
-    { icon: CalendarBlank, label: "Next session", value: `This ${upcomingSaturday()}` },
-    { icon: Clock, label: "Runs", value: DETAILS.cadence },
+    { icon: CalendarBlank, label: "Next session", value: upcomingSaturday() },
+    { icon: Clock, label: "Time", value: `${DETAILS.time} IST` },
     { icon: VideoCamera, label: "Format", value: DETAILS.format },
   ];
   return (
@@ -305,7 +377,21 @@ function SessionFacts({ className = "" }) {
   );
 }
 
+function Eyebrow({ children, tone = "light", className = "" }) {
+  return (
+    <p
+      className={`text-xs font-bold uppercase tracking-[0.14em] ${
+        tone === "dark" ? "text-[#a3e635]" : "text-[#3f6b0c]"
+      } ${className}`}
+    >
+      {children}
+    </p>
+  );
+}
+
 export default function MasterclassPage() {
+  const nextSession = upcomingSaturday();
+
   return (
     <div
       className={`ts-page ${display.variable} ${body.variable} relative min-h-[100dvh] overflow-x-clip bg-[#f4f7f0] text-[#14201a] antialiased`}
@@ -314,20 +400,26 @@ export default function MasterclassPage() {
 
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-[#14201a] focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:rounded-full focus:bg-[#14201a] focus:px-4 focus:py-2 focus:text-white"
       >
         Skip to content
       </a>
 
-      {/* Ambient light behind the whole page */}
+      {/* Scarcity bar */}
+      <div className="relative z-[60] bg-[#14201a] px-4 py-2.5 text-center text-[13px] font-semibold text-[#c6ef6b]">
+        Only {DETAILS.seats} seats per batch
+        <span className="mx-2 text-white/30">|</span>
+        <span className="text-white">Next batch: {nextSession}</span>
+      </div>
+
+      {/* Ambient light */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[1100px] overflow-hidden">
         <div className="ts-drift absolute -left-40 -top-40 h-[620px] w-[620px] rounded-full bg-[#d4f28a] opacity-60 blur-[110px]" />
         <div className="ts-drift-slow absolute -right-32 top-20 h-[520px] w-[520px] rounded-full bg-[#bfe8d3] opacity-70 blur-[110px]" />
-        <div className="absolute left-1/3 top-[520px] h-[380px] w-[380px] rounded-full bg-[#e9f7c6] opacity-80 blur-[100px]" />
       </div>
       <div aria-hidden className="ts-grain pointer-events-none fixed inset-0 z-[1]" />
 
-      {/* Floating glass nav */}
+      {/* Nav */}
       <header className="sticky top-3 z-50 px-3 sm:top-4 sm:px-6">
         <nav
           aria-label="Main"
@@ -338,9 +430,10 @@ export default function MasterclassPage() {
           </Link>
           <div className="hidden items-center gap-1 md:flex">
             {[
-              { href: "#what-we-cover", label: "The session" },
+              { href: "#curriculum", label: "Curriculum" },
+              { href: "#session", label: "The day" },
               { href: "#outcomes", label: "Outcomes" },
-              { href: "#questions", label: "Questions" },
+              { href: "#questions", label: "FAQ" },
             ].map((item) => (
               <a
                 key={item.href}
@@ -363,20 +456,21 @@ export default function MasterclassPage() {
         </nav>
       </header>
 
-      <main id="main" className="relative z-[2]">
+      {/* A plain div, not <main>: the root layout already provides the main landmark. */}
+      <div id="main" className="relative z-[2]">
         {/* Hero */}
         <section className="mx-auto max-w-6xl px-5 pb-20 pt-12 sm:px-6 md:pt-16 lg:px-8 lg:pb-28 lg:pt-20">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 motion-reduce:animate-none lg:col-span-7">
+            <div className="lg:col-span-7">
               <p className="ts-glass relative inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[13px] font-semibold text-[#2f5209]">
-                <VideoCamera weight="duotone" aria-hidden className="h-4 w-4" />
+                <GraduationCap weight="duotone" aria-hidden className="h-4 w-4" />
                 Live masterclass for ages {DETAILS.ages}
               </p>
 
-              <h1 className="font-display mt-6 text-[2.5rem] font-bold leading-[1.06] tracking-[-0.03em] sm:text-5xl lg:text-[3.4rem]">
-                Your child has an idea. In one live session, they{" "}
+              <h1 className="font-display mt-6 text-[2.5rem] font-bold leading-[1.06] tracking-[-0.03em] text-balance sm:text-5xl lg:text-[3.4rem]">
+                Your child does not just learn about AI. They{" "}
                 <span className="relative inline-block whitespace-nowrap pb-1">
-                  <span className="relative z-10 italic">build it.</span>
+                  <span className="relative z-10 italic">build with it.</span>
                   <span
                     aria-hidden
                     className="absolute inset-x-[-4px] bottom-[0.18em] z-0 h-[0.32em] rounded-full bg-[#c6ef6b]"
@@ -384,28 +478,43 @@ export default function MasterclassPage() {
                 </span>
               </h1>
 
-              <p className="mt-6 max-w-[34rem] text-lg leading-relaxed text-[#4b5a50] sm:text-xl">
-                A live masterclass where teens turn a real problem into a
-                working AI prototype, with mentors who build for a living.
+              <p className="mt-6 max-w-[36rem] text-lg leading-relaxed text-[#4b5a50] sm:text-xl">
+                Most programs teach theory. In a single four hour Saturday session,
+                your child builds a real startup from scratch, guided by IIT mentors
+                and founders who do this for a living.
               </p>
 
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
-                <PrimaryCta size="lg" />
+                <PrimaryCta size="lg">Reserve my child&apos;s seat</PrimaryCta>
                 <a
-                  href="#what-we-cover"
+                  href="#curriculum"
                   className="inline-flex h-12 items-center gap-1.5 rounded-full px-1 text-base font-semibold text-[#14201a] underline decoration-[#9ed62f] decoration-2 underline-offset-[6px] transition-colors hover:decoration-[#14201a]"
                 >
-                  See the session plan
+                  See the curriculum
                 </a>
               </div>
+
+              <ul className="mt-9 grid gap-3 sm:grid-cols-2">
+                {[
+                  "No coding required",
+                  "IIT mentors and founders",
+                  "Live mini pitch competition",
+                  "Lifetime platform access",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2.5 text-[15px] font-medium text-[#3d4a42]">
+                    <SealCheck weight="fill" aria-hidden className="h-[18px] w-[18px] flex-none text-[#5a9416]" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* Hero visual with glass session card */}
-            <div className="animate-in fade-in slide-in-from-bottom-6 delay-150 duration-700 motion-reduce:animate-none lg:col-span-5">
+            {/* Hero visual */}
+            <div className="lg:col-span-5">
               <div className="relative lg:pl-4">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-[#dfe7d8] shadow-[0_40px_80px_-40px_rgba(30,52,18,0.45)] lg:aspect-[4/3.5]">
                   <Image
-                    src={IMAGES.heroMain}
+                    src={teensToCamera}
                     alt="Three students looking up from the laptop they are building on"
                     fill
                     sizes="(max-width: 1024px) 100vw, 540px"
@@ -416,10 +525,10 @@ export default function MasterclassPage() {
                   <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#14201a]/25 via-transparent to-transparent" />
                 </div>
 
-                <div className="absolute -right-4 -top-8 hidden w-36 rotate-[4deg] overflow-hidden rounded-2xl ring-[6px] ring-white/80 shadow-[0_24px_40px_-20px_rgba(30,52,18,0.5)] sm:block lg:-right-8 lg:w-40">
+                <div className="absolute -right-4 -top-8 hidden w-36 rotate-[4deg] overflow-hidden rounded-2xl shadow-[0_24px_40px_-20px_rgba(30,52,18,0.5)] ring-[6px] ring-white/80 sm:block lg:-right-8 lg:w-40">
                   <div className="relative aspect-[4/3.3]">
                     <Image
-                      src={IMAGES.heroInset}
+                      src={teensDelighted}
                       alt="Students grinning at something they just got working"
                       fill
                       sizes="160px"
@@ -435,9 +544,9 @@ export default function MasterclassPage() {
                   <div className="mt-5 flex items-end justify-between gap-3 border-t border-[#14201a]/10 pt-4">
                     <Price />
                     <p className="text-right text-xs font-medium leading-snug text-[#5d6a62]">
-                      Small group
+                      {DETAILS.seats} seats
                       <br />
-                      Limited seats
+                      per batch
                     </p>
                   </div>
                 </div>
@@ -446,232 +555,374 @@ export default function MasterclassPage() {
           </div>
         </section>
 
-        {/* Manifesto + how the room works */}
-        <section className="mx-auto max-w-6xl px-5 pb-24 sm:px-6 md:pb-32 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="font-display text-3xl font-semibold leading-[1.15] tracking-[-0.025em] text-balance sm:text-4xl lg:text-[3.1rem]">
-              Most classes teach teenagers <span className="italic text-[#5d6a62]">about</span> AI.
-              This one has them build with it.
+        {/* Problem (dark) */}
+        <section className="ts-dark relative bg-[#14201a] py-20 md:py-28">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <Eyebrow tone="dark">The real problem</Eyebrow>
+            <h2 className="font-display mt-4 max-w-3xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] text-white sm:text-4xl lg:text-[2.9rem]">
+              School teaches your child <span className="italic text-white/55">what</span> to think.
+              We teach them <span className="text-[#a3e635]">how to build.</span>
             </h2>
-            <p className="mt-5 text-lg text-[#4b5a50]">
-              Not theory. Not just watching. Building.
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/60">
+              Parents tell us the same thing again and again. The marks are fine.
+              It is everything the report card does not measure that worries them.
             </p>
-          </div>
 
-          <div className="relative mt-14">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[2.25rem] bg-[#dfe7d8] sm:aspect-[16/9] lg:aspect-[21/9]">
-              <Image
-                src={IMAGES.room}
-                alt="Students working through an idea together on a laptop"
-                fill
-                sizes="(max-width: 1152px) 100vw, 1152px"
-                className="object-cover"
-                placeholder="blur"
-              />
-              <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#14201a]/30" />
+            <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {PROBLEMS.map(({ n, title, body: text }) => (
+                <article
+                  key={n}
+                  className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-7"
+                >
+                  <p className="font-display text-4xl font-bold leading-none text-[#a3e635]">{n}</p>
+                  <h3 className="mt-5 text-lg font-semibold text-white">{title}</h3>
+                  <p className="mt-2.5 text-[15px] leading-relaxed text-white/55">{text}</p>
+                </article>
+              ))}
             </div>
 
-            <div className="ts-glass relative mx-4 -mt-20 rounded-[1.75rem] p-6 sm:mx-10 sm:p-8 lg:absolute lg:bottom-6 lg:right-6 lg:top-6 lg:mx-0 lg:mt-0 lg:flex lg:w-[25rem] lg:flex-col lg:justify-center">
-              <h3 className="font-display text-xl font-semibold tracking-tight">
-                What happens in the room
-              </h3>
-              <ul className="mt-5 space-y-4">
-                {[
-                  "Live and interactive. Your child asks questions and gets answers in real time.",
-                  "No coding and no prior experience needed.",
-                  "Led by industry experts and working professionals.",
-                  "They leave with something built, not just notes.",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <CheckCircle weight="fill" aria-hidden className="mt-0.5 h-5 w-5 flex-none text-[#5a9416]" />
-                    <span className="text-[15px] leading-relaxed text-[#26332b]">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <figure className="mt-12 rounded-[2rem] border border-[#a3e635]/20 bg-gradient-to-br from-[#a3e635]/[0.12] to-[#a3e635]/[0.03] p-8 md:p-10">
+              <blockquote className="font-display max-w-4xl text-xl font-semibold leading-[1.45] text-white sm:text-2xl">
+                The difference between teenagers who go on to lead and those who do not
+                is rarely intelligence, resources, or even ideas. It is whether they had
+                the <span className="text-[#a3e635]">right platform, community and mentorship</span> at
+                the right time.
+              </blockquote>
+            </figure>
           </div>
         </section>
 
-        {/* Session plan */}
-        <section id="what-we-cover" className="relative scroll-mt-24 overflow-hidden py-24 md:py-32">
-          <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute inset-0 bg-[#e9f0e2] [mask-image:linear-gradient(to_bottom,transparent,#000_18%,#000_82%,transparent)]" />
-            <div className="ts-drift absolute -left-20 top-10 h-[460px] w-[460px] rounded-full bg-[#c9ee76] opacity-70 blur-[90px]" />
-            <div className="ts-drift-slow absolute bottom-0 right-0 h-[520px] w-[520px] rounded-full bg-[#b3e2cd] opacity-80 blur-[100px]" />
-            <div className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-70 blur-[80px]" />
-          </div>
+        {/* Curriculum */}
+        <section id="curriculum" className="scroll-mt-24 bg-[#eef4e6] py-20 md:py-28">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <Eyebrow>The curriculum</Eyebrow>
+            <h2 className="font-display mt-4 max-w-2xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] sm:text-4xl lg:text-[2.9rem]">
+              One session. Four modules. One real startup built.
+            </h2>
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#4b5a50]">
+              Every module is practised on your child&apos;s own idea, which is why it
+              sticks long after the session ends.
+            </p>
 
-          <div className="relative mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-            <div className="max-w-2xl">
-              <h2 className="font-display text-3xl font-semibold leading-[1.14] tracking-[-0.025em] sm:text-4xl lg:text-[2.9rem]">
-                One session. Four things your child learns to do.
-              </h2>
-              <p className="mt-5 max-w-[60ch] text-lg leading-relaxed text-[#4b5a50]">
-                Each one is practised on their own idea, so it sticks long after
-                the class ends.
-              </p>
-            </div>
-
-            <ol className="mt-14 grid gap-5 md:grid-cols-2 md:gap-6 md:pb-14">
-              {SESSION_PLAN.map(({ verb, icon: Icon, title, body }, i) => (
-                <li
-                  key={verb}
-                  className={`ts-glass relative rounded-[1.75rem] p-7 transition-transform duration-300 hover:-translate-y-1 sm:p-8 ${
-                    i % 2 === 1 ? "md:translate-y-14 md:hover:translate-y-12" : ""
-                  }`}
+            <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+              {MODULES.map(({ tag, icon: Icon, title, body: text, topics }, i) => (
+                <article
+                  key={tag}
+                  className="flex flex-col rounded-[1.75rem] border border-[#14201a]/[0.07] bg-white p-7 transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-24px_rgba(20,32,26,0.25)]"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#14201a] text-[#c6ef6b] shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]">
-                      <Icon weight="duotone" aria-hidden className="h-6 w-6" />
+                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-[#14201a]">
+                      <Icon weight="duotone" aria-hidden className="h-5 w-5 text-[#a3e635]" />
                     </span>
-                    <span className="font-display text-2xl font-bold tracking-tight text-[#3f6b0c]">
-                      {verb}
+                    <span className="font-display text-sm font-bold text-[#14201a]/25">
+                      0{i + 1}
                     </span>
                   </div>
-                  <h3 className="font-display mt-6 text-xl font-semibold leading-snug tracking-tight">
-                    {title}
-                  </h3>
-                  <p className="mt-3 text-[15.5px] leading-relaxed text-[#3d4a42]">{body}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        {/* Outcomes bento */}
-        <section id="outcomes" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-24 sm:px-6 md:py-32 lg:px-8">
-          <div className="max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold leading-[1.14] tracking-[-0.025em] sm:text-4xl lg:text-[2.9rem]">
-              What your child walks away with
-            </h2>
-            <p className="mt-5 text-lg leading-relaxed text-[#4b5a50]">
-              Something you can see, and something that stays with them.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
-            <article className="relative min-h-[26rem] overflow-hidden rounded-[2rem] bg-[#dfe7d8] sm:col-span-2 lg:row-span-2 lg:min-h-0">
-              <Image
-                src={IMAGES.outcome}
-                alt="Students smiling at the project they built together"
-                fill
-                sizes="(max-width: 1024px) 100vw, 580px"
-                className="object-cover"
-                placeholder="blur"
-              />
-              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#14201a]/45 via-transparent to-transparent" />
-              <div className="ts-glass absolute inset-x-4 bottom-4 rounded-[1.5rem] p-6 sm:inset-x-5 sm:bottom-5">
-                <CursorClick weight="duotone" aria-hidden className="h-7 w-7 text-[#3f6b0c]" />
-                <h3 className="font-display mt-3 text-2xl font-semibold leading-tight tracking-tight">
-                  A working prototype they can show you
-                </h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-[#26332b]">
-                  Something real and clickable. Not a worksheet, not a certificate of attendance.
-                </p>
-              </div>
-            </article>
-
-            {OUTCOMES.map(({ icon: Icon, title, body, tone }) => {
-              const tones = {
-                lime: "bg-[#dff3b8] text-[#14201a]",
-                white: "bg-white text-[#14201a] ring-1 ring-[#14201a]/[0.07]",
-                ink: "bg-[#14201a] text-white",
-                glass: "ts-glass text-[#14201a]",
-              };
-              const bodyTone = tone === "ink" ? "text-white/75" : "text-[#3d4a42]";
-              const iconTone = tone === "ink" ? "text-[#c6ef6b]" : "text-[#3f6b0c]";
-              return (
-                <article
-                  key={title}
-                  className={`relative flex min-h-[13rem] flex-col justify-between overflow-hidden rounded-[2rem] p-6 ${tones[tone]}`}
-                >
-                  {tone === "glass" && (
-                    <div aria-hidden className="absolute -right-10 -top-10 -z-10 h-40 w-40 rounded-full bg-[#b9ec5a] opacity-70 blur-2xl" />
-                  )}
-                  <Icon weight="duotone" aria-hidden className={`h-7 w-7 ${iconTone}`} />
-                  <div className="mt-8">
-                    <h3 className="font-display text-lg font-semibold leading-snug tracking-tight">{title}</h3>
-                    <p className={`mt-1.5 text-[15px] leading-relaxed ${bodyTone}`}>{body}</p>
-                  </div>
+                  <span className="mt-5 inline-flex w-fit rounded-full bg-[#a3e635]/20 px-2.5 py-1 text-xs font-bold uppercase tracking-[0.08em] text-[#3f6212]">
+                    {tag}
+                  </span>
+                  <h3 className="font-display mt-3 text-xl font-bold leading-tight">{title}</h3>
+                  <p className="mt-2.5 text-[15px] leading-relaxed text-[#4b5a50]">{text}</p>
+                  <ul className="mt-5 space-y-2 border-t border-[#14201a]/[0.07] pt-5">
+                    {topics.map((t) => (
+                      <li key={t} className="flex items-start gap-2 text-[13.5px] leading-snug text-[#4b5a50]">
+                        <ArrowRight weight="bold" aria-hidden className="mt-[3px] h-3.5 w-3.5 flex-none text-[#5a9416]" />
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
                 </article>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Parent questions */}
-        <section id="questions" className="scroll-mt-24 border-t border-[#14201a]/[0.08]">
-          <div className="mx-auto grid max-w-6xl gap-12 px-5 py-24 sm:px-6 md:py-32 lg:grid-cols-12 lg:gap-16 lg:px-8">
-            <div className="lg:sticky lg:top-28 lg:col-span-4 lg:self-start">
-              <h2 className="font-display text-3xl font-semibold leading-[1.14] tracking-[-0.025em] sm:text-4xl">
-                Questions parents ask us
+        {/* The day */}
+        <section id="session" className="scroll-mt-24 py-20 md:py-28">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <Eyebrow>How the day runs</Eyebrow>
+            <h2 className="font-display mt-4 max-w-2xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] sm:text-4xl lg:text-[2.9rem]">
+              What happens in those {DETAILS.duration}
+            </h2>
+
+            <div className="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-16">
+              <ol className="relative">
+                {TIMELINE.map(({ time, title, body: text, badge }, i) => (
+                  <li
+                    key={time}
+                    className={`flex gap-5 py-5 ${
+                      i !== TIMELINE.length - 1 ? "border-b border-[#14201a]/[0.08]" : ""
+                    }`}
+                  >
+                    <span className="w-[5.5rem] flex-none pt-0.5 text-xs font-bold tabular-nums text-[#6b7280]">
+                      {time}
+                    </span>
+                    <div className="min-w-0">
+                      <h3 className="text-[15px] font-bold leading-snug">{title}</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-[#4b5a50]">{text}</p>
+                      {badge && (
+                        <span className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-[#14201a] px-3 py-1 text-xs font-bold uppercase tracking-[0.05em] text-[#c6ef6b]">
+                          <Trophy weight="fill" aria-hidden className="h-3 w-3" />
+                          {badge}
+                        </span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="flex flex-col gap-5">
+                <div className="rounded-[2rem] bg-[#14201a] p-8">
+                  <h3 className="font-display text-xl font-bold text-white">
+                    Guided by people who actually build things
+                  </h3>
+                  <p className="mt-3.5 text-[15px] leading-relaxed text-white/60">
+                    Our mentors are not academics reading from slides. They are IIT
+                    graduates, active startup founders and working professionals who
+                    have shipped real products. Your child sees how they think,
+                    including how they handle being wrong.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {["IIT mentors", "Startup founders", "Live Q&A", "Honest feedback", "Small groups"].map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full border border-[#a3e635]/20 bg-[#a3e635]/10 px-3 py-1.5 text-xs font-bold text-[#a3e635]"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 rounded-[1.75rem] border border-[#14201a]/[0.07] bg-white p-6">
+                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-[#ff0000]">
+                    <YoutubeLogo weight="fill" aria-hidden className="h-5 w-5 text-white" />
+                  </span>
+                  <div>
+                    <h3 className="text-[15px] font-bold">Their pitch goes on YouTube</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-[#4b5a50]">
+                      Every student&apos;s pitch is recorded and published. Your child
+                      gets a real founder moment, on camera, that they can show anyone.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="relative aspect-[16/10] overflow-hidden rounded-[1.75rem] bg-[#dfe7d8]">
+                  <Image
+                    src={teensBuilding}
+                    alt="Students working through an idea together on a laptop"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 540px"
+                    className="object-cover"
+                    placeholder="blur"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Outcomes (dark) */}
+        <section id="outcomes" className="ts-dark scroll-mt-24 bg-[#14201a] py-20 md:py-28">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <Eyebrow tone="dark">What they walk away with</Eyebrow>
+            <h2 className="font-display mt-4 max-w-2xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] text-white sm:text-4xl lg:text-[2.9rem]">
+              Not just a certificate. Something they actually built.
+            </h2>
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/60">
+              By 2 PM your child has a real output, and a way of thinking that stays
+              with them long after.
+            </p>
+
+            <div className="mt-14 grid gap-4 lg:grid-cols-12">
+              <article className="rounded-[2rem] border border-[#a3e635]/20 bg-[#a3e635]/[0.08] p-8 lg:col-span-5 lg:row-span-2">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#a3e635]/15">
+                  <Rocket weight="duotone" aria-hidden className="h-6 w-6 text-[#a3e635]" />
+                </span>
+                <h3 className="font-display mt-5 text-xl font-bold text-white">
+                  A real startup concept
+                </h3>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-white/60">
+                  A complete package they built themselves. Not a school project, not a
+                  worksheet.
+                </p>
+                <ul className="mt-6 space-y-3 border-t border-white/10 pt-6">
+                  {[
+                    "Their own validated startup idea",
+                    "A brand name, logo and identity",
+                    "A complete pitch deck",
+                    "A plan for reaching first users",
+                    "Their recorded YouTube pitch",
+                  ].map((t) => (
+                    <li key={t} className="flex items-start gap-2.5 text-[15px] text-white/75">
+                      <CheckCircle weight="fill" aria-hidden className="mt-0.5 h-[18px] w-[18px] flex-none text-[#a3e635]" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+                {OUTCOMES.map(({ icon: Icon, title, body: text }) => (
+                  <article
+                    key={title}
+                    className="rounded-[1.75rem] border border-white/[0.08] bg-white/[0.04] p-7"
+                  >
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#a3e635]/12">
+                      <Icon weight="duotone" aria-hidden className="h-5 w-5 text-[#a3e635]" />
+                    </span>
+                    <h3 className="font-display mt-4 text-[17px] font-bold text-white">{title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-white/55">{text}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats */}
+        <section className="py-20 md:py-24">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <Eyebrow className="inline-block">Why parents trust TeenSkool</Eyebrow>
+              <h2 className="font-display mx-auto mt-4 max-w-2xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] text-balance sm:text-4xl">
+                India&apos;s most vibrant program for young changemakers
               </h2>
-              <p className="mt-5 text-lg leading-relaxed text-[#4b5a50]">
-                Something else on your mind? We are happy to talk it through
-                before you book.
-              </p>
-              <Link
-                href="/contact"
-                className="mt-6 inline-flex h-12 items-center gap-1.5 rounded-full px-1 font-semibold underline decoration-[#9ed62f] decoration-2 underline-offset-[6px] transition-colors hover:decoration-[#14201a]"
-              >
-                Contact the team
-              </Link>
             </div>
 
-            <dl className="grid gap-x-10 sm:grid-cols-2 lg:col-span-8">
-              {QUESTIONS.map(({ q, a }) => (
-                <div key={q} className="border-t border-[#14201a]/10 py-7">
-                  <dt className="font-display text-lg font-semibold leading-snug tracking-tight">{q}</dt>
-                  <dd className="mt-2.5 text-[15.5px] leading-relaxed text-[#4b5a50]">{a}</dd>
+            <dl className="mt-12 grid grid-cols-2 overflow-hidden rounded-[2rem] border border-[#14201a]/10 bg-[#14201a]/10 gap-px sm:grid-cols-4">
+              {STATS.map(({ value, suffix, label }) => (
+                <div key={label} className="bg-white px-6 py-8 text-center">
+                  <dt className="sr-only">{label}</dt>
+                  <dd>
+                    <span className="font-display block text-4xl font-bold leading-none text-[#14201a]">
+                      {value}
+                      <span className="text-[#5a9416]">{suffix}</span>
+                    </span>
+                    <span className="mt-2 block text-[13px] font-semibold text-[#6b7280]">{label}</span>
+                  </dd>
                 </div>
               ))}
             </dl>
           </div>
         </section>
 
+        {/* FAQ */}
+        <section id="questions" className="scroll-mt-24 border-t border-[#14201a]/[0.08] py-20 md:py-28">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+              <div className="lg:col-span-5">
+                <div className="lg:sticky lg:top-28">
+                  <Eyebrow>FAQ</Eyebrow>
+                  <h2 className="font-display mt-4 text-3xl font-bold leading-[1.14] tracking-[-0.025em] sm:text-4xl">
+                    Questions parents ask us
+                  </h2>
+                  <p className="mt-5 text-lg leading-relaxed text-[#4b5a50]">
+                    Something else on your mind? We are happy to talk it through before
+                    you book.
+                  </p>
+                  <Link
+                    href="/contact"
+                    className="mt-6 inline-flex h-12 items-center gap-1.5 rounded-full px-1 text-base font-semibold text-[#14201a] underline decoration-[#9ed62f] decoration-2 underline-offset-[6px] transition-colors hover:decoration-[#14201a]"
+                  >
+                    Contact the team
+                  </Link>
+                </div>
+              </div>
+
+              <dl className="lg:col-span-7">
+                {QUESTIONS.map(({ q, a }) => (
+                  <div key={q} className="border-t border-[#14201a]/10 py-7 first:border-t-0 first:pt-0">
+                    <dt className="font-display text-lg font-bold leading-snug tracking-tight">{q}</dt>
+                    <dd className="mt-2.5 text-[15.5px] leading-relaxed text-[#4b5a50]">{a}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </section>
+
         {/* Final CTA */}
         <section className="mx-auto max-w-6xl px-5 pb-24 sm:px-6 md:pb-32 lg:px-8">
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#cfe3b4]">
-            <Image
-              src={IMAGES.ctaBand}
-              alt=""
-              fill
-              sizes="(max-width: 1152px) 100vw, 1152px"
-              className="object-cover"
-            />
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#e6f5cc]/80 via-[#e6f5cc]/35 to-transparent" />
+          <div className="ts-dark relative overflow-hidden rounded-[2.5rem] bg-[#14201a]">
+            <div className="absolute inset-y-0 right-0 hidden w-[42%] lg:block">
+              <Image
+                src={brandStudents}
+                alt=""
+                fill
+                sizes="520px"
+                className="object-cover object-center"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-r from-[#14201a] via-[#14201a]/70 to-transparent"
+              />
+            </div>
 
-            <div className="relative p-4 sm:p-8 lg:p-12">
-              <div className="ts-glass relative max-w-xl rounded-[2rem] p-7 sm:p-10">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#3f6b0c]">
-                  Limited seats
-                </p>
-                <h2 className="font-display mt-3 text-3xl font-bold leading-[1.08] tracking-[-0.025em] text-balance sm:text-[2.6rem]">
+            <div className="relative p-8 sm:p-12 lg:p-14">
+              <div className="max-w-xl">
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#a3e635]/25 bg-[#a3e635]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.08em] text-[#a3e635]">
+                  <Users weight="fill" aria-hidden className="h-3.5 w-3.5" />
+                  {DETAILS.seats} seats per batch
+                </span>
+
+                <h2 className="font-display mt-5 text-3xl font-bold leading-[1.1] tracking-[-0.025em] text-balance text-white sm:text-[2.6rem]">
                   Give your child the head start you wish you&apos;d had
                 </h2>
-                <p className="mt-4 text-[17px] leading-relaxed text-[#26332b]">
-                  One live session. One real idea. One working prototype they
-                  built themselves. Groups are kept small so every child gets
-                  time with a mentor.
+                <p className="mt-4 text-[17px] leading-relaxed text-white/60">
+                  One Saturday. One real startup, built by them. A way of thinking that
+                  stays long after the session ends.
                 </p>
 
-                <div className="mt-7 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
-                  <SessionFacts />
-                  <Price size="lg" align="right" />
+                <dl className="mt-8 grid grid-cols-2 gap-x-5 gap-y-4 rounded-[1.5rem] border border-white/[0.08] bg-white/[0.04] p-6">
+                  {[
+                    { icon: CalendarBlank, label: "Date", value: nextSession },
+                    { icon: Clock, label: "Time", value: DETAILS.time },
+                    { icon: VideoCamera, label: "Format", value: "Live online" },
+                    { icon: GraduationCap, label: "For", value: DETAILS.grades },
+                  ].map(({ icon: Icon, label, value }) => (
+                    <div key={label} className="flex items-start gap-2.5">
+                      <Icon weight="duotone" aria-hidden className="mt-0.5 h-[18px] w-[18px] flex-none text-[#a3e635]" />
+                      <div className="min-w-0">
+                        <dt className="text-xs font-medium text-white/45">{label}</dt>
+                        <dd className="text-sm font-bold text-white">{value}</dd>
+                      </div>
+                    </div>
+                  ))}
+                </dl>
+
+                <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium text-white/50">Your investment</p>
+                    <p className="mt-1.5 flex items-baseline gap-3">
+                      <span className="font-display text-[2.75rem] font-bold leading-none text-white">
+                        {inr(PRICING.now)}
+                      </span>
+                      <span className="text-base text-white/40">
+                        <span className="sr-only">Regular price </span>
+                        <s>{inr(PRICING.mrp)}</s>
+                      </span>
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-[#a3e635] px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.06em] text-[#14201a]">
+                    Save {DISCOUNT_PCT}%
+                  </span>
                 </div>
 
-                <div className="mt-8 flex flex-col items-start gap-3">
-                  <PrimaryCta size="lg" className="w-full sm:w-auto" />
-                  <p className="flex items-center gap-1.5 text-sm text-[#3d4a42]">
-                    <LockKey weight="duotone" aria-hidden className="h-4 w-4 text-[#3f6b0c]" />
-                    Registration and payment are completed securely on Cashfree.
+                <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                  <PrimaryCta size="lg" className="w-full sm:w-auto">
+                    Reserve my child&apos;s seat
+                  </PrimaryCta>
+                  <p className="flex items-center gap-1.5 text-sm text-white/50">
+                    <LockKey weight="duotone" aria-hidden className="h-4 w-4 text-[#a3e635]" />
+                    Secure payment via Cashfree
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </section>
-      </main>
+      </div>
 
       <footer className="relative z-[2] border-t border-[#14201a]/[0.08]">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-5 py-10 sm:flex-row sm:px-6 lg:px-8">
@@ -687,7 +938,11 @@ export default function MasterclassPage() {
               { href: "/about", label: "About" },
               { href: "/contact", label: "Contact" },
             ].map((l) => (
-              <Link key={l.href} href={l.href} className="inline-flex h-11 items-center rounded-full px-3 transition-colors hover:text-[#14201a]">
+              <Link
+                key={l.href}
+                href={l.href}
+                className="inline-flex h-11 items-center rounded-full px-3 transition-colors hover:text-[#14201a]"
+              >
                 {l.label}
               </Link>
             ))}
