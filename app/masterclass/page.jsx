@@ -13,7 +13,6 @@ import {
   ChatCircleText,
   CheckCircle,
   Clock,
-  CursorClick,
   GraduationCap,
   Hammer,
   LockKey,
@@ -83,54 +82,38 @@ export const metadata = {
     "A live 4 hour Saturday masterclass where your child builds a real startup with AI, guided by IIT mentors and working founders. Ages 13 to 18. No coding required.",
 };
 
-const MODULES = [
+// Each row pairs the gap a parent already feels with what the session does
+// about it. The hour by hour detail lives in the session timeline below.
+const GAPS = [
   {
-    tag: "Mindset",
-    icon: Brain,
-    title: "Think like a founder",
-    body: "Before building anything, your child shifts from consuming to creating. This is the foundation everything else sits on.",
-    topics: [
-      "How founders see the world differently",
-      "Making decisions without all the answers",
-      "Treating failure as feedback",
-      "The builder identity exercise",
-    ],
-  },
-  {
-    tag: "Problem",
+    n: "01",
+    gap: "Information is not the same as skill",
+    gapBody:
+      "Your child can look anything up. What is missing is deciding what is worth doing, and then actually doing it.",
     icon: MagnifyingGlass,
-    title: "Find a problem worth solving",
-    body: "The best startups do not begin with ideas. They begin with real problems. Your child learns to spot one and check whether it is real.",
-    topics: [
-      "Telling real problems from imagined ones",
-      "Market research using AI",
-      "Looking at what already exists",
-      "A live peer validation round",
-    ],
+    fix: "They start from a real problem",
+    fixBody:
+      "Not a topic handed to them. Something they noticed themselves and genuinely want solved, pressure tested with AI until it holds up.",
   },
   {
-    tag: "Build",
+    n: "02",
+    gap: "No syllabus covers this",
+    gapBody:
+      "Critical thinking, creative confidence and an entrepreneurial mindset shape careers. None of them appear on a report card.",
     icon: Hammer,
-    title: "Build with AI, no code needed",
-    body: "Your child uses AI tools to create something real: a name, a logo, a brand identity and a pitch deck they can actually show you.",
-    topics: [
-      "The AI tools professionals use daily",
-      "Logo and brand creation",
-      "Building the pitch deck",
-      "Live feedback from mentors",
-    ],
+    fix: "They build the thing themselves",
+    fixBody:
+      "A working prototype, a brand and a pitch deck, made during the session with AI and no coding at all.",
   },
   {
-    tag: "Market",
+    n: "03",
+    gap: "The AI era is already here",
+    gapBody:
+      "Children who learn to use AI as a tool rather than a shortcut will lead. The rest will spend years catching up.",
     icon: Megaphone,
-    title: "Tell the world about it",
-    body: "A product nobody knows about is a hobby. Your child learns how founders actually find their first users.",
-    topics: [
-      "Market research basics",
-      "Branding and positioning",
-      "Content marketing with AI",
-      "The live pitch competition",
-    ],
+    fix: "They put it in front of real people",
+    fixBody:
+      "They pitch live to IIT mentors and working founders, get honest feedback, and the pitch is recorded and published.",
   },
 ];
 
@@ -165,24 +148,6 @@ const TIMELINE = [
     time: "2:00 PM",
     title: "Certificate and community",
     body: "Completion certificate issued, and your child joins the Young AI Masterminds community of builders.",
-  },
-];
-
-const PROBLEMS = [
-  {
-    n: "01",
-    title: "Information is not skill",
-    body: "Your child can look up anything. What is missing is applying it: making a decision, taking initiative, building something that did not exist before.",
-  },
-  {
-    n: "02",
-    title: "School will not teach this",
-    body: "Critical thinking, creative confidence, an entrepreneurial mindset. These shape careers, and they are not in any syllabus.",
-  },
-  {
-    n: "03",
-    title: "The AI era is already here",
-    body: "Children who learn to use AI as a tool rather than a shortcut will lead. The rest will be catching up with people who started earlier.",
   },
 ];
 
@@ -279,6 +244,14 @@ const PAGE_CSS = `
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
   opacity: 0.05;
   mix-blend-mode: multiply;
+}
+/* Highlight that follows the text across line breaks, unlike an absolutely
+   positioned bar which would stretch to the width of the whole inline box. */
+.ts-mark {
+  background-image: linear-gradient(to top, #c6ef6b 0.3em, transparent 0.3em);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-inline: 0.06em;
 }
 .ts-page a, .ts-page button { touch-action: manipulation; }
 .ts-page :focus-visible { outline: 2px solid #3f6b0c; outline-offset: 3px; }
@@ -430,7 +403,7 @@ export default function MasterclassPage() {
           </Link>
           <div className="hidden items-center gap-1 md:flex">
             {[
-              { href: "#curriculum", label: "Curriculum" },
+              { href: "#approach", label: "What they learn" },
               { href: "#session", label: "The day" },
               { href: "#outcomes", label: "Outcomes" },
               { href: "#questions", label: "FAQ" },
@@ -467,30 +440,23 @@ export default function MasterclassPage() {
                 Live masterclass for ages {DETAILS.ages}
               </p>
 
-              <h1 className="font-display mt-6 text-[2.5rem] font-bold leading-[1.06] tracking-[-0.03em] text-balance sm:text-5xl lg:text-[3.4rem]">
-                Your child does not just learn about AI. They{" "}
-                <span className="relative inline-block whitespace-nowrap pb-1">
-                  <span className="relative z-10 italic">build with it.</span>
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-[-4px] bottom-[0.18em] z-0 h-[0.32em] rounded-full bg-[#c6ef6b]"
-                  />
-                </span>
+              <h1 className="font-display mt-6 text-[2.4rem] font-bold leading-[1.08] tracking-[-0.03em] text-balance sm:text-5xl lg:text-[3.3rem]">
+                Prepare your child for 21st Century{" "}
+                <span className="ts-mark italic">Entrepreneurship &amp; AI Skills</span>
               </h1>
 
               <p className="mt-6 max-w-[36rem] text-lg leading-relaxed text-[#4b5a50] sm:text-xl">
-                Most programs teach theory. In a single four hour Saturday session,
-                your child builds a real startup from scratch, guided by IIT mentors
-                and founders who do this for a living.
+                Give your child the mindset, skills, and experience of a real
+                founder in a live AI Founder Masterclass.
               </p>
 
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <PrimaryCta size="lg">Reserve my child&apos;s seat</PrimaryCta>
                 <a
-                  href="#curriculum"
+                  href="#approach"
                   className="inline-flex h-12 items-center gap-1.5 rounded-full px-1 text-base font-semibold text-[#14201a] underline decoration-[#9ed62f] decoration-2 underline-offset-[6px] transition-colors hover:decoration-[#14201a]"
                 >
-                  See the curriculum
+                  See what they learn
                 </a>
               </div>
 
@@ -555,85 +521,111 @@ export default function MasterclassPage() {
           </div>
         </section>
 
-        {/* Problem (dark) */}
-        <section className="ts-dark relative bg-[#14201a] py-20 md:py-28">
+        {/* Why parents trust TeenSkool */}
+        <section className="pb-20 md:pb-24">
           <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-            <Eyebrow tone="dark">The real problem</Eyebrow>
-            <h2 className="font-display mt-4 max-w-3xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] text-white sm:text-4xl lg:text-[2.9rem]">
-              School teaches your child <span className="italic text-white/55">what</span> to think.
-              We teach them <span className="text-[#a3e635]">how to build.</span>
+            <div className="text-center">
+              <Eyebrow className="inline-block">Why parents trust TeenSkool</Eyebrow>
+              <h2 className="font-display mx-auto mt-4 max-w-2xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] text-balance sm:text-4xl">
+                India&apos;s most vibrant program for young changemakers
+              </h2>
+            </div>
+
+            <dl className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] border border-[#14201a]/10 bg-[#14201a]/10 sm:grid-cols-4">
+              {STATS.map(({ value, suffix, label }) => (
+                <div key={label} className="bg-white px-6 py-8 text-center">
+                  <dt className="sr-only">{label}</dt>
+                  <dd>
+                    <span className="font-display block text-4xl font-bold leading-none text-[#14201a]">
+                      {value}
+                      <span className="text-[#5a9416]">{suffix}</span>
+                    </span>
+                    <span className="mt-2 block text-[13px] font-semibold text-[#6b7280]">{label}</span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+
+        {/* The gap, and what we do about it */}
+        <section id="approach" className="scroll-mt-24 bg-[#eef4e6] py-20 md:py-28">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <Eyebrow>Why this matters</Eyebrow>
+            <h2 className="font-display mt-4 max-w-3xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] sm:text-4xl lg:text-[2.9rem]">
+              School teaches your child <span className="italic text-[#5d6a62]">what</span> to think.
+              We teach them how to build.
             </h2>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/60">
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#4b5a50]">
               Parents tell us the same thing again and again. The marks are fine.
               It is everything the report card does not measure that worries them.
             </p>
 
-            <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {PROBLEMS.map(({ n, title, body: text }) => (
-                <article
-                  key={n}
-                  className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-7"
-                >
-                  <p className="font-display text-4xl font-bold leading-none text-[#a3e635]">{n}</p>
-                  <h3 className="mt-5 text-lg font-semibold text-white">{title}</h3>
-                  <p className="mt-2.5 text-[15px] leading-relaxed text-white/55">{text}</p>
-                </article>
-              ))}
+            {/* Column labels, desktop only. On mobile each half is labelled inline. */}
+            <div aria-hidden className="mt-14 hidden gap-5 md:grid md:grid-cols-2">
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#8a968e]">
+                Where school stops
+              </p>
+              <p className="pl-8 text-xs font-bold uppercase tracking-[0.14em] text-[#3f6212]">
+                What the masterclass does
+              </p>
             </div>
 
-            <figure className="mt-12 rounded-[2rem] border border-[#a3e635]/20 bg-gradient-to-br from-[#a3e635]/[0.12] to-[#a3e635]/[0.03] p-8 md:p-10">
-              <blockquote className="font-display max-w-4xl text-xl font-semibold leading-[1.45] text-white sm:text-2xl">
-                The difference between teenagers who go on to lead and those who do not
-                is rarely intelligence, resources, or even ideas. It is whether they had
-                the <span className="text-[#a3e635]">right platform, community and mentorship</span> at
-                the right time.
+            <ol className="mt-4 space-y-4">
+              {GAPS.map(({ n, gap, gapBody, icon: Icon, fix, fixBody }) => (
+                <li
+                  key={n}
+                  className="relative grid overflow-hidden rounded-[1.75rem] border border-[#14201a]/[0.07] bg-white shadow-[0_18px_44px_-30px_rgba(20,32,26,0.4)] md:grid-cols-2"
+                >
+                  {/* The gap */}
+                  <div className="ts-dark bg-[#14201a] p-7 sm:p-8">
+                    <div className="flex h-9 items-center gap-3">
+                      <span className="font-display text-sm font-bold text-[#a3e635]">{n}</span>
+                      <span aria-hidden className="h-px flex-1 bg-white/15 md:hidden" />
+                      <span className="text-xs font-bold uppercase tracking-[0.12em] text-white/40 md:hidden">
+                        The gap
+                      </span>
+                    </div>
+                    <h3 className="font-display mt-5 text-xl font-bold leading-snug text-white">
+                      {gap}
+                    </h3>
+                    <p className="mt-2.5 text-[15.5px] leading-relaxed text-white/55">{gapBody}</p>
+                  </div>
+
+                  {/* Connector, desktop only */}
+                  <span
+                    aria-hidden
+                    className="absolute left-1/2 top-1/2 z-10 hidden h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#a3e635] ring-4 ring-white md:flex"
+                  >
+                    <ArrowRight weight="bold" className="h-4 w-4 text-[#14201a]" />
+                  </span>
+
+                  {/* What we do */}
+                  <div className="p-7 sm:p-8 md:pl-16">
+                    <div className="flex h-9 items-center gap-3">
+                      <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-[#a3e635]/20">
+                        <Icon weight="duotone" aria-hidden className="h-[18px] w-[18px] text-[#3f6212]" />
+                      </span>
+                      <span aria-hidden className="h-px flex-1 bg-[#14201a]/10 md:hidden" />
+                      <span className="text-xs font-bold uppercase tracking-[0.12em] text-[#3f6212] md:hidden">
+                        What we do
+                      </span>
+                    </div>
+                    <h3 className="font-display mt-5 text-xl font-bold leading-snug">{fix}</h3>
+                    <p className="mt-2.5 text-[15.5px] leading-relaxed text-[#4b5a50]">{fixBody}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <figure className="mt-10 rounded-[2rem] border border-[#a3e635]/30 bg-[#a3e635]/[0.14] p-8 sm:p-10">
+              <blockquote className="font-display text-xl font-semibold leading-[1.45] text-[#14201a] sm:text-[1.4rem]">
+                The difference between teenagers who go on to lead and those who do
+                not is rarely intelligence, resources, or even ideas. It is whether
+                they had the right platform, community and mentorship at the right
+                time.
               </blockquote>
             </figure>
-          </div>
-        </section>
-
-        {/* Curriculum */}
-        <section id="curriculum" className="scroll-mt-24 bg-[#eef4e6] py-20 md:py-28">
-          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-            <Eyebrow>The curriculum</Eyebrow>
-            <h2 className="font-display mt-4 max-w-2xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] sm:text-4xl lg:text-[2.9rem]">
-              One session. Four modules. One real startup built.
-            </h2>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#4b5a50]">
-              Every module is practised on your child&apos;s own idea, which is why it
-              sticks long after the session ends.
-            </p>
-
-            <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-              {MODULES.map(({ tag, icon: Icon, title, body: text, topics }, i) => (
-                <article
-                  key={tag}
-                  className="flex flex-col rounded-[1.75rem] border border-[#14201a]/[0.07] bg-white p-7 transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-24px_rgba(20,32,26,0.25)]"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-[#14201a]">
-                      <Icon weight="duotone" aria-hidden className="h-5 w-5 text-[#a3e635]" />
-                    </span>
-                    <span className="font-display text-sm font-bold text-[#14201a]/25">
-                      0{i + 1}
-                    </span>
-                  </div>
-                  <span className="mt-5 inline-flex w-fit rounded-full bg-[#a3e635]/20 px-2.5 py-1 text-xs font-bold uppercase tracking-[0.08em] text-[#3f6212]">
-                    {tag}
-                  </span>
-                  <h3 className="font-display mt-3 text-xl font-bold leading-tight">{title}</h3>
-                  <p className="mt-2.5 text-[15px] leading-relaxed text-[#4b5a50]">{text}</p>
-                  <ul className="mt-5 space-y-2 border-t border-[#14201a]/[0.07] pt-5">
-                    {topics.map((t) => (
-                      <li key={t} className="flex items-start gap-2 text-[13.5px] leading-snug text-[#4b5a50]">
-                        <ArrowRight weight="bold" aria-hidden className="mt-[3px] h-3.5 w-3.5 flex-none text-[#5a9416]" />
-                        {t}
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -777,33 +769,6 @@ export default function MasterclassPage() {
                 ))}
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Stats */}
-        <section className="py-20 md:py-24">
-          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <Eyebrow className="inline-block">Why parents trust TeenSkool</Eyebrow>
-              <h2 className="font-display mx-auto mt-4 max-w-2xl text-3xl font-bold leading-[1.14] tracking-[-0.025em] text-balance sm:text-4xl">
-                India&apos;s most vibrant program for young changemakers
-              </h2>
-            </div>
-
-            <dl className="mt-12 grid grid-cols-2 overflow-hidden rounded-[2rem] border border-[#14201a]/10 bg-[#14201a]/10 gap-px sm:grid-cols-4">
-              {STATS.map(({ value, suffix, label }) => (
-                <div key={label} className="bg-white px-6 py-8 text-center">
-                  <dt className="sr-only">{label}</dt>
-                  <dd>
-                    <span className="font-display block text-4xl font-bold leading-none text-[#14201a]">
-                      {value}
-                      <span className="text-[#5a9416]">{suffix}</span>
-                    </span>
-                    <span className="mt-2 block text-[13px] font-semibold text-[#6b7280]">{label}</span>
-                  </dd>
-                </div>
-              ))}
-            </dl>
           </div>
         </section>
 
