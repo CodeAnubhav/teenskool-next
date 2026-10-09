@@ -6,6 +6,10 @@ import teensToCamera from "@/public/assets/masterclassesImages/1bb9291256134df4a
 import teensBuilding from "@/public/assets/masterclassesImages/6e306fb0ca5446408c469ea63ce7eba0.jpg.webp";
 import teensDelighted from "@/public/assets/masterclassesImages/719166dde518487e8fe872135b4ed585.jpg.webp";
 import brandStudents from "@/public/assets/masterclassesImages/Untitled design (11).webp";
+import quoteZuckerberg from "@/public/assets/masterclassesImages/quotes/quote-zuckerberg.png";
+import quoteSrinivas from "@/public/assets/masterclassesImages/quotes/quote-srinivas.png";
+import quoteAltman from "@/public/assets/masterclassesImages/quotes/quote-altman.png";
+import QuoteCarousel from "@/components/masterclass/QuoteCarousel";
 import {
   ArrowRight,
   Brain,
@@ -171,6 +175,23 @@ const OUTCOMES = [
     icon: Path,
     title: "A way of thinking that transfers",
     body: "Spot a problem, test the assumption, ship something imperfect, improve it. It works far beyond startups.",
+  },
+];
+
+// The quotes are baked into the artwork, so the alt text has to carry them or
+// the whole section is invisible to screen readers and to search.
+const QUOTE_SLIDES = [
+  {
+    src: quoteZuckerberg,
+    alt: "Everyone will have invention superpowers. Mark Zuckerberg, CEO, Meta",
+  },
+  {
+    src: quoteSrinivas,
+    alt: "The future doesn't belong to consumers, it belongs to creators. Aravind Srinivas, CEO, Perplexity",
+  },
+  {
+    src: quoteAltman,
+    alt: "No matter what you choose, build stuff and be around smart people. Sam Altman, CEO, OpenAI",
   },
 ];
 
@@ -480,8 +501,8 @@ export default function MasterclassPage() {
               <div className="relative lg:pl-4">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-[#dfe7d8] shadow-[0_40px_80px_-40px_rgba(30,52,18,0.45)] lg:aspect-[4/3.5]">
                   <Image
-                    src={teensToCamera}
-                    alt="Three students looking up from the laptop they are building on"
+                    src={brandStudents}
+                    alt="Two students dressed as founders, arms folded and smiling"
                     fill
                     sizes="(max-width: 1024px) 100vw, 540px"
                     className="object-cover"
@@ -714,6 +735,22 @@ export default function MasterclassPage() {
           </div>
         </section>
 
+        {/* What the people building AI say */}
+        <section className="bg-[#eef4e6] py-20 md:py-24">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl text-center">
+              <Eyebrow className="inline-block">Not just our opinion</Eyebrow>
+              <h2 className="font-display mx-auto mt-4 text-3xl font-bold leading-[1.14] tracking-[-0.025em] text-balance sm:text-4xl">
+                The people building AI keep saying the same thing
+              </h2>
+            </div>
+
+            <div className="mt-12">
+              <QuoteCarousel slides={QUOTE_SLIDES} />
+            </div>
+          </div>
+        </section>
+
         {/* Outcomes (dark) */}
         <section id="outcomes" className="ts-dark scroll-mt-24 bg-[#14201a] py-20 md:py-28">
           <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
@@ -812,7 +849,7 @@ export default function MasterclassPage() {
           <div className="ts-dark relative overflow-hidden rounded-[2.5rem] bg-[#14201a]">
             <div className="absolute inset-y-0 right-0 hidden w-[42%] lg:block">
               <Image
-                src={brandStudents}
+                src={teensToCamera}
                 alt=""
                 fill
                 sizes="520px"
