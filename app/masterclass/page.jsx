@@ -43,7 +43,7 @@ const body = Figtree({
   variable: "--font-body",
 });
 
-const PAYMENT_URL = "https://payments.cashfree.com/forms/AIFounderMasterclass";
+const PAYMENT_URL = "https://rzp.io/rzp/3E4IbQC";
 
 const DETAILS = {
   time: "10 AM to 2 PM",
@@ -917,7 +917,7 @@ export default function MasterclassPage() {
                   </PrimaryCta>
                   <p className="flex items-center gap-1.5 text-sm text-white/50">
                     <LockKey weight="duotone" aria-hidden className="h-4 w-4 text-[#a3e635]" />
-                    Secure payment via Cashfree
+                    Secure payment via Razorpay
                   </p>
                 </div>
               </div>
