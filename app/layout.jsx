@@ -6,7 +6,6 @@ import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { SupabaseProvider } from '@/contexts/SupabaseContext';
-import MetaPixel from '@/components/analytics/MetaPixel';
 import PostHogProvider from '@/components/analytics/PostHogProvider';
 
 export const metadata = {
@@ -46,7 +45,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         </noscript>
         {/* End Google Tag Manager (noscript) */}
-        <MetaPixel />
         <PostHogProvider>
           <ThemeProvider>
             <SupabaseProvider>
